@@ -1,0 +1,53 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+      <div class="text-center">
+        <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+          Account Activation
+        </h2>
+      </div>
+
+      @if (isLoading) {
+        <div class="text-center">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+          <p class="mt-2 text-gray-600">Activating your account...</p>
+        </div>
+      }
+
+      @if (!isLoading && tokenChecked) {
+        <div class="rounded-md p-4" [ngClass]="{
+          'bg-green-50 text-green-800': tokenValid,
+          'bg-red-50 text-red-800': !tokenValid
+        }">
+          @if (tokenValid) {
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <p>Account activated successfully! Redirecting to login page...</p>
+            </div>
+          }
+          
+          @if (!tokenValid) {
+            <div class="flex items-center">
+              <svg class="h-5 w-5 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <p>{{ errorMessage }}</p>
+            </div>
+          }
+        </div>
+      }
+
+      @if (!tokenChecked && !isLoading) {
+        <div class="text-center text-gray-600">
+          <p>Verifying your activation token...</p>
+        </div>
+      }
+
+      <div class="text-center mt-4">
+        <a routerLink="/auth/user/signin" class="font-medium text-blue-600 hover:text-blue-500">
+          Back to Sign In
+        </a>
+      </div>
+    </div>
+  </div>

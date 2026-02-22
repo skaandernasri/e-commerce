@@ -1,0 +1,154 @@
+<div class="fixed inset-0 z-50 flex items-start md:items-center justify-center p-4 overflow-auto bg-black/50">
+    <div @fadeInUp class="relative w-full max-w-4xl bg-[var(--surface)] rounded-xl shadow-2xl border border-[var(--background)] mx-auto my-4 md:my-8">
+      
+      <!-- Header -->
+      <div class="sticky top-0 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] p-4 z-10">
+        <h2 class="text-xl font-bold text-white">
+          {{ isEditMode ? 'Edit User' : 'Create New User' }}
+        </h2>
+      </div>
+  
+      <!-- Content -->
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-6 space-y-6 max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-10rem)] overflow-y-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <!-- First Name -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-[var(--text)]">First Name*</label>
+            <input type="text" formControlName="prenom"
+                   class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+            @if(userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched){
+              <p class="text-red-500 text-sm mt-1">
+                @if(userForm.get('prenom')?.errors?.['required']){
+                  <span>First name is required.</span>
+                }
+                @else if(userForm.get('prenom')?.errors?.['minlength']){
+                  <span>Must be at least 4 characters long.</span>
+                }
+                @else if (userForm.get('prenom')?.errors?.['pattern']) {
+                  <span>Only letters, spaces, hyphens, and apostrophes allowed.</span>
+                }
+              </p>
+            }
+          </div>
+  
+          <!-- Last Name -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-[var(--text)]">Last Name*</label>
+ <input type="text" formControlName="nom"
+                   class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+            @if(userForm.get('nom')?.invalid && userForm.get('nom')?.touched){
+              <p class="text-red-500 text-sm mt-1">
+                @if(userForm.get('nom')?.errors?.['required']){
+                  <span>Last name is required.</span>
+                }
+                @else if(userForm.get('nom')?.errors?.['minlength']){
+                  <span>Must be at least 4 characters long.</span>
+                }
+                @else if (userForm.get('nom')?.errors?.['pattern']) {
+                  <span>Only letters, spaces, hyphens, and apostrophes allowed.</span>
+                }
+              </p>
+                }
+              </div>
+
+                        <!-- Phone Number -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-[var(--text)]">Phone Number*</label>
+            <input  type="text" formControlName="telephone" class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+            @if(userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched){
+              <p class="text-red-500 text-sm mt-1">
+                @if(userForm.get('telephone')?.errors?.['required']){
+                  <span>Phone number is required.</span>
+                }
+                @else if(userForm.get('telephone')?.errors?.['maxlength']){
+                  <span>Must be at most 20 numbers long.</span>
+                }
+              </p>
+              }
+            </div>
+          <!-- Email -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-[var(--text)]">Email*</label>
+            <input type="email" formControlName="email"
+                   class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+            @if(userForm.get('email')?.invalid && userForm.get('email')?.touched){
+              <p class="text-red-500 text-sm mt-1">
+                @if(userForm.get('email')?.errors?.['required']){
+                  <span>Email is required.</span>
+                }
+                @else if(userForm.get('email')?.errors?.['email'] || userForm.get('email')?.errors?.['pattern']){
+                  <span>Invalid email format.</span>
+                }
+              </p>
+            }
+          </div>
+  
+          <!-- Status -->
+          <div class="space-y-2 md:col-span-2">
+            <label class="block text-sm font-medium text-[var(--text)]">Status</label>            
+            <select formControlName="isverified" 
+                    class="w-full px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+              <option [value]="true">Verified</option>
+              <option [value]="false">Not Verified</option>
+            </select>
+          </div>
+  
+          <!-- Roles -->
+          <div class="space-y-2 md:col-span-2">
+            <label class="block text-sm font-medium text-[var(--text)]">Roles</label>
+      
+            <div class="flex flex-col sm:flex-row gap-2">
+              <select [(ngModel)]="selectedRole" 
+                      class="flex-1 px-3 py-2 text-sm md:text-base border rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]"
+                      [ngModelOptions]="{standalone: true}">
+                <option value="">Select a role...</option>
+                <option value="CLIENT">CLIENT</option>
+                <option value="ADMIN">ADMIN</option>
+                <option value="GESTIONNAIRE">GESTIONNAIRE</option>
+                <option value="REDACTEUR">REDACTEUR</option>
+                <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+              </select>
+              <button type="button" 
+                      (click)="addRole()"
+                      class="px-4 py-2 text-sm md:text-base bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] whitespace-nowrap"
+                      [disabled]="!selectedRole">
+                Add Role
+              </button>
+            </div>
+            
+            <div class="mt-2 space-y-2 max-h-40 overflow-y-auto">
+              @for(role of userForm.get('roles')?.value; track role; let i = $index) {
+                <div class="flex items-center justify-between p-2 bg-[var(--background)] rounded-md text-sm">
+                  <span class="text-[var(--text)]">{{ role }}</span>
+                  <button type="button" 
+                          (click)="removeRole(i)"
+                          class="text-red-500 hover:text-red-700">
+                    <span class="material-icons text-sm">close</span>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+  
+        <!-- Footer -->
+        <div class="sticky bottom-0 bg-[var(--background)] px-6 py-3 border-t border-[var(--border)] flex justify-end gap-3 -mx-6 -mb-6">
+          <button type="button"
+                  (click)="onCancel()"
+                  class="px-3 py-1 md:px-4 md:py-2 text-sm font-medium text-[var(--text)] hover:text-[var(--primary)] transition-colors">
+            Cancel
+          </button>
+          <button type="submit"
+                  [disabled]="userForm.invalid || isLoading"
+                  class="px-3 py-1 md:px-4 md:py-2 text-sm md:text-base bg-[var(--primary)] text-white font-medium rounded-md hover:bg-[var(--secondary)] transition-colors flex items-center gap-2 disabled:opacity-50">
+            @if (!isLoading) {
+              <span>{{ isEditMode ? 'Update' : 'Create' }}</span>
+            }
+            @else { 
+              <span class="animate-spin">↻</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

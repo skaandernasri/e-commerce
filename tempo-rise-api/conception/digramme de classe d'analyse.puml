@@ -1,0 +1,137 @@
+@startuml
+
+class Utilisateur {
+    - nom
+    - prenom
+    - email
+    - téléphone
+    - date d'inscription
+    - rôles
+}
+
+class Authentification {
+    - type
+    - identifiantExterne
+}
+
+class Produit {
+    - nom
+    - description
+    - prix
+}
+
+class Variante {
+    - id: Long
+    - taille: String
+    - couleur: String
+    - stock: long
+}
+
+class Categorie {
+    - nom
+    - description
+}
+
+class ImageProduit {
+    - url
+}
+
+class Commande {
+    - date
+    - statut
+    - total
+}
+
+class Adresse {
+    - ligne1
+    - ligne2
+    - ville
+    - code postal
+    - pays
+    - type
+}
+
+class LigneCommande {
+    - quantité
+    - prix total
+}
+
+class Panier {
+    - produits
+}
+
+class Promotion {
+    - nom
+    - description
+    - pourcentage
+    - période
+}
+
+class CodePromo {
+    - code
+    - réduction
+    - date expiration
+}
+
+class BlogPost {
+    - titre
+    - contenu
+    - date publication
+}
+
+class Commentaire {
+    - contenu
+    - date publication
+}
+
+class Avis {
+    - note
+    - commentaire
+    - date
+}
+
+class RetourProduit {
+    - raison
+    - date
+}
+
+class Notification {
+    - message
+    - date
+}
+
+class SuiviClient {
+    - action
+    - date
+}
+
+Utilisateur "1" -- "*" Authentification : utilise
+Utilisateur "1" -- "*" Commande : passe
+Utilisateur "1" -- "1" Panier : possède
+Utilisateur "1" -- "*" Adresse : possède
+Utilisateur "1" -- "*" Avis : donne
+Utilisateur "1" -- "*" Commentaire : rédige
+Utilisateur "1" -- "*" BlogPost : écrit
+Utilisateur "1" -- "*" RetourProduit : effectue
+Utilisateur "1" -- "*" Notification : reçoit
+Utilisateur "1" -- "*" SuiviClient : effectue
+
+Commande "1" -- "*" LigneCommande : contient
+Commande "1" -- "1" Adresse : livraison
+Commande "1" -- "1" Adresse : facturation
+Commande "1" -- "0..1" CodePromo : applique
+
+LigneCommande "*" -- "1" Produit : concerne
+
+Produit "*" -- "1" Categorie : appartient à
+Produit "1" -- "*" Promotion : bénéficie
+Produit "1" -- "*" Avis : reçoit
+Variante "1" -- "*" RetourProduit : peut faire l'objet de
+Produit "1" -- "*" Variante : possède
+Produit "1" -- "*" ImageProduit : possède
+
+BlogPost "1" -- "*" Commentaire : reçoit
+
+Panier "*" -- "*" Produit : contient
+
+@enduml

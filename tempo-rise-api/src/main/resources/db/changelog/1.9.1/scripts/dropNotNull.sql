@@ -1,0 +1,2 @@
+ALTER TABLE item_group
+ALTER COLUMN titre DROP NOT NULL;

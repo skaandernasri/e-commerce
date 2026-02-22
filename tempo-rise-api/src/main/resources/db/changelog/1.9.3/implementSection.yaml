@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sql:
+            sql: |
+              INSERT INTO utilisateur (id, nom, prenom, email, isverified, activation_token,
+              resetpasswordtoken, resetpasswordexpiresat, activationtokenexpiresat, téléphone, date_inscription, image, genre, date_naissance, loyalty_group)
+              SELECT 
+                1, 
+                'Admin', 
+                'Admin', 
+                'admin@tempo.tn', 
+                TRUE, 
+                NULL, 
+                NULL, 
+                NULL, 
+                NULL, 
+                '00000000', 
+                CURRENT_TIMESTAMP, -- Better to use current timestamp
+                NULL, 
+                'MALE', 
+                '2000-01-01', 
+                0
+              WHERE NOT EXISTS (SELECT 1 FROM utilisateur WHERE id = 1);
+        - sql:
+            sql: |
+              -- Create authentication record (omit id if auto-increment)
+              INSERT INTO authentification (password, provider_id, type, refresh_token, user_id)
+              SELECT 
+                '$2a$10$LIt1ZzjjdICvi071mRX21u0a5U5UZ/570PIwTcC.uJpprXKij7.ci', -- ADD THIS - password: Admin123.
+                0,
+                'EMAIL',
+                NULL,
+                1 ;
+        - sql:
+            sql: |
+              -- Create utilisateur_role table
+              INSERT INTO utilisateur_role (user_id, role)
+              SELECT 
+                1,
+                'ADMIN'
+              WHERE NOT EXISTS (SELECT 1 FROM utilisateur_role WHERE user_id = 1 AND role = 'ADMIN');
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.3/scripts/insertDataIntoSection.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sql:
+            sql: |
+              ALTER TABLE section
+              ADD COLUMN contenu_html TEXT;
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.3/scripts/insertData.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+

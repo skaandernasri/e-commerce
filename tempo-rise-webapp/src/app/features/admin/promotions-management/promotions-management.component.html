@@ -1,0 +1,123 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="bg-[var(--surface)] rounded-lg shadow-md p-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <h2 class="text-2xl font-bold text-[var(--text)]">Promotions Management</h2>
+      <button class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors whitespace-nowrap"
+              (click)="openCreatePromotion()">
+        Add New Promotion
+      </button>
+    </div>
+      <!-- Filters -->
+    <div class="mb-6 flex flex-col md:flex-row md:items-center md:gap-4">
+            <!-- Filter by Category Dropdown -->
+   <select
+  [(ngModel)]="selectedPomotion"
+  (change)="filterPromotions()"
+  class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]"
+  >
+  <option  [value]="status[2]">All</option>
+    <option [value]="status[0]">Active</option>
+    <option [value]="status[1]">inActive</option>
+
+ </select>
+    </div>
+
+
+      <!-- Content -->
+    @if (isLoading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+      </div>
+    } @else if (errorMessage) {
+      <div class="p-4 mb-4 bg-red-100 text-red-700 rounded-md">
+        {{ errorMessage }}
+      </div>
+    } @else {
+        <div class="overflow-x-auto  rounded-lg ">
+            <table class="w-full  min-w-[600px]">
+              <thead class="bg-[var(--background)]">
+                <tr>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Name</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Description</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Status</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Start date</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">End date</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Duration</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Expires in</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Type</th>
+                  <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (filteredPromotions.length === 0) {
+                  <tr >
+                    <td colspan="6" class="px-4 py-6 text-center text-sm text-[var(--text)]">
+                      No promotions found
+                    </td>
+                  </tr>
+                }
+                @else {
+                @for (promotion of paginatedPromotions; track promotion.id) {
+                  <tr class="border-t border-[var(--border)] hover:bg-[var(--background)] transition-colors">
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ promotion.nom }}</td>
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ promotion.description }}</td>
+                    <td class="px-6 py-4 ">
+                      @if (promotion.status=="Active") {
+                      <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm ">{{ promotion.status }}
+                      </span>
+                    }
+                    @else {
+                      <span class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm  ">{{ promotion.status }}
+                      </span>
+                    }
+                  </td>
+
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ promotion.dateDebut | date:'dd/MM/yyyy HH:mm'}}</td>
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ promotion.dateFin | date:'dd/MM/yyyy HH:mm' }}</td>
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ calculateDateDuration(promotion.dateDebut, promotion.dateFin)  }}</td>
+                    @if(promotion.status!="inActive"){
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">{{ expiresIn(promotion.dateFin)  }}</td>
+                  }
+                  @else {
+                    <td class="px-6 py-4 text-sm text-[var(--text)]">not Activated yet</td>
+
+                  }
+                  <td class="px-6 py-4 text-sm text-[var(--text)]">{{ promotion.type=="PERCENTAGE" ? "Percentage" : "Fixed" }}</td>
+                  
+                    <td class="px-6 py-4 text-sm flex gap-3">
+                      <button
+                        (click)="editPromotion(promotion.id)"
+                        class="text-blue-600 hover:text-blue-800"
+                        title="Edit"
+                      >
+                        <span class="material-icons">edit</span>
+                      </button>
+                      <button
+                        (click)="deletePromotion(promotion.id)"
+                        class="text-red-600 hover:text-red-800"
+                        title="Delete"
+                      >
+                        <span class="material-icons">delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                }
+              }
+              </tbody>
+            </table>
+          </div>
+           <!-- Pagination -->
+      <div class="mt-6">
+        <app-pagination 
+          [currentPage]="currentPage"
+          [itemsPerPage]="itemsPerPage"
+          [totalItems]="filteredPromotions.length"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+      </div>
+    }
+  </div> 
+</div>
+
+    

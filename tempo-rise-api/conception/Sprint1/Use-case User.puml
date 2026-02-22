@@ -1,0 +1,36 @@
+@startuml UseCase_Client
+
+actor "Client" as Client
+
+usecase "S'inscrire" as UC1
+usecase "Se connecter" as UC2
+usecase "Visualiser produits" as UC3
+usecase "Ajouter produit au panier" as UC4
+usecase "Retirer produit du panier" as UC5
+usecase "Passer commande" as UC6
+usecase "Consulter commande" as UC7
+usecase "Écrire commentaire" as UC8
+usecase "Noter produit" as UC9
+usecase "Retourner produit" as UC10
+usecase "Consulter historique de commande" as UC11
+usecase "Recevoir notification" as UC12
+
+Client -- UC1
+Client -- UC2
+Client -- UC3
+Client -- UC4
+Client -- UC5
+Client -- UC6
+Client -- UC7
+Client -- UC8
+Client -- UC9
+Client -- UC10
+Client -- UC11
+Client -- UC12
+
+note right of Client
+  Sauf "Visualiser produits", toutes les actions
+  nécessitent que l'utilisateur soit connecté.
+end note
+
+@enduml

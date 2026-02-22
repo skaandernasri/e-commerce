@@ -1,0 +1,121 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="bg-[var(--surface)] rounded-lg shadow-md p-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <h2 class="text-2xl font-bold text-[var(--text)]">Contacts Management</h2>
+    </div>
+  
+    <!-- Filters -->
+        <div class="mb-6">
+      <select [(ngModel)]="selectedType"
+              class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+        <option value=''   >All types</option>
+         <option value='AIDE'>AIDE</option><option value='RETOUR'>RETOUR</option>
+      </select>
+    </div>
+    <div class="mb-6">
+      <select [(ngModel)]="statusContact"
+              class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+        <option value=''   >Select a status...</option>
+         <option value='EN_COURS'>EN_COURS</option><option value='RESOLU'>RESOLU</option>
+      </select>
+    </div>
+    @if(selectedType()=='RETOUR' && statusContact()=='RESOLU'){
+    <div class="mb-6">
+      <select [(ngModel)]="refundMethod"
+              class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+        <option value=''   >Select a refund method...</option>
+         <option value="CARTE_BANCAIRE">CARTE_BANCAIRE</option><option value="VIREMENT">VIREMENT</option>
+      </select>
+    </div>
+    }
+
+  
+    @if (isLoading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+      </div>
+    } 
+     @else {
+      <div class="overflow-x-auto  rounded-lg ">
+        <table class="w-full min-w-[600px]">
+          <thead class="bg-[var(--background)]">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">User Email</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Subject</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Message</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Type</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Status</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]" (click)="sortOrdersByDate()">
+                <div class="flex items-center">
+                  Last update
+                  <span class="ml-1">
+                    @if (sortByDate() === 'ASC') {
+                      <svg class="w-4 h-4 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                      </svg>
+                    } @else if (sortByDate() === 'DESC') {
+                      <svg class="w-4 h-4 text-[var(--primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    }
+                    @else {
+                      <svg class="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+                      </svg>
+                    }
+                  </span>
+                </div>  
+              </th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (contact of contacts; track contact.id) {
+              <tr class="border-t border-[var(--border)] hover:bg-[var(--background)] transition-colors">
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ contact.email }}</td>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ contact.subject }}</td>
+                <app-expand-long-text [text]="contact.message" [id]="contact.id"></app-expand-long-text>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ contact.type }}</td>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ contact.statusContact }}</td>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ contact.updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                <td class="px-4 py-4 text-sm flex gap-3">
+                  <button
+                    (click)="updateContact(contact.id)"
+                    class="text-blue-600 hover:text-blue-800"
+                    title="View / Reply"
+                  >
+                    <span class="material-icons">visibility</span>
+                  </button>
+                  <!-- <button
+                    (click)="deleteContact(contact.id)"
+                    class="text-red-600 hover:text-red-800"
+                    title="Delete"
+                  >
+                    <span class="material-icons">delete</span>
+                  </button> -->
+                </td>
+              </tr>
+            }
+            @if (contacts.length === 0) {
+              <tr class="border-t border-gray-200">
+                <td colspan="5" class="px-6 py-4 text-center text-sm text-[var(--text)]">
+                  No contacts found
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+       <!-- Pagination -->
+       <div class="mt-6">
+        <app-pagination 
+          [currentPage]="pagination().page"
+          [itemsPerPage]="pagination().size"
+          [totalItems]="totalElements()"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+      </div>
+    }
+  </div>
+</div>

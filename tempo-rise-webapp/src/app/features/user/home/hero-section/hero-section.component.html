@@ -1,0 +1,18 @@
+<!-- Hero Section -->
+ @if(activeHeroSection()){
+<section [id]="activeHeroSection()!.type" class="relative h-screen flex flex-col items-center justify-center bg-black">
+  <!-- Background Image -->
+  <img [src]="activeHeroSection()!.imageUrl ? imageBaseUrl + activeHeroSection()?.imageUrl : imageAltRecord['hero'][0]" alt="Hero Background" 
+       class="absolute inset-0 w-full h-full object-cover opacity-50 z-0" />
+
+  <!-- Content -->
+  <div class="relative z-10 text-center px-4 text-white max-w-4xl mx-auto">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6">{{heroContent()?.title}}      </h1>
+    <p class="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8">{{heroContent()?.subtitle}} </p>
+    <button [routerLink]="heroContent()?.buttonLink" class="bg-white text-gray-900 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300 text-sm sm:text-base">
+      {{heroContent()?.buttonText}}
+
+    </button>
+  </div>
+</section>
+}

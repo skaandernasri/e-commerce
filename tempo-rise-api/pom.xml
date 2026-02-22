@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.3</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>tn.temporise</groupId>
+	<artifactId>tempo-rise-api</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>tempo-rise-api</name>
+	<description>Backend TempoRise project</description>
+
+	<properties>
+		<java.version>21</java.version>
+		<swagger-codegen-maven-plugin.version>2.3.1</swagger-codegen-maven-plugin.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- OpenApi plugin properties -->
+		<openapi.inputSpec>${project.basedir}/src/main/resources/api/tempo-rise-api.yaml</openapi.inputSpec>
+		<openapi.generatorName>spring</openapi.generatorName>
+		<openapi.apiPackage>tn.temporise.infrastructure.api</openapi.apiPackage>
+		<openapi.modelPackage>tn.temporise.domain.model</openapi.modelPackage>
+		<openapi.output>target/generated-sources</openapi.output>
+		<openapi.sourceFolder>api-temporise-server</openapi.sourceFolder>
+
+		<maven.version>3.9.5</maven.version>
+
+		<maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+		<compiler-plugin.version>3.11.0</compiler-plugin.version>
+		<surefire-plugin.version>3.2.2</surefire-plugin.version>
+		<failsafe-plugin.version>3.2.5</failsafe-plugin.version>
+		<maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
+		<testcontainers.version>1.20.6</testcontainers.version>
+		<logstash-logback-encoder.version>7.4</logstash-logback-encoder.version>
+		<spring-boot.version>3.2.1</spring-boot.version>
+		<reflections.version>0.10.2</reflections.version>
+
+		<springdoc-openapi-starter-webmvc.version>2.8.5</springdoc-openapi-starter-webmvc.version>
+		<spring-cloud-starter-openfeign.version>4.2.1</spring-cloud-starter-openfeign.version>
+		<lombok.version>1.18.30</lombok.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<commons-text.version>1.13.0</commons-text.version>
+		<mockito-inline.version>3.3.3</mockito-inline.version>
+		<spring-security-test.version>6.2.1</spring-security-test.version>
+		<jackson-datatype-threetenbp.version>2.15.2</jackson-datatype-threetenbp.version>
+		<awaitility.version>3.1.6</awaitility.version>
+		<jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+		<spring-boot-starter-data-jpa.version>3.4.3</spring-boot-starter-data-jpa.version>
+		<openapi-generator-maven-plugin.version>7.9.0</openapi-generator-maven-plugin.version>
+		<google-api-client.version>2.7.2</google-api-client.version>
+		<spring-boot-starter-mail.version>3.4.4</spring-boot-starter-mail.version>
+		<spring-boot-starter-freemarker.version>3.4.4</spring-boot-starter-freemarker.version>
+		<jackson-datatype-jsr310.version>2.18.3</jackson-datatype-jsr310.version>
+		<spring-cloud-dependencies.version>2024.0.1</spring-cloud-dependencies.version>
+		<spring-boot-starter-websocket.version>3.5.3</spring-boot-starter-websocket.version>
+		<google-analytics-data.version>0.79.0</google-analytics-data.version>
+		<junit-jupiter.version>5.13.4</junit-jupiter.version>
+        <opencsv.version>5.12.0</opencsv.version>
+        <commons-collections4.version>4.5.0</commons-collections4.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit-jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- JUnit Jupiter integration (needed for @Testcontainers) -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>${logstash-logback-encoder.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi-starter-webmvc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>${spring-boot-starter-websocket.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+			<version>${springdoc-openapi-starter-webmvc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>${spring-cloud-starter-openfeign.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>${jackson-databind-nullable.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>
+				jakarta.persistence
+			</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${spring-boot-starter-data-jpa.version}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-client -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<version>3.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+			<version>6.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<!--		pour enlever le conflit entre la version 1.11.0 et 1.12.0 de common-text-->
+<!--		<dependency>-->
+<!--			<groupId>com.opencsv</groupId>-->
+<!--			<artifactId>opencsv</artifactId>-->
+<!--			<version>5.12.0</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>org.apache.commons</groupId>-->
+<!--					<artifactId>commons-text</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
+
+		<!--		to configure the JwtEncoder and JwtDecoder beans-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-resource-server</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>${google-api-client.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.http-client</groupId>
+					<artifactId>google-http-client</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.http-client</groupId>
+					<artifactId>google-http-client-gson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.analytics/google-analytics-data -->
+		<dependency>
+			<groupId>com.google.analytics</groupId>
+			<artifactId>google-analytics-data</artifactId>
+			<version>${google-analytics-data.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+			<version>${spring-boot-starter-mail.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+			<version>${spring-boot-starter-freemarker.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson-datatype-jsr310.version}</version>  <!-- Use the latest version available -->
+		</dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+            <version>2.20.1</version>
+
+        </dependency>
+
+        <!--- Test dependencies !-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>${reflections.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<version>${spring-security-test.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-inline</artifactId>
+			<version>${mockito-inline.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.testcontainers/postgresql -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/io.rest-assured/rest-assured -->
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>5.5.1</version>
+			<scope>test</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.1.6</version>
+        </dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+					<!-- Aligning org.checkerframework to version 3.48.3 (used by PostgreSQL) -->
+					<dependency>
+						<groupId>org.checkerframework</groupId>
+						<artifactId>checker-qual</artifactId>
+						<version>3.48.3</version>
+					</dependency>
+
+					<!-- Align google-auth-library dependencies -->
+					<dependency>
+						<groupId>com.google.auth</groupId>
+						<artifactId>google-auth-library-oauth2-http</artifactId>
+						<version>1.30.0</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.auth</groupId>
+						<artifactId>google-auth-library-credentials</artifactId>
+						<version>1.30.0</version>
+					</dependency>
+
+					<!-- Align error-prone annotations -->
+					<dependency>
+						<groupId>com.google.errorprone</groupId>
+						<artifactId>error_prone_annotations</artifactId>
+						<version>2.35.1</version>
+					</dependency>
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>2.2.12</version> <!--2.2.12 -->
+            </dependency>
+
+			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson-datatype-jsr310.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+            <!-- Source: https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <!-- Force commons-collections4 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+
+            <!-- Force commons-text -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<!--					generated source directory was here-->
+					<generatedSourcesDirectory>                     ${project.build.directory}/generated-sources/openapi                 </generatedSourcesDirectory>
+						<parameters>true</parameters>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${surefire-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<includeTestSourceDirectory>true</includeTestSourceDirectory>
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>${openapi-generator-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>generate-tempo-rise-server</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>
+								${openapi.inputSpec}
+							</inputSpec>
+							<generatorName>spring</generatorName>
+							<apiPackage>${openapi.apiPackage}</apiPackage>
+							<modelPackage>${openapi.modelPackage}</modelPackage>
+							<output>${openapi.output}</output>
+							<generateApis>true</generateApis>
+							<generateApiDocumentation>true</generateApiDocumentation>
+							<generateApiTests>false</generateApiTests>
+							<generateModels>true</generateModels>
+							<generateModelDocumentation>true</generateModelDocumentation>
+							<generateModelTests>false</generateModelTests>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<configOptions>
+								<sourceFolder>${openapi.sourceFolder}</sourceFolder>
+								<library>spring-boot</library>
+								<delegatePattern>true</delegatePattern>
+								<useBeanValidation>true</useBeanValidation>
+								<serializableModel>true</serializableModel>
+								<useTags>true</useTags> <!-- Sépare les interfaces par tag -->
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<useJakartaEe>true</useJakartaEe>
+								<interfaceOnly>true</interfaceOnly>
+								<skipDefaultInterface>true</skipDefaultInterface>
+								<unhandledException>true</unhandledException>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>no-duplicate-declared-dependencies</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<banDuplicatePomDependencyVersions/>
+								<dependencyConvergence/>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+      <groupId>net.revelc.code.formatter</groupId>
+      <artifactId>formatter-maven-plugin</artifactId>
+      <version>2.23.0</version>
+      <configuration>
+        <configFile>${project.basedir}/config/formatter/eclipse-java-google-style.xml</configFile>
+       <!-- <profile>GoogleStyle</profile>-->
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>format</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+			
+		</plugins>
+	</build>
+
+</project>

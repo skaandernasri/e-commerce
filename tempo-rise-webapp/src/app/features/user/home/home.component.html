@@ -1,0 +1,37 @@
+@if(!homePageIsLoading()){
+  <div class = "space-y-4">
+<!-- Hero Section -->
+<app-hero [activeHeroSection]="activeHeroSection"></app-hero>
+
+
+<!-- Products Section -->
+<app-our-products [activeOurProductsSection]="activeOurProductsSection"></app-our-products>
+<!-- Features Section -->
+<app-features [activeContent1Section]="activeContent1Section"></app-features>
+  <!-- Advantages Section -->
+<app-advantages [activeContent2Section]="activeContent2Section"></app-advantages>
+<!-- How It Works Section -->
+<app-how-it-works [activeContent3Section]="activeContent3Section"></app-how-it-works>
+<!-- Image + Text Section -->
+<app-positivity [activeContent4Section]="activeContent4Section"></app-positivity>
+<!-- Mission Section -->
+<app-mission [activeContent5Section]="activeContent5Section"></app-mission>
+<!-- Final CTA Section -->
+<app-final-cta [activeContent6Section]="activeContent6Section"></app-final-cta>
+<!-- Learn More Section -->
+<app-learn-more [activeContent7Section]="activeContent7Section"></app-learn-more>
+
+<!-- Testimonials Section -->
+<app-our-reviews [activeOurReviewsSection]="activeOurReviewsSection"></app-our-reviews>
+
+
+
+<!-- FAQ Section -->
+<app-faq [activeFAQSection]="activeFaqSection"></app-faq>
+<!-- Newsletter Section -->
+<app-new-letter [activeContent8Section]="activeContent8Section"></app-new-letter>
+</div>
+}
+@else {
+  <app-logo-spinner></app-logo-spinner>
+}

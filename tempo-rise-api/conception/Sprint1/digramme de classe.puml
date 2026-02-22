@@ -1,0 +1,97 @@
+@startuml
+' Classes principales du sprint 1
+
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +prenom: String
+    +email: String
+    +téléphone : String
+    +roles: Set<Role>
+}
+
+enum Role {
+    CLIENT
+    REDACTEUR
+    ADMIN
+    SUPER_ADMIN
+    GESTIONNAIRE
+}
+
+class Authentification {
+    +id: Long
+    +type: TypeAuthentification
+    +motDePasse: String
+    +providerId: String
+    +utilisateur: Utilisateur
+}
+
+enum TypeAuthentification {
+    EMAIL
+    FACEBOOK
+    GOOGLE
+}
+
+class Produit {
+    +id: Long
+    +nom: String
+    +description: String
+    +marque: String
+    +composition: String
+    +guide: String
+    +faq: String
+    +categorie: Categorie
+    +prix: Double
+}
+class Variant {
+    +id: Long
+    +produit: Produit
+    +taille: String
+    +couleur: String
+    +stock: long
+}
+
+class Categorie {
+    +id: Long
+    +nom: String
+    +description: String
+}
+
+class Promotion {
+    +id: Long
+    +nom: String
+    +description: String
+    +pourcentageReduction: Double
+}
+
+class ImageProduit {
+    +id: Long
+    +url: String
+}
+
+class Panier {
+    +id: Long
+    +utilisateur: Utilisateur [0..1]  ' Peut être null si utilisateur non connecté
+    +ajouterProduit(produit: Produit, quantite: int): void
+    +supprimerProduit(produit: Produit): void
+    +viderPanier(): void
+}
+
+class Panier_Produit {
+    +quantite: int
+}
+
+' Associations
+
+Utilisateur "1" -- "*" Authentification : a
+Produit "*" -- "1" Categorie : appartient à
+Produit "1" -- "*" Promotion : bénéficie
+Produit "1" -- "*" ImageProduit : possède
+Produit "1" -- "*" Variant : possède
+Panier "1" -- "*" Panier_Produit : contient
+Panier_Produit "*" -- "1" Produit : référence
+Panier "0..1" -- "0..1" Utilisateur : appartient à
+Authentification "*" -- "1" TypeAuthentification
+Role "*" -- "1" Utilisateur
+
+@enduml

@@ -1,0 +1,28 @@
+    @if(activeBannerSection()) {
+    <div class="w-full h-full py-2 text-center  overflow-hidden flex items-center bg-[var(--primary)]">
+      @if(bannerContent()){
+        @if(bannerContent()?.fix) {
+          @for(item of bannerContent()?.texts; track $index) {
+           <div class="flex flex-row gap-4 items-center justify-center font-semibold text-white  inline-block">
+            {{ item.text }}
+           </div>
+          }
+        }
+        @else{
+        <div
+          #banner
+          class="flex flex-row gap-4 items-center justify-center font-semibold text-white whitespace-nowrap inline-block animate-banner"
+          [style.--speed]="duration"
+          [style.--start]="startPos"
+          [style.--end]="endPos"
+        >
+        @for(item of bannerContent()?.texts; track $index) {
+          <div class="font-semibold text-white whitespace-nowrap inline-block">
+            {{ item.text }}
+          </div>
+        }
+        </div>
+        }
+}
+    </div>
+    }

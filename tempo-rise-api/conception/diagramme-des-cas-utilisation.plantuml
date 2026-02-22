@@ -1,0 +1,52 @@
+@startuml
+
+actor "Utilisateur" as Utilisateur
+actor "Gestionnaire" as Gestionnaire
+actor "Administrateur" as Administrateur
+actor "Super Administrateur" as SuperAdmin
+
+usecase "S'inscrire" as UC1
+usecase "Se connecter" as UC2
+usecase "Visualiser produits" as UC3
+usecase "Ajouter produit au panier" as UC4
+usecase "Retirer produit du panier" as UC5
+usecase "Passer commande" as UC6
+usecase "Consulter commande" as UC7
+usecase "Écrire commentaire" as UC8
+usecase "Noter produit" as UC9
+usecase "Retourner produit" as UC10
+usecase "Consulter historique de commande" as UC11
+usecase "Recevoir notification" as UC12
+usecase "Gérer stock" as UC13
+usecase "Gérer utilisateur" as UC14
+usecase "Gérer promotions" as UC15
+usecase "Générer facture" as UC16
+usecase "Changer template" as UC17
+usecase "Suivre action client" as UC18
+
+Utilisateur -- UC1
+Utilisateur -- UC2
+Utilisateur -- UC3
+Utilisateur -- UC4
+Utilisateur -- UC5
+Utilisateur -- UC6
+Utilisateur -- UC7
+Utilisateur -- UC8
+Utilisateur -- UC9
+Utilisateur -- UC10
+Utilisateur -- UC11
+Utilisateur -- UC12
+
+Gestionnaire -- UC13
+Gestionnaire -- UC14
+Gestionnaire -- UC15
+Gestionnaire -- UC16
+
+Administrateur -- UC14
+Administrateur -- UC15
+Administrateur -- UC13
+Administrateur -- UC18
+
+SuperAdmin -- UC17
+
+@enduml

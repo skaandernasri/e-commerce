@@ -1,0 +1,151 @@
+<!-- Cart Modal -->
+@if(isCartOpen()) {
+  <div class="fixed inset-0 z-50 overflow-hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-50" [@fadeInOut] (click)="closeCart()"></div>
+
+    <div class="fixed inset-y-0 right-0 w-full max-w-md" [@slideInOut] (click)="$event.stopPropagation()">
+      <div class="h-full flex flex-col bg-[var(--surface)] shadow-xl">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-xl font-bold text-[var(--text)]">
+            {{ 'CART.TITLE' | translate:{count: activeCart().articles.length} }}
+          </h2>
+          <div class="flex items-center space-x-4">
+            @if (activeCart().articles.length > 0) {
+              <button (click)="clearCart()" class="text-sm text-red-500 hover:opacity-70">
+                {{ 'CART.CLEAR_ALL' | translate }}
+              </button>
+            }
+            <button (click)="closeCart()" class="text-[var(--text)] hover:opacity-70">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cart items -->
+        <div class="flex-1 overflow-y-auto p-4">
+          @if (activeCart().articles.length === 0) {
+            <div class="text-center py-8">
+              <p class="text-[var(--text)] opacity-70">{{ 'CART.EMPTY' | translate }}</p>
+            </div>
+          } @else {
+            <div class="space-y-4">
+              @for (product of activeCart().articles; track product.id) {
+                @for (variant of product.variants; track variant.id) {
+                  <div class="flex flex-col border-b border-gray-200 dark:border-gray-700 pb-4" [@fadeInUp]>
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center space-x-4">
+                        @if(product.imageProduits.length > 0){
+                        <img [src]="imagesBaseUrl+product.imageProduits[0].url" [alt]="product.nom" class="w-16 h-16 object-cover rounded">
+                        }
+                        <div>
+                          <h3 class="font-semibold text-[var(--text)]">
+                            {{ product.nom }} - {{ variant.size }} - {{ variant.color }}
+                          </h3>
+                          <p class="text-[var(--text)] opacity-80">{{ product.newPrice | currencyFormat }}</p>
+                        </div>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <button
+                          [disabled]="isLoading()"
+                          (click)="decrementQuantity(product, variant)"
+                          class="p-1 rounded-full hover:bg-[var(--background)]">
+                          <svg class="w-4 h-4 text-[var(--text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                          </svg>
+                        </button>
+                        <span class="w-8 text-center text-[var(--text)]">
+                          {{ authState().isAuthenticated ? variant.reservedQuantity : variant.cartQuantity }}
+                        </span>
+                        <button
+                          [disabled]="authState().isAuthenticated ? variant.availableQuantity == 0 || isLoading() : variant.availableQuantity! <= variant.cartQuantity || isLoading()"
+                          (click)="incrementQuantity(product, variant)"
+                          class="p-1 rounded-full hover:bg-[var(--background)]">
+                          <svg class="w-4 h-4 text-[var(--text)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                      <button (click)="removeProduct(product, variant)"
+                              class="text-sm text-red-500 hover:opacity-70 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        {{ 'CART.REMOVE' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Recommended Products -->
+        <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+          <h3 class="text-lg font-semibold text-[var(--text)] mb-3">
+            {{ 'CART.RECOMMENDED' | translate }}
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            @for (product of recommendedProducts(); track product.id) {
+              <div class="flex items-start gap-3 hover:scale-105 transition duration-300 cursor-pointer"
+                   (click)="showProductDetails(product.id)">
+                @if(product.imageProduits.length > 0){
+                  <img [src]="imagesBaseUrl+product.imageProduits[0].url" alt="{{ product.nom }}" class="w-16 h-16 object-cover rounded-md" />
+                }
+                @else {
+                  <span class="text-gray-500">{{ 'CART.NO_IMAGE' | translate }}</span>
+                }
+                <div class="flex-1">
+                  <h4 class="text-sm font-medium text-[var(--text)] truncate">{{ product.nom }}</h4>
+                  <p class="text-sm text-[var(--primary)] font-semibold">
+                    @if(product.promotions?.length) {
+                      {{ product.newPrice | currencyFormat }}
+                    } @else {
+                      {{ product.prix | currencyFormat }}
+                    }
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="border-t border-gray-200 dark:border-gray-700 p-4">
+          <div class="space-y-2 mb-4">
+            <div class="flex justify-between text-[var(--text)]">
+              <span>{{ 'CART.SUBTOTAL' | translate }}</span>
+              <span>{{ subtotal() | currencyFormat }}</span>
+            </div>
+            <div class="flex justify-between text-[var(--text)]">
+              <span [ngClass]="{
+      'text-green-500 line-through': shipping() === 0
+    }">{{ 'CART.SHIPPING' | translate }}</span>
+              <span [ngClass]="{
+      'text-green-500 line-through': shipping() === 0
+    }">{{ configGlobalSignal().valeurLivraison | currencyFormat }}</span>
+            </div>
+          </div>
+          <div class="flex justify-between font-bold text-lg py-2 text-[var(--text)]">
+            <span>{{ 'CART.TOTAL' | translate }}</span>
+            <span>{{ total() | currencyFormat }}</span>
+          </div>
+          <button (click)="proceedToCheckout()"
+                  class="w-full bg-[var(--primary)] text-white py-2 rounded-lg transition-opacity hover:opacity-90"
+                  [ngClass]="{
+                    'opacity-50 cursor-not-allowed disabled pointer-events-none': isCartEmpty()
+                  }">
+            {{ 'CART.CHECKOUT' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,2 @@
+ALTER TABLE image_produit
+  ALTER COLUMN url TYPE TEXT;

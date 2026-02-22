@@ -1,0 +1,173 @@
+.env
+/.idea
+/docker/docker-compose.yml
+/logs/application.log
+/target
+######################
+# Eclipse
+######################
+.metadata
+tmp/
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+.attach_pid*
+*~.nib
+local.properties
+.classpath
+.project
+.sts4*
+.settings/
+.loadpath
+.factorypath
+/src/main/resources/rebel.xml
+*.ucls
+*.useq
+.springBeans
+bin/
+
+# External tool builders
+.externalToolBuilders/**
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+
+######################
+# Intellij
+######################
+.idea/
+.idea/*.*
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+classes/
+out/
+
+######################
+# Node
+######################
+/node_modules
+npm-debug.log
+
+
+######################
+# VSCODE
+######################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+######################
+# Maven
+######################
+/log/
+target/
+
+######################
+# Gradle
+######################
+.gradle/
+/build/
+
+######################
+# Package Files
+######################
+*.jar
+*.war
+*.ear
+*.db
+
+######################
+# Windows
+######################
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+
+######################
+# Mac OSX
+######################
+.DS_Store
+.svn
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+
+######################
+# Directories
+######################
+/bin/
+/deploy/
+/dist
+/tmp
+/out-tsc
+/midfid-apis-impl/midfid-apis-impl-common/src/main/resources/ssl
+######################
+# Logs
+######################
+*.log*
+
+######################
+# Others
+######################
+*.class
+*.pid
+*.*~
+*~
+.merge_file*
+.erlang.cookie
+.sass-cache
+connect.lock
+/coverage
+libpeerconnection.log
+testem.log
+/typings
+*.sublime-workspace
+RemoteSystemsTempFiles/
+.c9/
+.mtj.tmp/
+/.sonarlint/
+
+######################
+# Gradle Wrapper
+######################
+!gradle/wrapper/gradle-wrapper.jar
+
+######################
+# Maven Wrapper
+######################
+!.mvn/wrapper/maven-wrapper.jar
+
+
+######################
+# VM
+######################
+hs_err_pid*
+/.metadata/
+/.recommenders/
+
+
+*.versionsBackup
+
+.sdkmanrc
+
+http-client.private.env.json

@@ -1,0 +1,25 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+rectangle "Sprint 4" {
+actor Client
+actor Admin
+
+package "Module Commande & Paiement" {
+  usecase "Passer une commande" as UC1
+  usecase "Payer la commande (Konnect)" as UC2
+  usecase "Demander un retour/remboursement" as UC3
+}
+
+package "Module Notification" {
+  usecase "Recevoir des notifications" as UC4
+}
+
+Client --> UC1
+Client --> UC2
+Client --> UC3
+Client --> UC4
+
+Admin --> UC4
+}
+@enduml

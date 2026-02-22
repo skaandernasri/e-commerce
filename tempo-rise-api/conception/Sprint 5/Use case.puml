@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Admin" as Admin
+actor "Client" as Client
+rectangle "Scheduler (Job automatique)" as Scheduler
+
+package "Modèle de fidélité" {
+    usecase "Consulter les niveaux de fidélité" as UC_ConsulterFidelite
+    usecase "Lancer clustering quotidien" as UC_ClusteringAutomatique
+}
+
+package "Promotion et notification" {
+    usecase "Générer des codes promo personnalisés" as UC_GenererCodesPromo
+    usecase "Envoyer email avec code promo" as UC_EnvoyerEmail
+    usecase "Envoyer notification avec code promo" as UC_EnvoyerNotif
+}
+
+Admin --> UC_ConsulterFidelite
+Admin --> UC_GenererCodesPromo
+Admin --> UC_EnvoyerEmail
+Admin --> UC_EnvoyerNotif
+
+Scheduler --> UC_ClusteringAutomatique : exécute à 00:00
+UC_ClusteringAutomatique --> UC_ConsulterFidelite : met à jour les données
+
+Client --> UC_EnvoyerEmail : reçoit email
+Client --> UC_EnvoyerNotif : reçoit notification
+
+@enduml

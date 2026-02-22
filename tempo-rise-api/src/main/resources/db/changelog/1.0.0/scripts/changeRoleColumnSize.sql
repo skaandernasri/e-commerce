@@ -1,0 +1,2 @@
+ALTER TABLE utilisateur_role
+  ALTER COLUMN role TYPE VARCHAR(20);

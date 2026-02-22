@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.2/scripts/removeItemAndItemGroupAndupdateSection.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+
+

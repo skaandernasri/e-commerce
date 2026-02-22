@@ -1,0 +1,45 @@
+@startuml DiagrammeCasUtilisation_Sprint1
+
+left to right direction
+skinparam packageStyle rectangle
+
+rectangle "Sprint 1" {
+  actor Client as client
+  actor Gestionnaire as gestionnaire
+
+  rectangle "Fonctionnalités Client" {
+    client -- (S'inscrire)
+    client -- (Se connecter)
+    client -- (Gérer session)
+
+    client -- (Consulter les produits)
+    client -- (Ajouter un produit au panier)
+
+    (Filtrer les produits) .> (Consulter les produits) : extend
+    (Voir détails produit) .> (Consulter les produits) : extend
+    (Modifier la quantité du produit) .> (Ajouter un produit au panier) : extend
+  }
+
+  rectangle "Gestion de Stock (Gestionnaire)" {
+    gestionnaire -- (Gérer produits)
+    gestionnaire -- (Gérer catégories)
+    gestionnaire -- (Gérer promotions)
+  }
+
+  note right of gestionnaire
+    Toutes les fonctionnalités du gestionnaire
+    nécessitent une connexion préalable.
+
+    La gestion de chaque entité comprend :
+    - Ajout
+    - Modification
+    - Suppression
+    après validation.
+  end note
+    note right of client
+      La gestion de session c'est la déconnexion d'un utilisateur.
+
+    end note
+}
+
+@enduml

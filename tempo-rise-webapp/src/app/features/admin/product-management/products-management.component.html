@@ -1,0 +1,105 @@
+<div class="container mx-auto px-4 py-6">
+  <div class="bg-[var(--surface)] rounded-lg shadow-md p-6">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <h2 class="text-2xl font-bold text-[var(--text)]">Products Management</h2>
+      <button class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors whitespace-nowrap"
+              (click)="openCreateProduct()">
+        Add New Product
+      </button>
+    </div>
+  
+    <!-- Filters -->
+    <div class="mb-6 ">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search products..."
+        class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]"
+      >
+    </div>
+        <div class="mb-6">
+      <select [(ngModel)]="selectedCategory"
+              class="w-full md:w-1/3 px-4 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+        <option value=""   >Select a category...</option>
+              @for(cat of categories(); track cat.id) {
+          <option >{{cat.nom}}</option>
+        }
+      </select>
+    </div>
+  
+    @if (isLoadingProducts() || isLoadingCategories()) {
+      <app-spinner></app-spinner>
+    } 
+     @else {
+      <div class="overflow-x-auto  rounded-lg ">
+        <table class="w-full min-w-[600px]">
+          <thead class="bg-[var(--background)]">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Name</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Price</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Category</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-[var(--text)]">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of products(); track product.id) {
+              <tr class="border-t border-[var(--border)] hover:bg-[var(--background)] transition-colors">
+                <td class="px-4 py-4 text-sm text-[var(--text)]"><app-expand-long-text [text]="product.nom" [id]="product.id" [lengthToShow]="30"></app-expand-long-text></td>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ product.newPrice | currencyFormat }}</td>
+                <td class="px-4 py-4 text-sm text-[var(--text)]">{{ product.categorie.nom }}</td>
+                <td class="px-4 py-4 text-sm flex gap-3">
+                  <button
+                    (click)="editProduct(product.id)"
+                    class="text-blue-600 hover:text-blue-800"
+                    title="Edit"
+                  >
+                    <span class="material-icons">edit</span>
+                  </button>
+                  <button
+                    (click)="deleteProduct(product.id)"
+                    class="text-red-600 hover:text-red-800"
+                    title="Delete"
+                  >
+                    <span class="material-icons">delete</span>
+                  </button>
+                   <!-- ✅ Toggle activation -->
+                    @if(toggleIsLoading){
+                      <div class="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-[var(--primary)]"></div>
+                    }
+                    @else{
+  <button
+    (click)="toggleProductStatus(product.id)"
+    [ngClass]="product.actif ? 'text-green-600 hover:text-green-800' : 'text-gray-500 hover:text-gray-700'"
+    [title]="product.actif ? 'Deactivate Product' : 'Activate Product'"
+  >
+    <span class="material-icons">
+      {{ product.actif ? 'toggle_on' : 'toggle_off' }}
+    </span>
+  </button>
+  }
+                </td>
+              </tr>
+            }
+            @if (products().length === 0) {
+              <tr class="border-t border-gray-200">
+                <td colspan="5" class="px-6 py-4 text-center text-sm text-[var(--text)]">
+                  No products found
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+       <!-- Pagination -->
+       <div class="mt-6">
+        <app-pagination 
+          [currentPage]="pagination().page"
+          [itemsPerPage]="pagination().size"
+          [totalItems]="totalElements()"
+          (pageChange)="onPageChange($event)">
+        </app-pagination>
+      </div>
+    }
+  </div>
+</div>

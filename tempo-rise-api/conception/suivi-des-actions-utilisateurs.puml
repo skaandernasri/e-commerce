@@ -1,0 +1,26 @@
+@startuml
+actor Utilisateur
+participant "Frontend (Navigateur)" as Browser
+participant "SuiviClient" as SC
+participant "GoogleAnalyticsService" as GA
+participant "Base de données (Suivi)" as DB
+participant "Utilisateur" as User
+
+== Interaction de l'utilisateur avec l'interface ==
+
+Utilisateur -> Browser : Interagir avec le site (ex: Ajouter au panier)
+Browser -> SC : Enregistrer l'action effectuée
+SC -> DB : Sauvegarder l'action dans la base de données
+DB -> SC : Confirmation de l'enregistrement
+
+== Suivi de l'action avec Google Analytics ==
+
+SC -> GA : Envoi de l'action à Google Analytics (action, catégorie, etc.)
+GA -> GA : Traitement de l'action (collecte et analyse)
+GA -> SC : Confirmation de l'envoi à Google Analytics
+
+== Retour à l'utilisateur ==
+
+SC -> User : Confirmation de l'action effectuée (ex: "Produit ajouté au panier")
+
+@enduml

@@ -1,0 +1,88 @@
+/* Bootstrap SCSS (for mixins, variables, functions) */
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+/* ngx-toastr */
+@import "ngx-toastr/toastr";
+
+@import "quill/dist/quill.core.css";
+@import "quill/dist/quill.snow.css";
+
+
+/* -----------------------------
+   Tailwind Base
+----------------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+/* Your custom styles here */
+.ql-editor img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: none;
+  height: auto;
+}
+
+:root {
+  /* Light Theme Variables */
+
+  --primary: theme('colors.light-primary');
+  --secondary: theme('colors.light-secondary');
+  --background: theme('colors.light-background');
+  --surface: theme('colors.light-surface');
+  --text: theme('colors.light-text');
+  --text2: theme('colors.light-text2');
+  --footer-bg: theme('colors.light-footer'); /* equivalent to bg-lime-800 */
+  --hover: theme('colors.light-hover');
+  --mdc-filled-tel-form-focus-outline-color: var(--primary);
+  --mdc-filled-tel-form-background: var(--surface);
+  --mdc-filled-tel-form-hover-background: color-mix(in srgb, var(--surface) 90%, white);
+  --mdc-tel-form-placeholder-color: color-mix(in srgb, var(--text) 60%, transparent);
+  --mdc-theme-primary: var(--primary);
+}
+
+/* Dark Theme */
+.theme-dark {
+
+  --primary: theme('colors.dark-primary');
+  --secondary: theme('colors.dark-secondary');
+  --background: theme('colors.dark-background');
+  --surface: theme('colors.dark-surface');
+  --text: theme('colors.dark-text');
+  --text2: theme('colors.dark-text2');
+  --footer-bg: theme('colors.dark-footer'); /* equivalent to bg-lime-800 */
+  --hover: theme('colors.dark-hover');
+  --mdc-filled-tel-form-focus-outline-color: var(--primary);
+  --mdc-filled-tel-form-background: color-mix(in srgb, var(--surface) 95%, black);
+  --mdc-filled-tel-form-hover-background: color-mix(in srgb, var(--surface) 85%, black);
+  --mdc-tel-form-placeholder-color: color-mix(in srgb, var(--text) 60%, transparent);
+  --mdc-theme-primary: var(--primary);
+}
+/* Colorful Theme */
+.theme-colorful {
+
+  --primary: theme('colors.colorful-primary');
+  --secondary: theme('colors.colorful-secondary');
+  --background: theme('colors.colorful-background');
+  --surface: theme('colors.colorful-surface');
+  --text: theme('colors.colorful-text');
+  --text2: theme('colors.colorful-text2');
+  --footer-bg: theme('colors.colorful-footer'); /* equivalent to bg-lime-800 */
+  --hover: theme('colors.colorful-hover');
+      /* Colorful Theme - Phone Input */
+  --mdc-filled-tel-form-focus-outline-color: var(--secondary);
+  --mdc-filled-tel-form-background: var(--surface);
+  --mdc-filled-tel-form-hover-background: color-mix(in srgb, var(--surface) 80%, var(--secondary) 20%);
+  --mdc-tel-form-placeholder-color: color-mix(in srgb, var(--text) 70%, transparent);
+  --mdc-theme-primary: var(--secondary);
+}
+
+body {
+  @apply bg-[var(--background)] text-[var(--text)];
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

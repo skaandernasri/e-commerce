@@ -1,0 +1,154 @@
+@if(activeProductsSection()){
+<div class="container mx-auto px-4 flex flex-col lg:flex-row gap-x-10 text-[var(--text)] relative">
+
+  <!-- Floating Filter Button (Mobile Only) -->
+  @if (isMobile && !showFilters) {
+    <button
+      class="fixed bottom-4 right-4 z-20 bg-[var(--primary)] text-white p-3 rounded-full shadow-lg"
+      (click)="showFilters = true"
+      aria-label="Open filters">
+      <i class="fas fa-sliders-h"></i>
+    </button>
+  }
+
+  <!-- Filter Sidebar -->
+  @if (showFilters || !isMobile) {
+    <aside
+      [@filterSlideIn]
+      class="w-full lg:w-1/4 pr-0 lg:pr-8 mb-8 lg:mb-0 sticky top-4 z-20 bg-[var(--surface)] p-6 rounded-lg shadow-md">
+
+      <!-- Header -->
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">{{ 'PRODUCTS.FILTERS.TITLE' | translate }}</h2>
+        <button (click)="toggleAllFilters()" aria-label="Toggle all filters">
+          <i class="fas {{ allFiltersVisible ? 'fa-eye-slash' : 'fa-eye' }}"></i>
+        </button>
+      </div>
+
+      <!-- Filter Sections -->
+      <div class="space-y-6">
+
+        <!-- Price Filter -->
+        <section>
+          <div class="flex justify-between items-center">
+            <h3 class="font-semibold">
+              {{ 'PRODUCTS.FILTERS.PRICE' | translate }}:
+              {{ filters().priceRange[0] }} - {{ filters().priceRange[1] }}
+            </h3>
+            <button (click)="toggleFilter('price')">
+              <i class="fas {{ filterStates().price ? 'fa-minus' : 'fa-plus' }}"></i>
+            </button>
+          </div>
+          @if (filterStates().price) {
+            <div class="mt-4" [@expandCollapse]>
+              <mat-slider class="w-full" min="0" [max]="maxPrice()" step="1" showTickMarks discrete [displayWith]="formatLabel">
+                <input
+                  matSliderStartThumb
+                  [value]="filters().priceRange[0]"
+                  (input)="onPriceChange(0, $event)">
+                <input
+                  matSliderEndThumb
+                  [value]="filters().priceRange[1]"
+                  (input)="onPriceChange(1, $event)">
+              </mat-slider>
+            </div>
+          }
+        </section>
+
+        <!-- Category Filter -->
+        <section>
+          <div class="flex justify-between items-center">
+            <h3 class="font-semibold">{{ 'PRODUCTS.FILTERS.CATEGORIES' | translate }}</h3>
+            <button (click)="toggleFilter('category')">
+              <i class="fas {{ filterStates().category ? 'fa-minus' : 'fa-plus' }}"></i>
+            </button>
+          </div>
+          @if (filterStates().category) {
+            <div class="flex flex-wrap gap-2 mt-4" [@expandCollapse]>
+              @for (category of categories(); track category.id) {
+                <button
+                  (click)="toggleCategory(category.id)"
+                  class="px-3 py-1 border rounded-full text-sm transition hover:bg-[var(--primary)]"
+                  [class.bg-[var(--primary)]]="filters().categories[category.id]"
+                  [class.text-white]="filters().categories[category.id]">
+                  {{ category.nom }}
+                </button>
+              }
+            </div>
+          }
+        </section>
+
+        <!-- Promotion Filter -->
+        <section>
+          <div class="flex justify-between items-center">
+            <h3 class="font-semibold">
+              {{ 'PRODUCTS.FILTERS.PROMOTION' | translate }}:
+              {{ filters().promotionRange[0] }}% - {{ filters().promotionRange[1] }}%
+            </h3>
+            <button (click)="toggleFilter('promotion')">
+              <i class="fas {{ filterStates().promotion ? 'fa-minus' : 'fa-plus' }}"></i>
+            </button>
+          </div>
+          @if (filterStates().promotion) {
+            <div class="mt-4" [@expandCollapse]>
+              <mat-slider class="w-full" min="0" max="100" step="5" showTickMarks discrete [displayWith]="formatLabel">
+                <input
+                  matSliderStartThumb
+                  [value]="filters().promotionRange[0]"
+                  (input)="onPromotionChange(0, $event)">
+                <input
+                  matSliderEndThumb
+                  [value]="filters().promotionRange[1]"
+                  (input)="onPromotionChange(1, $event)">
+              </mat-slider>
+            </div>
+          }
+        </section>
+      </div>
+
+      <!-- Reset Button -->
+      <button
+        class="mt-6 w-full bg-[var(--primary)] text-white py-2 rounded hover:opacity-90"
+        (click)="resetFilters()">
+        {{ 'PRODUCTS.FILTERS.RESET' | translate }}
+      </button>
+    </aside>
+  }
+
+  <!-- Product Grid -->
+   @if(activeProductsOurProductsSection()){
+  <main [id]="activeProductsOurProductsSection()?.type" class="w-full lg:w-3/4">
+    <h1 class="text-3xl font-bold mb-8">{{mainContent()?.title}}</h1>
+
+    @if (isLoadingProducts() ) {
+      <app-spinner></app-spinner>
+    } 
+    @else {
+      @if (products().length > 0) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          @for (product of products(); track product.id) {
+            <app-product-card [product]="product"></app-product-card>
+          }
+        </div>
+      } @else {
+        <div class="text-center py-12">
+          <p class="text-lg">{{ 'PRODUCTS.NO_MATCH' | translate }}</p>
+          <button
+            (click)="resetFilters()"
+            class="mt-4 bg-[var(--primary)] text-white px-4 py-2 rounded hover:opacity-90">
+            {{ 'PRODUCTS.FILTERS.RESET' | translate }}
+          </button>
+        </div>
+      }
+    }
+
+    <app-pagination
+      [currentPage]="pagination().page"
+      [itemsPerPage]="pagination().size"
+      [totalItems]="totalElements()"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </main>
+}
+</div>
+}

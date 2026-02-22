@@ -1,0 +1,6 @@
+package tn.temporise.domain.model;
+
+public enum TypePage {
+  ALL, HOME, PRODUCT, CONTACT, ABOUT, BLOG, TERMS_AND_CONDITIONS, PRODUCT_DETAILS, DELIVERY_AND_RETURN, LEGAL_NOTICE
+}
+

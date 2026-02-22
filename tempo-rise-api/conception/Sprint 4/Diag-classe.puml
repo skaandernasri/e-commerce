@@ -1,0 +1,93 @@
+@startuml
+
+' ================== Entités principales ==================
+
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +email: String
+    +téléphone: String
+}
+class Contact {
+    +id: Long
+    +subject: String
+    +message: String
+    +type: TypeContact
+    +statusContact: StatusContact
+    +refundMethod: RefundMethod
+    +isRefunded: boolean
+    +refundedAt: Date
+    +createdAt: Date
+    +updatedAt: Date
+    +user: Utilisateur
+    +commande: Commande
+
+}
+
+class Commande {
+    +id: Long
+    +date: Date
+    +statut: StatutCommande
+    +total: Double
+    +utilisateur: Utilisateur
+    +adresseLivraison: Adresse
+    +adresseFacturation: Adresse
+}
+
+class RetourProduit {
+    +id: Long
+    +raisonRetour: String
+    +dateRetour: Date
+    +produit: Produit
+    +utilisateur: Utilisateur
+}
+class Produit {
+    +id: Long
+    +nom: String
+    +description: String
+    +marque: String
+    +composition: String
+    +guide: String
+    +faq: String
+    +prix: Double
+}
+
+class Paiement {
+    +id: Long
+    +referenceKonnect: String
+    +datePaiement: Date
+    +commande: Commande
+}
+
+class Notification {
+    +id: Long
+    +message: String
+    +dateEnvoi: Date
+    +utilisateur: Utilisateur
+    +lu: boolean
+}
+
+class Adresse {
+    +id: Long
+    +ligne1: String
+    +ville: String
+    +type: TypeAdresse
+}
+
+' ================== Associations ==================
+
+Utilisateur "1" -- "*" Commande : passe
+Utilisateur "1" -- "*" Notification : reçoit
+Utilisateur "1" -- "*" RetourProduit : effectue
+Utilisateur "1" -- "*" Contact : poste
+
+Commande "1" -- "*" Paiement : contient
+Commande "*" -- "1" Adresse : adresseLivraison
+Commande "*" -- "1" Adresse : adresseFacturation
+
+
+
+Produit "1" -- "*" RetourProduit : est retourné
+
+
+@enduml

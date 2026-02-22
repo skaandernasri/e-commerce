@@ -1,0 +1,13 @@
+<div class="flex items-center gap-2">
+  <label for="theme" class="text-[var(--text)]">Theme:</label>
+  <select
+    id="theme"
+    [value]="currentTheme()"
+    (change)="onThemeChange($event)"
+    class="bg-[var(--surface)] text-[var(--text)] p-2 rounded-md border border-[var(--primary)]"
+  >
+    <option value="light">Light</option>
+    <option value="dark">Dark</option>
+    <option value="colorful">Colorful</option>
+  </select>
+</div>

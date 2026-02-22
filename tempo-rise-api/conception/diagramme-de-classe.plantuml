@@ -1,0 +1,381 @@
+@startuml
+
+class Authentification {
+    +id: Long
+    +type: TypeAuthentification
+    +motDePasse: String  // Seulement pour les connexions par email
+    +providerId: String  // ID unique de Facebook/Google (nullable)
+    +utilisateur: Utilisateur
+}
+class UtilisateurAnonyme {
+    +id: Long
+    +tempId: String  // UUID stocké dans un cookie
+    +dateCreation: Date
+}
+enum TypeAuthentification {
+    EMAIL
+    FACEBOOK
+    GOOGLE
+}
+
+class NewsLetter {
+    +id: Long
+    +email: String
+    +createdAt: Date
+    +subscribedAt: Date
+    +unsubscribedAt: Date
+    +status: StatusNewsLetter
+    +confirmationToken: UUID
+    +confirmationTokenExpiresAt: Date
+}
+enum StatusNewsLetter {
+    SUBSCRIBED
+    UNSUBSCRIBED
+    PENDING
+}
+
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +prenom: String
+    +email: String
+    +téléphone : String
+    +date_inscription: Date
+    +roles: Set<Role>
+    +genre: Genre
+    +date_naissance: Date
+}
+enum Genre {
+    HOMME
+    FEMME
+}
+enum Role {
+    CLIENT
+    GESTIONNAIRE
+    ADMIN
+    REDACTEUR
+    SUPER_ADMIN
+}
+
+class Produit {
+    +id: Long
+    +nom: String
+    +description: String
+    +marque: String
+    +composition: String
+    +guide: String
+    +faq: String
+    +categorie: Categorie
+    +prix: Double
+}
+class Variant {
+    +id: Long
+    +produit: Produit
+    +taille: String
+    +couleur: String
+    +stock: long
+}
+
+class ImageProduit {
+    +id: Long
+    +url: String
+    +produit: Produit
+}
+
+class Categorie {
+    +id: Long
+    +nom: String
+    +description: String
+}
+
+class Commande {
+    +id: Long
+    +date: Date
+    +statut: StatutCommande
+    +utilisateur: Utilisateur
+    +total: Double
+    +adresse_livraison: Adresse
+    +adresse_facturation: Adresse
+    +modePaiement: ModePaiement
+    +codePromo: CodePromo
+}
+
+enum StatutCommande {
+    EN_COURS
+    EXPEDIEE
+    LIVREE
+}
+
+enum ModePaiement {
+    CARTE_BANCAIRE
+    VIREMENT
+    A_LIVRAISON
+}
+
+
+
+class LigneCommande {
+    +id: Long
+    +produit: Produit
+    +quantite: int
+    +prixTotal: Double
+}
+
+class BlogPost {
+    +id: Long
+    +titre: String
+    +contenu: String
+    +datePublication: Date
+    +auteur: Utilisateur
+}
+
+
+class ImageBlogPost {
+    +id: Long
+    +url: String
+    +blogPost: BlogPost
+}
+
+class Commentaire {
+    +id: Long
+    +contenu: String
+    +datePublication: Date
+    +auteur: Utilisateur
+    +blogPost: BlogPost
+}
+
+class Promotion {
+    +id: Long
+    +nom: String
+    +description: String
+    +pourcentageReduction: Double
+    +dateDebut: Date
+    +dateFin: Date
+}
+
+class CodePromo {
+    +id: Long
+    +code: String
+    +reduction: Double
+    +dateExpiration: Date
+}
+
+class GestionStock {
+    +suiviStock(): void
+    +suiviVente(): void
+    +suiviVenteParProduit(): Map<Produit, Integer>
+}
+
+class SuiviVentes {
+    +suivreVentes(): void
+}
+
+class GestionUtilisateur {
+    +ajouterUtilisateur(): void
+    +modifierUtilisateur(): void
+    +supprimerUtilisateur(): void
+}
+
+class Facture {
+    +id: Long
+    +commande: Commande
+    +dateEmission: Date
+    +total: Double
+    +genererFacture(): void
+}
+
+class Avis {
+    +id: Long
+    +note: int
+    +commentaire: String
+    +datePublication: Date
+    +utilisateur: Utilisateur
+    +produit: Produit
+}
+
+class HistoriqueCommande {
+    +id: Long
+    +dateCommande: Date
+    +statut: StatutCommande
+    +produits: Set<Produit>
+    +utilisateur: Utilisateur
+}
+
+class RetourProduit {
+    +id: Long
+    +raisonRetour: String
+    +dateRetour: Date
+    +produit: Produit
+    +utilisateur: Utilisateur
+}
+
+class Notification {
+    +id: Long
+    +message: String
+    +dateEnvoi: Date
+    +utilisateur: Utilisateur
+    +lire(): void
+}
+
+class UserNotif{
+    +id: Long
+    +utilisateur: Utilisateur
+    +notification: Notification
+}
+
+class Panier {
+    +id: Long
+    +utilisateur: Utilisateur
+    +produits: Set<Produit>
+    +ajouterProduit(produit: Produit): void
+    +supprimerProduit(produit: Produit): void
+    +viderPanier(): void
+}
+
+class Panier_Produit {
+    +panier_id: Long
+    +produit_id: Long
+    +quantite: int
+}
+
+class SuiviClient {
+    +id: Long
+    +utilisateur: Utilisateur
+    +produit: Produit
+    +typeAction: TypeAction
+    +score: Double
+    +date: Date
+}
+
+class Adresse {
+    +id: Long
+    +utilisateur: Utilisateur
+    +ligne1: String
+    +ligne2: String
+    +ville: String
+    +code_postal: String
+    +pays: String
+    +type: TypeAdresse
+}
+class Whishlist {
+    +id: Long
+    +utilisateur: Utilisateur
+    +produits: Set<Produit>
+}
+class WhishlistItem {
+    +whishlist : Whishlist
+    +produit: Produit
+}
+enum TypeAdresse {
+    LIVRAISON
+    FACTURATION
+}
+
+enum TypeAction {
+    VIEW_PRODUCT
+    ADD_TO_CART
+    REMOVE_FROM_CART
+    PURCHASE
+    ADD_TO_WISHLIST
+    LEAVE_REVIEW
+    SEARCH_CLICK
+    PRODUCT_HOVER
+}
+
+
+class GoogleAnalyticsService {
+    +suivreAction(utilisateur: Utilisateur, action: String): void
+}
+
+class GestionTemplate {
+    +changerTemplate(nouveauTemplate: String): void
+}
+/'
+Partie paramétrage
+'/
+
+enum TypePage {
+      HOME,
+      ABOUT,
+      CONTACT,
+      SHOP,
+      BLOG,
+      PRODUCT
+}
+
+class Section {
+    +id: Long
+    +titre: String
+    +type: TypeSection
+    +type: TypePage
+    +ordre: int
+    +contenuJson: String  // e.g. {"title": "...", "subtitle": "...", "buttonText": "..."}
+    +user: Utilisateur
+    +dateCreation: Date
+    +dateModification: Date
+}
+
+enum TypeSection {
+    HERO
+    FOOTER
+    HEADER
+    CONTENT
+    CONTACT
+    CUSTOM
+}
+
+
+class ConfigurationGlobale {
+    +id: Long
+    +valeur_livraison: float
+    +seuil_livraison_gratuite: float
+}
+UtilisateurAnonyme --|> Utilisateur
+Utilisateur "1" -- "*" SuiviClient : effectue
+Utilisateur "1" -- "1" Whishlist : possède
+GoogleAnalyticsService "1" -- "*" SuiviClient : enregistre
+Utilisateur "1" -- "*" Commande : passe
+Commande "1" -- "*" LigneCommande : contient
+LigneCommande "*" -- "1" Produit : concerne
+Produit "*" -- "1" Categorie : appartient à
+Produit "1" -- "*" ImageProduit : possède
+Produit "1" -- "*" Promotion : bénéficie
+Produit "1" -- "*" Variant : possède
+Produit "1" -- "*" WhishlistItem :appartient
+Whishlist "1" -- "*" WhishlistItem : contient
+Commande "1" -- "0..1" CodePromo : applique
+Commande "1" -- "1" Facture : génère
+BlogPost "1" -- "*" ImageBlogPost : possède
+Utilisateur "1" -- "*" BlogPost : écrit
+BlogPost "1" -- "*" Commentaire : reçoit
+Utilisateur "1" -- "*" Commentaire : poste
+Utilisateur "1" -- "*" Role : possède
+GestionStock "1" -- "*" Produit : suit
+GestionStock "1" -- "*" Commande : suit
+SuiviVentes "1" -- "*" Commande : suit
+SuiviVentes "1" -- "*" Utilisateur : gère
+GestionUtilisateur "1" -- "*" Utilisateur : gère
+Utilisateur "1" -- "*" Avis : poste
+Produit "1" -- "*" Avis : reçoit
+Utilisateur "1" -- "*" HistoriqueCommande : consulte
+Produit "1" -- "*" HistoriqueCommande : appartient à
+Produit "1" -- "*" RetourProduit : est retourné
+Utilisateur "1" -- "*" RetourProduit : effectue
+Utilisateur "1" -- "*" UserNotif : avoir
+Notification "1" -- "*" UserNotif : avoir
+Utilisateur "1" -- "1" Panier : possède
+GestionTemplate "1" -- "1" Utilisateur : modifie
+Authentification "*" -- "1" TypeAuthentification
+Commande "*" -- "1" StatutCommande
+Commande "*" -- "1" ModePaiement
+Panier "1" -- "*" Panier_Produit : contient
+Panier_Produit "*" -- "1" Produit : référence
+Utilisateur "1" -- "*" Adresse : possède
+Commande "*" -- "1" Adresse : utilise pour facturation/livraison
+Adresse "*" -- "1" TypeAdresse : est de type
+Produit "1" -- "*" SuiviClient : est concerné par
+SuiviClient "*" -- "1" TypeAction : est de type
+anonymousUser "1" -- "*" SuiviClient : est concerné par
+Utilisateur "1" -- "*" Section : peut créer
+
+@enduml

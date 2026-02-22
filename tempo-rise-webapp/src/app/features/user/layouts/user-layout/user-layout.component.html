@@ -1,0 +1,43 @@
+<div class="flex flex-col min-h-screen bg-[var(--background)]">
+  <app-main-header class="sticky top-0 z-30 "></app-main-header>
+
+  <main class="flex flex-col flex-1 flex-0 w-full overflow-auto">
+        <!-- 🧭 Sidebar (fixed width) on the right -->
+   <app-social-links></app-social-links>
+<router-outlet></router-outlet>
+    <app-cart></app-cart> 
+  </main>
+  <app-footer></app-footer>
+   @if(!cookieExists()){
+    <div
+     class="fixed inset-0  bg-black bg-opacity-50 z-[998] ">
+</div>
+<div @fade
+ class="fixed bottom-0 left-0 w-full z-[999] bg-[var(--surface)] !pointer-events-auto !visible">
+  <div class="max-w-4xl mx-auto p-4 flex flex-col md:flex-row items-center gap-4">
+    <!-- Text -->
+    <p class="text-sm flex-1">
+      We use cookies to improve your experience, analyze traffic, and for marketing purposes.
+      You can accept or decline these cookies at any time.
+    </p>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        (click)="accept()"
+        class="px-4 py-2 rounded-md bg-[var(--primary)] text-white hover:opacity-90 transition"
+      >
+        Accept
+      </button>
+
+      <button
+        (click)="decline()"
+        class="px-4 py-2 rounded-md bg-gray-300 text-gray-900 dark:bg-gray-600 dark:text-white hover:opacity-80 transition"
+      >
+        Decline
+      </button>
+    </div>
+  </div>
+</div>
+}
+</div>

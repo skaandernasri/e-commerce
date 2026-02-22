@@ -1,0 +1,63 @@
+@if(activeFooterSection()){
+  
+<footer class="bg-[var(--footer-bg)] text-white py-12 mt-auto">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- First Column - TEMPO -->
+      <div class="flex flex-col items-center">
+<img [src]="footerContent()?.logoUrl ? imagesBaseUrl + footerContent()?.logoUrl : logoUrlAlt" alt="Logo" class="w-22 h-12 mb-3">
+
+<!-- facebook-->
+<div class="flex items-center gap-2" >
+  @for( content of footerContent()?.socials ; track $index){
+  <a  [href]="content.link" target="_blank" rel="noopener noreferrer" appExternalLink class="cursor-pointer">
+    <img [src]="content.url ? imagesBaseUrl + content.url : getSocialLogoAlt(content.alt)" [alt]="content.alt" class="w-8 h-8 object-contain flex items-center justify-center" />
+</a>
+}
+</div>
+
+      </div>
+       @for(content of footerContent()?.groups ; track $index){
+      <div>
+        <h2 class="text-lg font-semibold mb-4">{{content.groupHeaderText}}</h2>
+        <ul class="space-y-2 text-sm">
+          @for(item of content.textAndLinks ; track $index){
+            <div class="flex flex-row gap-2 items-center">
+            @if(item.imageUrl){
+                      <img [src]="item.imageUrl ? imagesBaseUrl + item.imageUrl : ''" alt="image" class="w-8 h-8 object-contain " />
+            }
+          <li class="break-words whitespace-normal max-w-[20ch]">
+            @if(item.isLink){
+              @if(item.linkType === 'EXTERNAL_LINK'){
+                <a [href]="item.link" class="hover:underline" appExternalLink>{{item.text}}</a>
+              }
+              @else if(item.linkType === 'SECTION_LINK'){ 
+                <a [routerLink]="item.link.split('#')[0]" [fragment]="item.link.split('#')[1]" class="hover:underline" >{{item.text}}</a>
+              }
+              @else{
+                <a [routerLink]="item.link" class="hover:underline" >{{item.text}}</a>
+              }
+            }
+            @else{
+              <p>{{item.text}}</p>
+            }
+          </li>
+          </div>
+          }
+
+        </ul>
+      </div>
+
+      <!-- Third Column - Boutique -->
+      }
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center mt-8 pt-8 border-t border-gray-200">
+      <p class="text-sm">
+        {{ footerContent()?.copyright }}
+      </p>
+    </div>
+  </div>
+</footer>
+}

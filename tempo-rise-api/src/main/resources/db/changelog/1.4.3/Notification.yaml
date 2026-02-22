@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.3/scripts/AddTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.3/scripts/addJoinTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

@@ -1,0 +1,16 @@
+@startuml UseCase_Redacteur
+
+actor "Rédacteur" as Redacteur
+
+usecase "Publier article de blog" as UC24
+usecase "Gérer article de blog" as UC25
+
+Redacteur -- UC24
+Redacteur -- UC25
+
+ note right of Redacteur
+  "Gérer" = CRUD (Créer, Lire, Mettre à jour, Supprimer)
+  Toutes ces actions nécessitent une connexion.
+end note
+
+@enduml

@@ -1,0 +1,14 @@
+ @if(activeContent6Section()){
+<section [id]="activeContent6Section()?.type" class="relative h-screen sm:h-screen flex items-center justify-center mt-6 sm:mt-12">
+  <img [src]=" activeContent6Section()?.imageUrl ? imageBaseUrl + activeContent6Section()?.imageUrl: imageAltRecord['content6'][0]" alt="Hero Background" 
+       class="absolute inset-0 w-full h-full object-cover z-0" />
+
+  <div class="relative z-10 text-center px-4 text-white max-w-4xl mx-auto">
+    <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6">{{ content6Content()?.title }}</h1>
+    <button class="bg-white text-gray-900 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-bold hover:bg-gray-100 transition duration-300 text-sm sm:text-base"
+            [routerLink]="content6Content()?.buttonLink">
+      {{ content6Content()?.buttonText }}
+    </button>
+  </div>
+</section>
+ }

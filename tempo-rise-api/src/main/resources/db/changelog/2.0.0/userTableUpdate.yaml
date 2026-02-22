@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/2.0.0/scripts/addColumnUserType.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/2.0.0/scripts/update.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/2.0.0/scripts/alterIdinanonymeTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+

@@ -1,0 +1,702 @@
+{
+    "TITLE": "موقع التجارة الإلكترونية",
+    "WELCOME_HEADING": "مرحبًا بكم في متجرنا",
+    "FEATURED_PRODUCTS_TITLE": "المنتجات المميزة",
+    "FEATURED_PRODUCTS_DESCRIPTION": "اكتشف أحدث مجموعة من منتجاتنا.",
+    "SHOP_NOW_BUTTON": "تسوق الآن",
+    "SPECIAL_OFFERS_TITLE": "العروض الخاصة",
+    "SPECIAL_OFFERS_DESCRIPTION": "استكشف عروضنا الحالية والخصومات.",
+    "VIEW_OFFERS_BUTTON": "عرض العروض",
+    "LATEST_BLOG_POSTS_TITLE": "أحدث المقالات",
+    "LATEST_BLOG_POSTS_DESCRIPTION": "اقرأ أحدث مقالاتنا وتحديثاتنا.",
+    "READ_BLOG_BUTTON": "اقرأ المدونة",
+    "HEADER": {
+      "HOME": "الصفحة الرئيسية",
+      "PRODUCTS": "المنتجات",
+      "BLOG": "مدونة",
+      "CONTACT": "اتصال",
+      "TOGGLE_NAV": "تبديل القائمة",
+      "SEARCH_PLACEHOLDER": "ابحث عن المنتجات...",
+      "SEARCH": "بحث",
+      "CART": "عربة التسوق",
+      "NOTIFICATIONS": "الإشعارات",
+      "LOAD_MORE": "تحميل المزيد",
+      "NO_NOTIFICATIONS": "لا توجد إشعارات",
+      "LOADING": "جار التحميل...",
+      "DASHBOARD": "لوحة التحكم"
+  },
+"DASHBOARD": {
+  "ADMIN": "المسؤول"
+},
+"USER_MENU": {
+    "ACCOUNT": "الحساب",
+    "PROFILE": "الملف الشخصي",
+    "ORDERS": "الطلبات",
+    "LOGOUT": "تسجيل الخروج",
+    "LOGIN": "تسجيل الدخول",
+    "WHISHLIST": "قائمة الرغبات"
+  },
+  "footer": {
+    "about": "عن المتجر",
+    "description": "E-Store هو وجهتك على الإنترنت لشراء المنتجات عالية الجودة. نحن ملتزمون بتوفير تجربة تسوق استثنائية لعملائنا.",
+    "quickLinks": "روابط سريعة",
+    "home": "الصفحة الرئيسية",
+    "products": "المنتجات",
+    "blog": "المدونة",
+    "contact": "اتصل بنا",
+    "followUs": "تابعنا",
+    "socialMedia": {
+      "facebook": "فيسبوك",
+      "instagram": "إنستغرام",
+      "linkedin": "لينكدإن"
+    },
+    "copyright": "© {{ currentYear }} E-Store - جميع الحقوق محفوظة"
+  },
+  
+  "HOME": {
+    "HERO": {
+      "TITLE": "احمي نفسك والكوكب بشفافية تامة.",
+      "SUBTITLE": "ملابس داخلية للدورة الشهرية مبتكرة ومصممة للراحة والأناقة والاستدامة.",
+      "BUTTON": "تسوق الآن"
+    },
+    "PRODUCTS": {
+      "TITLE": "منتجاتنا",
+      "NOIMAGE": "لا توجد صورة متاحة",
+      "NODESCRIPTION": "لا يوجد وصف متاح",
+      "NOPRODUCTS": "لا توجد منتجات متاحة حاليًا",
+      "VIEWALL": "عرض جميع المنتجات"
+    },
+    "FEATURES": {
+      "TITLE": "لأن جسدكِ يستحق الأفضل في كل دورة.",
+      "SUBTITLE": "ناعمة، طبيعية، ومصممة خصيصًا لفترتك الشهرية.",
+      "INGREDIENTS": {
+        "TITLE": "المكونات",
+        "TEXT": "طبيعية"
+      },
+      "PROTECTION": {
+        "TITLE": "الحماية",
+        "TEXT": "معتمدة"
+      },
+      "OEKOTEX": {
+        "TITLE": "شهادة Oeko Tex",
+        "TEXT": "معتمدة"
+      },
+      "ODORFREE": {
+        "TITLE": "خالٍ من الروائح"
+      }
+    },
+    "ADVANTAGES": {
+      "TITLE": "٦ فوائد للملابس الداخلية الشهرية",
+      "LONGTERMSAVINGS": "توفير طويل المدى",
+      "BODYPOSITIVITY": "إيجابية الجسد",
+      "LESSEXPOSURE": "تعرض أقل للمنتجات",
+      "VERSATILITY": "التعددية والراحة",
+      "ECOFRIENDLY": "حل صديق للبيئة",
+      "COMFORT": "راحة وتنفس"
+    },
+    "IMAGETEXT": {
+      "TITLE": "إيجابية الجسد",
+      "DESCRIPTION": "في أوروبا والولايات المتحدة، ينتهي أكثر من ٨٠٪ من المنتجات الشهرية في مكبات النفايات، حيث يمكن للفوط التخلصية أن تستغرق من ٥٠٠ إلى ٨٠٠ سنة لتتحلل. تلك التي لا يتم التخلص منها غالبًا تدخل أنظمة المياه."
+    },
+    "MISSION": {
+      "TITLE": "مهمتنا",
+      "SUBTITLE": "عيش الحياة بالإيقاع المثالي.",
+      "COMFORT": {
+        "TITLE": "الراحة",
+        "TEXT": "ابتكار ملابس داخلية مريحة للفترة الشهرية، مثالية للجميع."
+      },
+      "DURABILITY": {
+        "TITLE": "التحمل",
+        "TEXT": "يمكن أن تدوم حتى ٢ إلى ٥ سنوات."
+      },
+      "ECORESPONSIBILITY": {
+        "TITLE": "مسؤولية بيئية",
+        "TEXT": "مصنوعة مع احترام البيئة."
+      }
+    },
+    "CTA": {
+      "TITLE": "تقدم بقوة وراحة وثقة.",
+      "BUTTON": "تسوق الآن"
+    },
+    "LEARNMORE": {
+      "TITLE": "تعرفي أكثر على الدورة الشهرية",
+      "HEALTHHYGIENE": "الصحة والنظافة الشهرية",
+      "ULTIMATEGUIDE": "الدليل النهائي لاستخدام الملابس الداخلية الشهرية",
+      "CRAMPS": "كيفية التخلص من تقلصات الدورة الشهرية"
+    },
+    "TESTIMONIALS": {
+      "TITLE": "آراء العملاء",
+      "NOREVIEWS": "لا توجد مراجعات متاحة."
+    },
+   "FAQ": {
+  "TITLE": "الأسئلة الشائعة",
+  "SUBTITLE": "من الطبيعي أن تطرحي أسئلة. إليك كل ما تحتاجين معرفته عن Tempo واستخدام الملابس الداخلية الشهرية.",
+  "ITEMS": [
+    {
+      "QUESTION": "كيف تعمل الملابس الداخلية الشهرية من Tempo؟",
+      "ANSWER": "تستخدم الملابس الداخلية الشهرية من Tempo تقنية امتصاص متعددة الطبقات تحافظ على تدفق الدورة الشهرية مع بقاء الملابس جافة عند ملامستها للجلد."
+    },
+    {
+      "QUESTION": "كيف أختار المقاس المناسب؟",
+      "ANSWER": "اطلعي على دليل المقاسات المتاح على موقعنا. نوصي بأخذ مقاساتك الطبيعية دون تعديل ومقارنتها بالجدول الخاص بنا."
+    },
+    {
+      "QUESTION": "هل منتجات Tempo آمنة للبشرة الحساسة؟",
+      "ANSWER": "نعم، منتجاتنا مضادة للحساسية ومختبرة من قبل أطباء الجلد. ولا تحتوي على أي مواد كيميائية مهيجة."
+    },
+    {
+      "QUESTION": "هل تحترم منتجاتكم البيئة؟",
+      "ANSWER": "بالطبع. نستخدم مواد مستدامة وعملية التصنيع لدينا تقلل بشكل كبير من التأثير البيئي مقارنة بالمنتجات القابلة للتخلص."
+    }
+  ]
+}
+,
+    "NEWSLETTER": {
+      "TITLE": "كوني أول من يشعر بالفارق مع Tempo!",
+      "SUBTITLE": "اشتركي للحصول على آخر التحديثات والمعاينات والعروض الخاصة.",
+      "EMAILPLACEHOLDER": "أدخلي بريدك الإلكتروني",
+      "BUTTON": "اشتركي الآن"
+    }
+  },
+  "PRODUCTS": {
+  "TITLE": "منتجاتنا",
+  "NO_MATCH": "لا توجد منتجات تطابق فلاترك.",
+  "FILTERS": {
+    "TITLE": "الفلاتر",
+    "PRICE": "السعر",
+    "CATEGORIES": "الفئات",
+    "PROMOTION": "الخصم",
+    "RESET": "إعادة تعيين الفلاتر"
+  }
+},
+"PAGINATION": {
+  "SHOWING": "عرض من {{ start }} إلى {{ end }} من أصل {{ total }} إدخالات",
+  "PREVIOUS": "السابق",
+  "NEXT": "التالي"
+},
+"PRODUCT_DETAILS": {
+  "BREADCRUMB_HOME": "الرئيسية",
+  "BREADCRUMB_PRODUCTS": "المنتجات",
+  "REVIEWS": "التقييمات",
+  "SIZE": "المقاس",
+  "COLOR": "اللون",
+  "QUANTITY": "الكمية",
+  "SELECT_SIZE": "اختر المقاس",
+  "SELECT_COLOR": "اختر اللون",
+  "SELECT_SIZE_COLOR": "اختر المقاس واللون",
+  "ADD_TO_CART": "أضف إلى السلة",
+  "OUT_OF_STOCK": "غير متوفر",
+  "ADD_TO_WISHLIST": "أضف إلى المفضلة",
+  "REVIEWS_SECTION_TITLE": "آراؤنا",
+  "REVIEWS_SECTION_SUBTITLE": "أخبرنا عن تجربتك",
+  "CANCEL": "إلغاء",
+  "WRITE_REVIEW": "اكتب تقييماً",
+  "FIRST_REVIEW": "كن أول من يكتب رأيه",
+  "WRITE_YOUR_REVIEW": "اكتب تقييمك",
+  "RATING": "التقييم:",
+  "YOUR_REVIEW": "تقييمك",
+  "PLACEHOLDER_REVIEW": "شاركنا رأيك حول هذا المنتج...",
+  "SUBMIT_REVIEW": "إرسال التقييم",
+  "PRODUCT_NOT_FOUND": "المنتج غير موجود",
+  "PRODUCT_NOT_FOUND_DESC": "المنتج الذي تبحث عنه غير موجود أو قد تمت إزالته.",
+  "BROWSE_PRODUCTS": "تصفح المنتجات",
+  "RECOMMENDED_PRODUCTS": "منتجات مقترحة",
+  "IMAGE_NOT_AVAILABLE": "الصورة غير متوفرة",
+  "DESCRIPTION_NOT_AVAILABLE": "الوصف غير متوفر",
+  "NO_RECOMMENDED": "لا توجد منتجات مقترحة",
+  "NO_RECOMMENDED_DESC": "لا توجد منتجات مقترحة حالياً.",
+  "NO_REVIEWS": "لا توجد تقييمات",
+  "BACK_TO_PRODUCTS": "العودة للمنتجات",
+  "PRODUCT_NOT_FOUND_MESSAGE": "المنتج الذي تبحث عنه غير موجود أو قد تمت إزالته."
+
+},
+  "SWAL": {
+    "SUCCESS": "نجاح",
+    "ERROR": "خطأ",
+    "ORDER_ITEM_SUCCESS_UPDATE": "تم تحديث الصنف في الطلب",
+    "ORDER_ITEM_FAILED_UPDATE": "فشل تحديث الصنف في الطلب",
+    "WARNING": "تحذير",
+    "INFO": "معلومات",
+    "ACTION_CONFIRM": "تنفيذ الإجراء",
+    "CANCEL": "إلغاء",
+    "NOT_AVAILABLE": "الوصف غير متوفر",
+    "NO_RECOMMENDED": "لا توجد منتجات مقترحة",
+    "NO_RECOMMENDED_DESC": "لا توجد منتجات مقترحة حالياً.",
+    "PAYMENT_SUCCESS": "تم الدفع بنجاح",
+    "PAYMENT_ERROR": "فشل الدفع",
+    "LOGIN_REQUIRED": "تسجيل الدخول مطلوب",
+    "ACTION_REQUIRED": "إجراء مطلوب",
+    "PROFILE_UPDATED": "تم تحديث الملف الشخصي بنجاح",
+    "PASSWORD_CHANGED": "تم تغيير كلمة المرور بنجاح",
+    "CHECKOUT_CONFIRM_MESSAGE": "هل ترغب بتأكيد الطلب؟",
+    "CHECKOUT_CONFIRM_TITLE": "تأكيد الطلب",
+    "ORDER_CREATED": "تم إنشاء الطلب بنجاح",
+    "ORDER_ERROR": "فشل إنشاء الطلب",
+    "ORDER_STATUS_UPDATED": "تم تحديث حالة الطلب بنجاح",
+    "ORDER_STATUS_UPDATE_FAILED": "فشل في تحديث حالة الطلب",
+    "ORDER_ITEM_DELETED": "تم حذف عنصر الطلب بنجاح",
+    "ORDER_ITEM_DELETED_FAILED": "فشل في حذف عنصر الطلب",
+    "REVIEW_SUBMITTED": "تم إرسال التقييم بنجاح",
+    "REVIEW_SUBMIT_FAILED": "فشل في إرسال التقييم",
+    "SELECT_SIZE_COLOR": "يرجى اختيار المقاس واللون",
+    "LOGIN_REQUIRED_WISHLIST": "يجب تسجيل الدخول لإضافة عنصر إلى قائمة الرغبات!",
+    "WISHLIST_ADDED": "تمت إضافة العنصر إلى قائمة الرغبات بنجاح",
+    "WISHLIST_ADD_FAILED": "فشل في إضافة العنصر إلى قائمة الرغبات",
+    "ACCOUNT_ACTIVATED": "تم تفعيل الحساب بنجاح",
+    "INVALID_OR_EXPIRED_TOKEN": "الرابط غير صالح أو الرمز منتهي الصلاحية",
+    "INVALID_CREDENTIALS": "بيانات الاعتماد غير صالحة",
+    "ACCOUNT_NOT_VERIFIED": "لقد أرسلنا رسالة بريد إلكتروني لتفعيل حسابك. يرجى التحقق من صندوق الوارد.",
+    "SIGNIN_FAILED": "فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.",
+    "EMAIL_SENT_SUCCESS": "تم إرسال البريد الإلكتروني بنجاح",
+    "ERROR_SENDING_EMAIL": "حدث خطأ أثناء إرسال البريد الإلكتروني",
+    "GOOGLE_SIGNIN_FAILED": "فشل تسجيل الدخول عبر Google. حاول مرة أخرى.",
+    "INSUFFICIENT_STOCK": "المخزون غير كافٍ",
+    "WISHLIST" : {
+      "WISHLIST_ADDED": "تمت إضافة العنصر إلى قائمة الرغبات بنجاح",
+      "WISHLIST_ADD_FAILED": "فشل في إضافة العنصر إلى قائمة الرغبات",
+      "ALREADY_IN_WISHLIST": "العنصر موجود في قائمة الرغبات"
+    },
+
+      "CART": {
+    "FAILED_CREATE": "فشل في انشاء السلة",
+    "CLEARED": "تم حذف سلة التسوق بنجاح",
+    "FAILED_UPDATE": "فشل تحديث السلة",
+    "NOT_ENOUGH_QUANTITY": "الكمية المتاحة غير كافية",
+    "USER_ID_REQUIRED": "مطلوب معرف المستخدم",
+    "QUANTITY_POSITIVE": "يجب أن تكون الكمية موجبة",
+    "FAILED_RETRIEVE": "فشل استرجاع السلة",
+    "FAILED_LOAD_IMAGES": "فشل تحميل صور السلة للعنصر {{id}}",
+    "ITEM_ADDED_CART": "تمت إضافة العنصر إلى السلة",
+    "ITEM_REMOVED_CART": "تمت إزالة العنصر من السلة",
+    "CART_MERGE_FAILED": "فشل دمج سلة التسوق",
+    "ITEM_QUANTITY_UPDATED": "تم تحديث كمية العنصر بنجاح",
+    "INVALID_FORM_OR_EMPTY_CART": "نموذج غير صالح او سلة التسوق فارغة",
+    "CART_MERGED_SUCCESS": "تم دمج سلة التسوق بنجاح",
+    "ADD_CART_FAILED": "فشل في إضافة العنصر إلى السلة"
+
+
+  },
+  "PROMOTION": {
+    "SAVED_SUCCESSFULLY": "تم حفظ الترويج بنجاح",
+    "FAILED_SAVE": "فشل في حفظ الترويج",
+    "PROMOCODE_APPLIED": "تم تطبيق كود الترويج!"
+  },
+  "USER":{
+    "FAILED_LOAD": "فشل في تحميل المستخدم",
+    "SUCCESS_UPDATE": "تم تحديث المستخدم بنجاح",
+    "SUCCESS_DELETE": "تم حذف المستخدم بنجاح",
+    "FAILED_DELETE": "فشل في حذف المستخدم",
+    "FAILED_UPDATE": "فشل في تحديث المستخدم"
+  },
+  "ADDRESS":{
+    "FAILED_LOAD": "فشل في تحميل العنوان",
+    "FAILED_CREATE": "فشل في انشاء العنوان",
+    "SUCCESS_CREATE": "تم انشاء العنوان بنجاح",
+    "SUCCESS_UPDATE": "تم تحديث العنوان بنجاح",
+    "SUCCESS_DELETE": "تم حذف العنوان بنجاح",
+    "FAILED_DELETE": "فشل في حذف العنوان",
+    "FAILED_UPDATE": "فشل في تحديث العنوان",
+    "FAILED_DELETE_LINKED_ORDER": "فشل في حذف العنوان المرتبط بطلب"
+  },
+  "CONTACT": {
+    "VALID_FIELDS": "يرجى تعبئة جميع الحقول المطلوبة",
+    "SUCCESS_SEND": "تم ارسال الرسالة بنجاح",
+    "FAILED_SEND": "فشل في ارسال الرسالة"
+  },
+  "INVOICE": {
+    "ELEMENT_NOT_FOUND": "عنصر الفاتورة غير موجود",
+    "FAILED_LOAD": "فشل في تحميل الفاتورة"
+  },
+  "PROFILE":{
+    "IMAGE_UPDATE_SUCCESS":"تم تحديث صورة الملف الشخصي بنجاح",
+    "IMAGE_UPDATE_FAILED":"فشل في تحديث صورة الملف الشخصي",
+    "IMAGE_LOAD_FAILED":"فشل في تحميل صورة الملف الشخصي",
+    "UPDATE_SUCCESS":"تم تحديث الملف الشخصي بنجاح",
+    "UPDATE_FAILED":"فشل في تحديث الملف الشخصي"
+  },
+  "ORDERS":{
+    "FAILED_LOAD": "فشل في تحميل الطلبات",
+    "SUCCESS_UPDATE": "تم تحديث حالة الطلب بنجاح",
+    "FAILED_UPDATE": "فشل في تحديث حالة الطلب"
+},
+"PRODUCTS":{
+  "FAILED_UPDATE":"فشل في تحديث المنتج",
+  "SUCCESS_UPDATE":"تم تحديث المنتج بنجاح",
+  "FAILED_LOAD":"فشل في تحميل المنتج",
+  "SUCCESS_LOAD":"تم تحميل المنتج بنجاح",
+  "FAILED_DELETE":"فشل في حذف المنتج",
+  "SUCCESS_DELETE":"تم حذف المنتج بنجاح",
+  "INVALID_IMAGE_TYPE":"نوع الصورة غير صالح، يجب ان يكون jpeg، png، jpg"
+}
+  },
+  
+  "CART": {
+    "TITLE": "سلتك ({{count}})",
+    "CLEAR_ALL": "مسح الكل",
+    "EMPTY": "سلتك فارغة",
+    "REMOVE": "إزالة",
+    "RECOMMENDED": "قد يعجبك أيضًا",
+    "NO_IMAGE": "لا توجد صورة متاحة",
+    "SUBTOTAL": "المجموع الفرعي",
+    "SHIPPING": "الشحن",
+    "TOTAL": "الإجمالي",
+    "CHECKOUT": "إتمام الشراء"
+  },
+"BLOG": {
+  "TITLE": "مدونتنا",
+  "NO_POSTS": "لا توجد مقالات متاحة حالياً.",
+  "READ_MORE": "اقرأ المزيد"
+},
+"CONTACT": {
+  "TITLE": "اتصل بالدعم",
+  "EMAIL": "البريد",
+  "SUBJECT": "الموضوع",
+  "MESSAGE": "الرسالة",
+  "TYPE": "النوع",
+  "HELP": "مساعدة",
+  "RETURN": "إرجاع",
+  "ORDER": "الطلب",
+  "SELECT_ORDER": "اختر الطلب",
+  "ORDER_NUMBER": "طلب",
+  "SEND": "إرسال الرسالة",
+  "LOADING": "جارٍ التحميل...",
+  "LOGIN_PROMPT": "يرجى تسجيل الدخول لإرسال طلب الاتصال.",
+  "GO_TO_LOGIN": "الانتقال إلى تسجيل الدخول",
+  "SOCIETY_NUMBER": "رقم",
+  "SOCIETY_EMAIL": "بريد الكتروني",
+  "SOCIETY_INFO": "معلومات المجتمع"
+},
+
+ 
+  "profile": {
+    "title": "ملفي الشخصي",
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "phoneNumber": "رقم الهاتف",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "male": "ذكر",
+      "female": "أنثى",
+      "uploadPhoto": "تحميل الصورة",
+      "saveChanges": "حفظ التغييرات"
+    },
+    "validation": {
+      "firstNameRequired": "الاسم الأول مطلوب.",
+      "firstNameMinLength": "يجب أن يحتوي على 4 أحرف على الأقل.",
+      "firstNamePattern": "يُسمح بالأحرف والمسافات والشرطات والفواصل العليا فقط.",
+      "lastNameRequired": "اسم العائلة مطلوب.",
+      "lastNameMinLength": "يجب أن يحتوي على حرفين على الأقل.",
+      "lastNamePattern": "يُسمح بالأحرف والمسافات والشرطات والفواصل العليا فقط.",
+      "phoneRequired": "رقم الهاتف مطلوب.",
+      "phoneMaxLength": "يجب ألا يتجاوز 20 حرفاً.",
+      "phoneMinLength": "يجب أن يحتوي على 8 أحرف على الأقل.",
+      "birthDateRequired": "تاريخ الميلاد مطلوب.",
+      "underage": "يجب أن يكون عمرك 18 عاماً على الأقل.",
+      "genderRequired": "يرجى اختيار جنسك."
+    },
+    "deliveryAddresses": {
+      "title": "عناوين التسليم",
+      "addButton": "إضافة عنوان تسليم",
+      "noAddresses": "لا توجد عناوين تسليم محفوظة"
+    },
+    "billingAddresses": {
+      "title": "عناوين الفواتير",
+      "addButton": "إضافة عنوان فاتورة",
+      "noAddresses": "لا توجد عناوين فواتير محفوظة"
+    },
+    "addressForm": {
+      "addDelivery": "إضافة عنوان تسليم جديد",
+      "editDelivery": "تعديل عنوان التسليم",
+      "addBilling": "إضافة عنوان فاتورة جديد",
+      "editBilling": "تعديل عنوان الفاتورة",
+      "addressLine1": "سطر العنوان 1",
+      "addressLine2": "سطر العنوان 2",
+      "postalCode": "الرمز البريدي",
+      "city": "المدينة",
+      "country": "البلد",
+      "selectCountry": "اختر البلد",
+      "cancel": "إلغاء",
+      "save": "حفظ العنوان",
+      "update": "تحديث العنوان"
+    },
+    "orderHistory": {
+      "title": "سجل الطلبات",
+      "orderNumber": "الطلب #",
+      "placedOn": "تم الطلب في:",
+      "status": "الحالة:",
+      "paymentMethod": "طريقة الدفع:",
+      "downloadPdf": "تحميل ملف PDF",
+      "noOrders": "لم تقم بتقديم أي طلبات بعد"
+    }
+},
+"CONFIRM_DIALOG":{
+  "TITLE":"تأكيد",
+  "MESSAGE":"هل تريد حذف هذا العنوان؟",
+  "YES":"نعم",
+  "NO":"لا"
+},
+"ADMIN_SIDEBAR": {
+  "DASHBOARD": "لوحة التحكم",
+  "PRODUCTS": "المنتجات",
+  "MANAGE_PRODUCTS": "إدارة المنتجات",
+  "USERS": "المستخدمون",
+  "MANAGE_USERS": "إدارة المستخدمين",
+  "ORDERS": "الطلبات",
+  "INVOICES": "الفواتير",
+  "MANAGE_INVOICES": "إدارة الفواتير",
+  "REVIEWS": "التقييمات",
+  "BLOGS": "المدونات",
+  "MANAGE_BLOGS": "إدارة المدونات",
+  "CATEGORIES": "الفئات",
+  "MANAGE_CATEGORIES": "إدارة الفئات",
+  "PROMOTIONS": "العروض",
+  "MANAGE_PROMOTIONS": "إدارة العروض",
+  "MANAGE_PROMO_CODES": "إدارة رموز الخصم",
+  "CONTACTS": "جهات الاتصال",
+  "RECOMMENDATION": "نظام التوصية",
+  "MANAGE_SECTIONS": "إدارة القسائم",
+  "MANAGE_GENERAL": "إدارة الحقول الاساسية"
+},
+ "ORDER_DETAILS": {
+    "TITLE": "تفاصيل الطلب",
+    "PRINT_INVOICE": "طباعة الفاتورة",
+    "CUSTOMER_DETAILS": "معلومات العميل",
+    "NAME": "الاسم",
+    "EMAIL": "البريد الإلكتروني",
+    "PHONE": "الهاتف",
+    "SHIPPING_ADDRESS": "عنوان الشحن",
+    "PAYMENT_METHOD": "طريقة الدفع",
+    "ORDER_STATUS": "حالة الطلب",
+    "DELIVERED": "تم التوصيل",
+    "IN_PROGRESS": "قيد التنفيذ",
+    "SHIPPED": "تم الشحن",
+    "CHANGE_STATUS": "تغيير الحالة (مدير)",
+    "UPDATE_STATUS": "تحديث الحالة",
+    "ORDER_ITEMS": "عناصر الطلب",
+    "PRODUCT": "المنتج",
+    "COLOR": "اللون",
+    "SIZE": "الحجم",
+    "QUANTITY": "الكمية",
+    "PRICE": "السعر",
+    "TOTAL": "الإجمالي",
+    "ORDER_SUMMARY": "ملخص الطلب",
+    "PRODUCTS_SUBTOTAL": "إجمالي المنتجات",
+    "DISCOUNT": "الخصم",
+    "SHIPPING_FEE": "رسوم الشحن",
+    "EXPEDITION_DETAILS": "تفاصيل الشحن",
+    "ANNULED": "ملغى",
+    "RETURN": "ارجاع",
+    "COMPLETED": "مكتمل",
+    "PENDING": "قيد الانتظار",
+    "CONFIRMED": "مؤكد",
+    "CANCELLED": "ملغى",
+    "IN_PROGRESS_PREPARATION": "قيد التنفيذ (تحضير)",
+    "ALL_STATUS": "جميع الحالات",
+    "MERGE_INVOICE": "دمج الفواتير"
+
+    
+  },
+  "INVOICE_DETAILS": {
+    "TITLE": "تفاصيل الفاتورة"
+  },
+  "PAYMENT":{
+    "LABEL":"طريقة الدفع",
+    "CARD":"بطاقة",
+    "CASH":"نقدي",
+    "ERROR":"يرجى تحديد طريقة الدفع",
+    "COMMING_SOON":"قريبا"
+  },
+    "COMPANY": {
+    "NAME": "تمبورايز",
+    "CONTACT": "الاتصال",
+    "PHONE": "الهاتف"
+  },
+  "SHOW_MORE": "اظهار المزيد",
+  "SHOW_LESS": "اظهار اقل",
+  
+  "CHECKOUT": {
+    "TITLE": "الشحن والدفع",
+    "LEGAL_CONDITIONS":"أوافق على الشروط والأحكام وسياسة الخصوصية",
+    "EMAIL": {
+      "LABEL": "عنوان البريد الإلكتروني",
+      "PLACEHOLDER": "you@example.com",
+      "REQUIRED": "البريد الإلكتروني مطلوب",
+      "INVALID": "البريد الإلكتروني غير صالح",
+      "HINT":"مثال: user@example.com"
+    },
+    "FIRSTNAME": {
+      "LABEL": "الاسم الأول",
+      "PLACEHOLDER": "أحمد",
+      "REQUIRED": "الاسم الأول مطلوب",
+      "MINLENGTH": "يجب أن يتكون الاسم الأول من حرفين على الأقل",
+      "PATTERN": "يمكن أن يحتوي الاسم الأول على حروف فقط",
+      "HINT":"الحد الأدنى 2 حرف، أحرف فقط"
+    },
+    "LASTNAME": {
+      "LABEL": "اسم العائلة",
+      "PLACEHOLDER": "محمد",
+      "REQUIRED": "اسم العائلة مطلوب",
+      "MINLENGTH": "يجب أن يتكون اسم العائلة من حرفين على الأقل",
+      "PATTERN": "يمكن أن يحتوي اسم العائلة على حروف فقط",
+      "HINT":"الحد الأدنى 2 حرف، أحرف فقط"
+    },
+    "PHONE": {
+      "LABEL": "رقم الهاتف",
+      "MAIN_LABEL": "رقم الهاتف",
+      "CODE_PLACEHOLDER": "الرمز",
+      "SEARCH_PLACEHOLDER": "بحث",
+      "NO_ENTRIES": "لم يتم العثور على بلد",
+      "NATIONAL_NUMBER": "الرقم",
+      "HINT": "حدد بلداً واكتب الرقم",
+      "INVALID_NUMBER": "رقم غير صالح",
+      "REQUIRED_ERROR": "هذا الحقل مطلوب"
+    },
+    "DELIVERY": {
+      "TITLE": "عنوان التوصيل",
+      "ADD_NEW": "+ إضافة عنوان جديد",
+      "NO_ADDRESS": "لا توجد عناوين توصيل محفوظة",
+      "NOT_SELECTED": "لا يوجد عنوان توصيل محدد"
+    },
+    "BILLING": {
+      "TITLE": "عنوان الفوترة",
+      "ADD_NEW": "+ إضافة عنوان جديد",
+      "SAME": "نفس عنوان التوصيل",
+      "DIFFERENT": "عنوان مختلف",
+      "NO_ADDRESS": "لا توجد عناوين فوترة محفوظة",
+      "NOT_SELECTED": "لا يوجد عنوان فوترة محدد"
+    },
+    "PAYMENT": {
+      "LABEL": "طريقة الدفع",
+      "CASH": "الدفع عند الاستلام",
+      "CARD": "بطاقة ائتمان",
+      "ERROR": "الرجاء اختيار طريقة الدفع",
+      "COMMING_SOON": "قريبا"
+    },
+    "PROMO": {
+      "LABEL": "رمز الخصم",
+      "PLACEHOLDER": "أدخل رمز الخصم",
+      "APPLY": "تطبيق"
+    },
+    "BUTTON": {
+      "COMPLETE": "إتمام الشراء",
+      "LOADING": "جاري المعالجة..."
+    },
+    "SUMMARY": {
+      "TITLE": "ملخص الطلب",
+      "EMPTY": "سلة التسوق فارغة",
+      "SUBTOTAL": "المجموع الفرعي",
+      "SHIPPING": "رسوم الشحن",
+      "DISCOUNT": "الخصم",
+      "TOTAL": "المجموع الإجمالي",
+      "VARIANT": "المتغير",
+      "QUANTITY": "الكمية"
+    },
+    "ADDRESS_FORM": {
+      "ADD_NEW": "إضافة",
+      "EDIT": "تعديل",
+      "DELIVERY": "التوصيل",
+      "BILLING": "الفوترة",
+      "ADDRESS": "العنوان",
+      "FIELDS": {
+        "LINE1": "السطر الأول",
+        "LINE1_PLACEHOLDER": "123 الشارع الرئيسي",
+        "LINE2": "السطر الثاني (اختياري)",
+        "LINE2_PLACEHOLDER": "شقة 4B",
+        "CITY": "المدينة",
+        "CITY_PLACEHOLDER": "تونس",
+        "ZIP": "الرمز البريدي",
+        "ZIP_PLACEHOLDER": "12345",
+        "COUNTRY": "البلد",
+        "SELECT_COUNTRY": "اختر البلد"
+      },
+      "ERRORS": {
+        "REQUIRED": "هذا الحقل مطلوب",
+        "ADDRESS_REQUIRED": "العنوان مطلوب",
+        "CITY_REQUIRED": "المدينة مطلوبة",
+        "ZIP_REQUIRED": "الرمز البريدي مطلوب",
+        "COUNTRY_REQUIRED": "البلد مطلوب",
+        "ZIP_PATTERN": "يجب أن يتكون الرمز البريدي من 5 أرقام"
+      },
+      "ACTIONS": {
+        "CANCEL": "إلغاء",
+        "SAVE": "حفظ",
+        "UPDATE": "تحديث"
+      }
+    },
+    "EMPTY_CART": {
+      "TITLE": "سلة التسوق فارغة",
+      "MESSAGE": "يبدو أنك لم تضف أي شيء بعد. تصفح المنتجات وأضفها إلى سلة التسوق لبدء طلبك.",
+      "BUTTON": "متابعة التسوق"
+    }
+  },
+  "SAVE": "وفر",
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "تسجيل الدخول",
+      "SIGNING_IN": "جاري تسجيل الدخول...",
+      "EMAIL_PLACEHOLDER": "البريد الإلكتروني",
+      "EMAIL_REQUIRED": "البريد الإلكتروني مطلوب",
+      "EMAIL_INVALID": "يرجى إدخال بريد إلكتروني صالح",
+      "PASSWORD_PLACEHOLDER": "كلمة المرور",
+      "PASSWORD_REQUIRED": "كلمة المرور مطلوبة",
+      "PASSWORD_MIN": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "FORGOT_PASSWORD": "هل نسيت كلمة المرور؟",
+      "SUBMIT": "تسجيل الدخول",
+      "OR_WEBSITE": "أو",
+      "WEBSITE_LINK": "تصفح موقعنا",
+      "OR_SIGN_WITH": "أو تسجيل الدخول بواسطة",
+      "GOOGLE_SIGNIN": "تسجيل الدخول بواسطة Google",
+      "NO_ACCOUNT": "ليس لديك حساب؟",
+      "SIGN_UP": "سجل الآن"
+    }
+  },
+   "SIGNUP": {
+    "TITLE": "إنشاء حساب",
+    "CREATING_ACCOUNT": "جارٍ إنشاء حسابك...",
+    "ACCOUNT_CREATED": "تم إنشاء الحساب!",
+    "SETTING_UP": "جاري إعداد حسابك...",
+    "WELCOME": "مرحبًا بك في مجتمعنا!",
+    "SUCCESS_MESSAGE": "تم إنشاء حسابك بنجاح.",
+    "REDIRECTING": "جاري التحويل لتسجيل الدخول...",
+    "EMAIL": "البريد الإلكتروني",
+    "EMAIL_REQUIRED": "البريد الإلكتروني مطلوب.",
+    "EMAIL_INVALID": "تنسيق البريد الإلكتروني غير صالح.",
+    "PASSWORD": "كلمة المرور",
+    "PASSWORD_REQUIRED": "كلمة المرور مطلوبة.",
+    "PASSWORD_MINLENGTH": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.",
+    "PASSWORD_PATTERN": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل وحرف كبير ورقم وحرف خاص.",
+    "CONFIRM_PASSWORD": "تأكيد كلمة المرور",
+    "CONFIRM_PASSWORD_REQUIRED": "تأكيد كلمة المرور مطلوب.",
+    "PASSWORDS_MISMATCH": "كلمتا المرور غير متطابقتين.",
+    "BIRTH_DATE": "تاريخ الميلاد",
+    "GENDER": "الجنس",
+    "MALE": "ذكر",
+    "FEMALE": "أنثى",
+    "SUBMIT": "إنشاء الحساب",
+    "PROCESSING": "جارٍ المعالجة...",
+    "OR_SIGNUP_WITH": "أو التسجيل باستخدام",
+    "GOOGLE_SIGNIN": "تسجيل الدخول باستخدام Google",
+    "ALREADY_HAVE_ACCOUNT": "هل لديك حساب؟",
+    "LOGIN": "تسجيل الدخول",
+    "GENDER_REQUIRED": "يرجى اختيار الجنس.",
+    "BIRTHDATE_REQUIRED": "تاريخ الميلاد مطلوب.",
+    "UNDERAGE": "يجب أن يكون عمرك 18 عامًا على الأقل.",
+    "EMAIL_ALREADY_EXISTS": "حساب موجود بالفعل بهذا البريد الإلكتروني.",
+    "FAILED": "فشل في التسجيل"
+  }
+
+
+
+
+
+
+
+
+
+
+
+}
+
+  

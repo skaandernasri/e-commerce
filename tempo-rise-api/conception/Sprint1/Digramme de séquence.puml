@@ -1,0 +1,78 @@
+@startuml DiagrammeSequence_Sprint1
+
+actor Client
+actor Gestionnaire
+participant "Interface Utilisateur" as UI
+participant "Contrôleur" as Controller
+participant "Service Métier" as Service
+participant "Base de Données" as DB
+
+== S'inscrire ==
+Client -> UI : Saisir informations d'inscription
+UI -> Controller : envoyerInscription(données)
+Controller -> Service : validerEtInscrire(données)
+Service -> DB : INSERT INTO utilisateurs VALUES (...)
+DB --> Service : confirmation inscription
+Service --> Controller : succès
+Controller --> UI : afficher message confirmation
+
+== Se connecter ==
+Client -> UI : Saisir identifiants
+UI -> Controller : envoyerIdentifiants(login, mdp)
+Controller -> Service : verifierIdentifiants(login, mdp)
+Service -> DB : SELECT * FROM utilisateurs WHERE login=...
+DB --> Service : infos utilisateur
+alt utilisateur invalide
+    Service --> Controller : erreur
+    Controller --> UI : afficher erreur
+else utilisateur valide
+    Service --> Controller : succès
+    Controller --> UI : afficher interface utilisateur
+end
+
+== Consulter les produits ==
+Client -> UI : Accéder à la page des produits
+UI -> Controller : getProduits()
+Controller -> Service : récupérerListeProduits()
+Service -> DB : SELECT * FROM produits
+DB --> Service : liste produits
+Service --> Controller : transmettre liste
+Controller --> UI : afficher produits
+
+== Voir détails produit ==
+Client -> UI : Cliquer sur un produit
+UI -> Controller : getDetailsProduit(produitId)
+Controller -> Service : récupérerDetails(produitId)
+Service -> DB : SELECT * FROM produits WHERE id = ...
+DB --> Service : détails produit
+Service --> Controller : transmettre détails
+Controller --> UI : afficher détails
+
+== Ajouter au panier ==
+Client -> UI : Cliquer sur "Ajouter au panier"
+UI -> Controller : ajouterProduitPanier(produitId)
+Controller -> Service : ajouterAuPanier(produitId, sessionId)
+Service -> DB : INSERT INTO panier_temp VALUES (...)
+DB --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher message confirmation
+
+== Ajouter produit ==
+Gestionnaire -> UI : Remplir formulaire
+UI -> Controller : envoyerNouveauProduit(données)
+Controller -> Service : validerEtAjouterProduit(données)
+Service -> DB : INSERT INTO produits VALUES (...)
+DB --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher message succès
+
+== Modifier produit ==
+Gestionnaire -> UI : Modifier infos produit
+UI -> Controller : envoyerModifProduit(données)
+Controller -> Service : validerEtModifierProduit(données)
+Service -> DB : UPDATE produits SET ... WHERE id = ...
+DB --> Service : confirmation
+Service --> Controller : modification réussie
+Controller --> UI : afficher succès
+
+@enduml

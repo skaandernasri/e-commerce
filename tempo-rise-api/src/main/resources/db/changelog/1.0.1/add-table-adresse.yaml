@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.1/scripts/schema.sql
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.1/scripts/AdresseAutoIncrement.sql
+            stripComments: true
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE avis ALTER COLUMN date_publication SET DEFAULT CURRENT_TIMESTAMP
+  - changeSet:
+      id: 6
+      author: postgres
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE facture ALTER COLUMN date_emission SET DEFAULT CURRENT_TIMESTAMP
+  - changeSet:
+      id: 7
+      author: postgres
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE image_produit ADD COLUMN contenu BYTEA
+  - changeSet:
+      id: 8
+      author: postgres
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE image_produit DROP COLUMN url
+  - changeSet:
+      id: 9
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.1/scripts/TimestampWithTimeZone.sql
+            stripComments: true
+  - changeSet:
+      id: 10
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.1/scripts/onCascadeForTableAdresse.sql
+            stripComments: true
+  - changeSet:
+      id: 11
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.1/scripts/withoutTimeZone.sql
+            stripComments: true

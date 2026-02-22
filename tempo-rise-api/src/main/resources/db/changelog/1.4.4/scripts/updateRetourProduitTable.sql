@@ -1,0 +1,3 @@
+ALTER TABLE retour_produit DROP COLUMN IF EXISTS produit_id;
+
+ALTER TABLE retour_produit ADD COLUMN variant_id BIGINT NOT NULL REFERENCES variant(id) ON DELETE CASCADE;

@@ -1,0 +1,90 @@
+<div class="min-h-screen bg-[var(--background)] py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold text-[var(--text)] mb-2">Ma Liste de Souhaits</h1>
+        <p class="text-[var(--text)] opacity-70">
+          {{ wishlistProducts().produits!.length }} {{ wishlistProducts().produits!.length === 1 ? 'produit' : 'produits' }} dans la liste de souhaits
+        </p>
+      </div>
+      
+      <!-- Remove All Button -->
+      @if(wishlistProducts().produits!.length > 0){
+        <button 
+          (click)="removeAllFromWishlist()" 
+          class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors font-medium shadow-md">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Tout supprimer
+        </button>
+      }
+    </div>
+
+    <!-- Loading State -->
+    @if(isLoading()){
+      <div class="flex justify-center items-center py-20">
+        <div class="animate-spin rounded-full h-12 w-12 border-4 border-[var(--primary)] border-t-transparent"></div>
+      </div>
+    }@else{
+      @if(!isLoading() && wishlistProducts().produits!.length === 0){
+    <!-- Empty Wishlist -->
+      <div class="bg-[var(--surface)] rounded-lg shadow-md p-12 text-center">
+        <svg class="mx-auto h-24 w-24 text-[var(--text)] opacity-30 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <h2 class="text-2xl font-semibold text-[var(--text)] mb-2">Votre liste est vide</h2>
+        <p class="text-[var(--text)] opacity-70 mb-6">
+          Ajoutez des produits à votre liste de souhaits pour les retrouver facilement
+        </p>
+        <button (click)="continueShopping()" 
+                class="bg-[var(--primary)] text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity">
+          Découvrir nos produits
+        </button>
+      </div>
+    }
+
+    <!-- Wishlist Grid -->
+    @if (wishlistProducts().produits!.length > 0) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @for (product of wishlistProducts().produits; track product.id) {
+          <div class="relative">
+            <!-- Remove Button Overlay -->
+            <button 
+              (click)="removeFromWishlist(product.id)"
+              class="absolute top-3 right-3 z-10 bg-white hover:bg-red-50 rounded-full p-2 shadow-lg transition-all hover:scale-110 group"
+              title="Retirer de la liste">
+              <svg class="w-5 h-5 text-red-500 group-hover:animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" 
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" 
+                      clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            <!-- Product Card -->
+            <app-product-card
+              [product]="product">
+            </app-product-card>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Continue Shopping Button -->
+    @if(!isLoading() && wishlistProducts().produits!.length > 0){
+      <div class="mt-8 text-center">
+        <button (click)="continueShopping()" 
+                class="inline-flex items-center gap-2 text-[var(--primary)] hover:underline font-medium">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Continuer mes achats
+        </button>
+      </div>
+    }
+    }
+  </div>
+</div>

@@ -1,0 +1,33 @@
+@if(activeOurProductsSection()){
+   
+  <section [id]="activeOurProductsSection()?.type" class="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="font-sans text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12">{{ourProductsContent()?.title}}  </h2>
+      
+      <!-- Products Grid -->
+        @if (isLoadingProducts() ) {
+        <div class="flex justify-center items-center h-64">
+          <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+        </div>
+      } 
+      @else{
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+        @for (product of products(); track $index) {
+          <app-product-card
+              [product]="product">
+            </app-product-card>
+        } @empty {
+          <div class="col-span-3 text-center py-8 sm:py-12">
+            <p class="text-gray-500">{{ 'HOME.PRODUCTS.NOPRODUCTS' | translate }}</p>
+          </div>
+        }
+      </div>
+  }
+      <div class="text-center">
+        <button [routerLink]="ourProductsContent()?.buttonLink" class="border-2 border-[var(--primary)] text-[var(--primary)] px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold hover:bg-[var(--primary)] hover:text-white transition text-sm sm:text-base">
+          {{ourProductsContent()?.buttonText}}
+        </button>
+      </div>
+    </div>
+  </section>
+}

@@ -1,0 +1,391 @@
+<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto animate-in fade-in duration-200">
+  <div class="bg-[var(--surface)] rounded-lg shadow-2xl w-full max-w-5xl max-h-[95vh] overflow-y-auto my-8 animate-in zoom-in-95 duration-200 scrollbar-thin scrollbar-thumb-[var(--primary)] scrollbar-track-[var(--background)]">
+    <div class="sticky top-0 bg-[var(--surface)] border-b border-[var(--border)] px-6 py-4 z-10">
+      <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold text-[var(--text)]">Create New Order</h2>
+        <button (click)="onCancel()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    @if(isLoading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+      </div>
+    } @else {
+      <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" >
+        <div class="p-6 space-y-6">
+        <!-- Customer Information Section -->
+        <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+          <h3 class="text-lg font-semibold text-[var(--text)] mb-4">Customer Information</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- User Selection -->
+            <div class="md:col-span-2">
+              <label class="block mb-1 text-sm font-medium text-[var(--text)]">Select User *</label>
+              <select formControlName="utilisateurId" 
+                      (change)="onUserSelect(+$any($event.target).value)"
+                      class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none">
+                <option value="">Choose a user...</option>
+                @for (user of users(); track user.id) {
+                  <option [value]="user.id">{{ user.nom }} {{ user.prenom }} ({{ user.email }})</option>
+                }
+              </select>
+              @if(orderForm.get('utilisateurId')?.touched && orderForm.get('utilisateurId')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">User is required</div>
+              }
+            </div>
+
+            <!-- First Name -->
+            <div>
+              <label class="block mb-1 text-sm font-medium text-[var(--text)]">First Name *</label>
+              <input type="text" formControlName="prenom" 
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              @if(orderForm.get('prenom')?.touched && orderForm.get('prenom')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">First name is required</div>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div>
+              <label class="block mb-1 text-sm font-medium text-[var(--text)]">Last Name *</label>
+              <input type="text" formControlName="nom" 
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              @if(orderForm.get('nom')?.touched && orderForm.get('nom')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">Last name is required</div>
+              }
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label class="block mb-1 text-sm font-medium text-[var(--text)]">Email *</label>
+              <input type="email" formControlName="email" 
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              @if(orderForm.get('email')?.touched && orderForm.get('email')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">Email is required</div>
+              }
+              @if(orderForm.get('email')?.errors?.['email']) {
+                <div class="text-red-500 text-sm mt-1">Invalid email format</div>
+              }
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label class="block mb-1 text-sm font-medium text-[var(--text)]">Phone *</label>
+              <ngx-material-intl-tel-input
+                [fieldControl]="orderForm.controls['telephone']"
+                [required]="true"
+                [autoIpLookup]="false"
+                [autoSelectCountry]="true"
+                [autoSelectedCountry]="defaultCountry"
+                [numberValidation]="true"
+                [enableSearch]="true"
+                [includeDialCode]="false"
+                [emojiFlags]="false"
+                [hidePhoneIcon]="false"
+                [preferredCountries]="preferredCountries"
+                [enablePlaceholder]="true">
+              </ngx-material-intl-tel-input>
+            </div>
+          </div>
+        </div>
+
+        <!-- Addresses Section -->
+        <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+          <h3 class="text-lg font-semibold text-[var(--text)] mb-4">Delivery & Billing Addresses</h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Delivery Address -->
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-medium text-[var(--text)]">Delivery Address *</label>
+                <button type="button" 
+                        (click)="openNewAddressForm('LIVRAISON')"
+                        class="text-xs text-[var(--primary)] hover:text-[var(--secondary)]">
+                  + Add New
+                </button>
+              </div>
+              <select formControlName="adresseLivraisonId" 
+                      class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                <option value="">Select delivery address...</option>
+                @for (address of adressLivraison(); track address.id) {
+                  <option [value]="address.id">
+                    {{ address.ligne1 }}, {{ address.ville }}, {{ address.codePostal }}
+                  </option>
+                }
+              </select>
+              @if(orderForm.get('adresseLivraisonId')?.touched && orderForm.get('adresseLivraisonId')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">Delivery address is required</div>
+              }
+            </div>
+
+            <!-- Billing Address -->
+            <div>
+              <div class="flex justify-between items-center mb-1">
+                <label class="block text-sm font-medium text-[var(--text)]">Billing Address *</label>
+                <button type="button" 
+                        (click)="openNewAddressForm('FACTURATION')"
+                        class="text-xs text-[var(--primary)] hover:text-[var(--secondary)]">
+                  + Add New
+                </button>
+              </div>
+              <select formControlName="adresseFacturationId" 
+                      class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+                <option value="">Select billing address...</option>
+                @for (address of adressFacturation(); track address.id) {
+                  <option [value]="address.id">
+                    {{ address.ligne1 }}, {{ address.ville }}, {{ address.codePostal }}
+                  </option>
+                }
+              </select>
+              @if(orderForm.get('adresseFacturationId')?.touched && orderForm.get('adresseFacturationId')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">Billing address is required</div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+          <h3 class="text-lg font-semibold text-[var(--text)] mb-4">Payment Method</h3>
+          <select formControlName="modePaiement" 
+                  class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+            <option value="A_LIVRAISON">Cash on Delivery</option>
+            <option value="CARTE_BANCAIRE">Credit/Debit Card</option>
+          </select>
+        </div>
+
+        <!-- Products Section -->
+        <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-[var(--text)]">Order Items</h3>
+            <button type="button" 
+                    (click)="addProductItem()"
+                    class="px-4 py-2 bg-[var(--primary)] text-[var(--background)] rounded-md hover:bg-[var(--secondary)] transition-colors text-sm flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+              </svg>
+              Add Product
+            </button>
+          </div>
+
+          @if(produitsArray.length === 0) {
+            <div class="text-center py-8 text-[var(--text-muted)]">
+              <p>No products added yet. Click "Add Product" to start.</p>
+            </div>
+          }
+
+          <div formArrayName="produits" class="space-y-4">
+            @for (productControl of produitsArray.controls; track $index; let i = $index) {
+              <div [formGroupName]="i" class="border border-[var(--border)] rounded-lg p-4 bg-white dark:bg-gray-800">
+                <div class="flex justify-between items-start mb-3">
+                  <h4 class="font-medium text-[var(--text)]">Product #{{ i + 1 }}</h4>
+                  <button type="button" 
+                          (click)="removeProductItem(i)"
+                          class="text-red-600 hover:text-red-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <!-- Product Selection -->
+                  <div class="md:col-span-2 lg:col-span-3">
+                    <label class="block mb-1 text-sm font-medium">Product *</label>
+                    <select formControlName="productId" 
+                            (change)="onProductSelect(i, $any($event.target).value)"
+                            class="w-full border border-gray-300 p-2 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none text-sm">
+                      <option value="">Select a product...</option>
+                      @for (product of products(); track product.id) {
+                        <option [value]="product.id">{{ product.nom }} - {{ product.newPrice | currencyFormat }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <!-- Color -->
+                  <div>
+                    <label class="block mb-1 text-sm font-medium">Color *</label>
+                    <select formControlName="couleur" 
+                            (change)="onColorSelect(i, $any($event.target).value)"
+                            [disabled]="!productControl.get('id')?.value"
+                            class="w-full border border-gray-300 p-2 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none text-sm disabled:opacity-50">
+                      <option value="">Select color...</option>
+                      @for (color of getAvailableColors(i); track color) {
+                        <option [value]="color">{{ color }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <!-- Size -->
+                  <div>
+                    <label class="block mb-1 text-sm font-medium">Size *</label>
+                    <select formControlName="taille" 
+                            (change)="onSizeSelect(i, $any($event.target).value)"
+                            [disabled]="!productControl.get('couleur')?.value"
+                            class="w-full border border-gray-300 p-2 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none text-sm disabled:opacity-50">
+                      <option value="">Select size...</option>
+                      @for (size of getAvailableSizes(i); track size) {
+                        <option [value]="size">{{ size }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  <!-- Quantity -->
+                  <div>
+                    <label class="block mb-1 text-sm font-medium">Quantity *</label>
+                    <input type="number" 
+                           formControlName="quantite" 
+                           (input)="onQuantityChange(i)"
+                           min="1"
+                           class="w-full border border-gray-300 p-2 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none text-sm">
+                  </div>
+
+                  <!-- Price (readonly) -->
+                  <div class="md:col-span-2 lg:col-span-1">
+                    <label class="block mb-1 text-sm font-medium">Unit Price</label>
+                    <input type="text" 
+                           [value]="productControl.get('newPrice')?.value | currencyFormat"
+                           readonly
+                           class="w-full border border-gray-300 p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-[var(--text)] text-sm cursor-not-allowed">
+                  </div>
+
+                  <!-- Total (readonly) -->
+                  <div class="md:col-span-2 lg:col-span-2">
+                    <label class="block mb-1 text-sm font-medium">Total</label>
+                    <input type="text" 
+                           [value]="productControl.get('prixTotal')?.value | currencyFormat"
+                           readonly
+                           class="w-full border border-gray-300 p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-[var(--text)] font-semibold text-sm cursor-not-allowed">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+          <h3 class="text-lg font-semibold text-[var(--text)] mb-4">Order Summary</h3>
+          <div class="space-y-2">
+            <div class="flex justify-between text-[var(--text)]">
+              <span>Subtotal:</span>
+              <span class="font-medium">{{ calculateSubtotal() | currencyFormat }}</span>
+            </div>
+            <div class="flex justify-between text-[var(--text)]">
+              <span>Shipping Fee:</span>
+              <span class="font-medium">{{ calculateShipping() | currencyFormat }}</span>
+            </div>
+            <div class="border-t border-[var(--border)] pt-2 mt-2 flex justify-between text-lg font-bold text-[var(--text)]">
+              <span>Total:</span>
+              <span>{{ calculateSubtotal() + calculateShipping() | currencyFormat }}</span>
+            </div>
+          </div>
+        </div>
+</div>
+        <!-- Action Buttons -->
+        <div class="flex sticky bottom-6 justify-end bg-[var(--background)] gap-3 pt-4 border-t border-[var(--border)]">
+          <button type="button" 
+                  (click)="onCancel()"
+                  [disabled]="isSubmitting"
+                  class="px-6 py-2 border border-gray-300 rounded-md text-[var(--text)] hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed">
+            Cancel
+          </button>
+          <button type="submit" 
+                  [disabled]="isSubmitting || orderForm.invalid || produitsArray.length === 0"
+                  class="px-6 py-2 bg-[var(--primary)] text-[var(--background)] rounded-md hover:bg-[var(--secondary)] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+            @if(isSubmitting) {
+              <div class="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+            }
+            <span>{{ isSubmitting ? 'Creating...' : 'Create Order' }}</span>
+          </button>
+        </div>
+        
+      </form>
+    }
+  </div>
+</div>
+
+<!-- New Address Modal -->
+@if(showNewAddressForm) {
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-[60] animate-in fade-in duration-200">
+    <div class="bg-[var(--surface)] rounded-lg shadow-2xl w-full max-w-md animate-in zoom-in-95 duration-200">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-4 text-[var(--text)]">
+          Add New {{ addressFormType === 'LIVRAISON' ? 'Delivery' : 'Billing' }} Address
+        </h3>
+        
+        <form [formGroup]="newAddressForm" (ngSubmit)="submitNewAddress()" class="space-y-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Address Line 1 *</label>
+            <input type="text" formControlName="ligne1" 
+                   class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                   placeholder="Street address">
+            @if(newAddressForm.get('ligne1')?.touched && newAddressForm.get('ligne1')?.errors?.['required']) {
+              <div class="text-red-500 text-sm mt-1">Address is required</div>
+            }
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">Address Line 2</label>
+            <input type="text" formControlName="ligne2" 
+                   class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none"
+                   placeholder="Apartment, suite, etc. (optional)">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-sm font-medium">City *</label>
+              <input type="text" formControlName="ville" 
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              @if(newAddressForm.get('ville')?.touched && newAddressForm.get('ville')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">City is required</div>
+              }
+            </div>
+            
+            <div>
+              <label class="block mb-1 text-sm font-medium">Postal Code *</label>
+              <input type="text" formControlName="codePostal" 
+                     (keypress)="allowOnlyNumbers($event)"
+                     maxlength="5"
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              @if(newAddressForm.get('codePostal')?.touched && newAddressForm.get('codePostal')?.errors?.['required']) {
+                <div class="text-red-500 text-sm mt-1">Postal code is required</div>
+              }
+            </div>
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">Country *</label>
+            <select formControlName="pays" 
+                    class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] outline-none">
+              <option value="">Select country...</option>
+              @for (country of countries; track country.code) {
+                <option [value]="country.name">{{ country.name }}</option>
+              }
+            </select>
+            @if(newAddressForm.get('pays')?.touched && newAddressForm.get('pays')?.errors?.['required']) {
+              <div class="text-red-500 text-sm mt-1">Country is required</div>
+            }
+          </div>
+          
+          <div class="flex justify-end gap-3 pt-4">
+            <button type="button" 
+                    (click)="closeNewAddressForm()"
+                    class="px-4 py-2 border border-gray-300 rounded-md text-[var(--text)] hover:bg-gray-100 transition">
+              Cancel
+            </button>
+            <button type="submit" 
+                    [disabled]="newAddressForm.invalid"
+                    class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed">
+              Add Address
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}

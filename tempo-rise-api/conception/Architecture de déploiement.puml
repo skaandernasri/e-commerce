@@ -1,0 +1,11 @@
+@startuml
+skinparam componentStyle rectangle
+
+node "Serveur VPS (Zenhosting)" {
+    [Traefik\n(Reverse Proxy)]
+    [Frontend Angular\n(ghcr.io/frontend)] --> [Traefik]
+    [Backend Spring Boot\n(ghcr.io/backend)] --> [Traefik]
+    [Service ML Python\n(ghcr.io/ml)] --> [Traefik]
+    [Base de données\n(PostgreSQL)]
+}
+@enduml

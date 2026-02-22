@@ -1,0 +1,6 @@
+ALTER TABLE promotion
+ALTER COLUMN pourcentage_reduction TYPE DECIMAL(10,2);
+
+
+ALTER TABLE promotion
+ADD COLUMN type VARCHAR(20) NOT NULL DEFAULT 'PERCENTAGE';

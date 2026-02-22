@@ -1,0 +1,20 @@
+@startuml UseCase_Gestionnaire
+
+actor "Gestionnaire" as Gestionnaire
+
+usecase "Gérer stock" as UC13
+usecase "Gérer promotions" as UC15
+usecase "Générer facture" as UC16
+usecase "Gérer utilisateur" as UC14
+
+Gestionnaire -- UC13
+Gestionnaire -- UC15
+Gestionnaire -- UC16
+Gestionnaire -- UC14
+
+note right of Gestionnaire
+  "Gérer" = CRUD (Créer, Lire, Mettre à jour, Supprimer)
+  Toutes ces actions nécessitent une connexion.
+end note
+
+@enduml

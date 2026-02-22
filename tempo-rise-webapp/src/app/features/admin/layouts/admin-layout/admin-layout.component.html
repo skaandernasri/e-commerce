@@ -1,0 +1,23 @@
+<!-- Full viewport container -->
+<div class="flex flex-col min-h-screen bg-[var(--background)] transition-all duration-200 ease-in-out "
+     [class.ml-64]="sidebarOpen" [class.ml-12]="!sidebarOpen">
+    <!-- 🧱 Sticky Header -->
+    <app-main-header
+      class="sticky top-0 z-30">
+    </app-main-header>
+  <app-admin-sidebar [(isOpen)]="sidebarOpen"></app-admin-sidebar>
+
+  <main class="flex flex-col flex-1 w-full overflow-auto">
+
+
+    <!-- 🧾 Scrollable content only -->
+      <div class="flex justify-end pt-5 pr-5">
+        <app-theme-selector></app-theme-selector>
+      </div>
+  <!-- 🧭 Sidebar (fixed width) on the right -->
+   <app-social-links></app-social-links>
+      <router-outlet></router-outlet>
+      <app-cart></app-cart>
+</main>
+      <app-footer ></app-footer>
+    </div>

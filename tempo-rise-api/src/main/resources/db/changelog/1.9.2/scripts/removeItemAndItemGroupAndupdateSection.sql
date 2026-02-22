@@ -1,0 +1,10 @@
+
+DROP TABLE item;
+DROP TABLE IF EXISTS item_group;
+ALTER TABLE IF EXISTS section
+    DROP COLUMN IF EXISTS ordre,
+    DROP COLUMN IF EXISTS contenu_html,
+    ADD COLUMN IF NOT EXISTS contenu_json TEXT;
+
+
+

@@ -1,0 +1,32 @@
+@startuml
+' Allow mixing of different UML element types
+allowmixing
+
+!define RECTANGLE class
+
+skinparam linetype ortho
+skinparam shadowing false
+skinparam defaultTextAlignment center
+
+node "Serveur de production" {
+  node "Conteneur\nSpring Boot App" {
+    RECTANGLE "Application E-commerce\n(Spring Boot + Micrometer)" as App
+    App --> "Endpoint /actuator/prometheus"
+  }
+
+  node "Conteneur\nPrometheus" {
+    RECTANGLE "Prometheus\nScraping des métriques" as Prometheus
+    Prometheus --> "Fichier prometheus.yml"
+    Prometheus --> App : Scrape métriques
+  }
+
+  node "Conteneur\nGrafana" {
+    RECTANGLE "Grafana\nDashboards personnalisés" as Grafana
+    Grafana --> Prometheus : Requête de données
+  }
+}
+
+actor "Développeur / Admin" as Admin
+Admin --> Grafana : Visualise les dashboards
+
+@enduml

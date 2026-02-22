@@ -1,0 +1,59 @@
+@startuml DiagrammeSequence_Authentification_Hexagonal
+
+actor Client
+participant "Interface Client" as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "Port de sortie : UtilisateurRepository" as UtilisateurRepo
+
+== S'inscrire ==
+Client -> UI : Saisir informations d'inscription
+UI -> Controller : envoyerInscription(données)
+Controller -> Service : inscrireUtilisateur(données)
+Service -> UtilisateurRepo : save(utilisateur)
+UtilisateurRepo --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher message confirmation
+
+== Se connecter ==
+Client -> UI : Saisir identifiants
+UI -> Controller : envoyerIdentifiants(login, mdp)
+Controller -> Service : authentifier(login, mdp)
+Service -> UtilisateurRepo : findByLogin(login)
+UtilisateurRepo --> Service : utilisateur trouvé / null
+alt utilisateur invalide
+    Service --> Controller : erreur d’authentification
+    Controller --> UI : afficher erreur
+else utilisateur valide
+    Service --> Controller : succès
+    Controller --> UI : afficher interface utilisateur
+end
+
+== Consulter les produits ==
+Client -> UI : Accéder à la page des produits
+UI -> Controller : getProduits()
+Controller -> Service : récupérerProduits()
+Service -> "ProduitRepository" : findAll()
+"ProduitRepository" --> Service : liste produits
+Service --> Controller : transmettre liste
+Controller --> UI : afficher produits
+
+== Voir détails produit ==
+Client -> UI : Cliquer sur un produit
+UI -> Controller : getDetailsProduit(produitId)
+Controller -> Service : récupérerProduitParId(produitId)
+Service -> "ProduitRepository" : findById(produitId)
+"ProduitRepository" --> Service : détails produit
+Service --> Controller : transmettre détails
+Controller --> UI : afficher détails
+
+== Ajouter au panier ==
+Client -> UI : Cliquer sur "Ajouter au panier"
+UI -> Controller : ajouterProduitPanier(produitId)
+Controller -> Service : ajouterAuPanier(produitId, sessionId)
+Service -> "PanierRepository" : ajouterProduit(sessionId, produitId)
+"PanierRepository" --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher message confirmation
+
+@enduml

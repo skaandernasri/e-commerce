@@ -1,0 +1,388 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    command:
+      # Entrypoints HTTP/HTTPS
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # Redirection HTTP -> HTTPS
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      # Docker provider
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      # Let's Encrypt
+      - --certificatesresolvers.letsencrypt.acme.email=contact@temposphere.tn
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+      # Dashboard Traefik
+      - --api.dashboard=true
+      - --api.insecure=false
+      # Logging
+      - --log.level=INFO
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - letsencrypt:/letsencrypt
+    networks:
+      - frontend
+      - backend
+      - db
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      # Dashboard Traefik
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.temposphere.tn`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$9Cv/OMGj$$ZomWQzuQbL.3RNS3H2VnQ0"
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      # Rate limiting middleware
+      - "traefik.http.middlewares.rate-limit.ratelimit.average=100"
+      - "traefik.http.middlewares.rate-limit.ratelimit.burst=50"
+
+  postgres:
+    image: postgres:17.5
+    container_name: postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d temporise"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: temporise
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d/
+    networks:
+      - db
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  postgres-backup:
+    image: postgres-backup
+    container_name: postgres-backup
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: temporise
+    networks:
+      - db
+    volumes:
+      - ./db/backups:/backups
+      - ./db/backup-scripts:/scripts
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  pgadmin:
+    image: dpage/pgadmin4:9.4.0
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: contact@temposphere.tn
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_LISTEN_PORT: 80
+      PGADMIN_CONFIG_SERVER_MODE: 'True'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'True'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.temposphere.tn`)"
+      - "traefik.http.routers.pgadmin.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+      - "traefik.http.routers.pgadmin.middlewares=rate-limit"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - db
+      - backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  backend-temporise:
+    image: ghcr.io/temporise/tempo-rise-api:latest
+    container_name: app-temporise
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/temporise
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: prod
+      MODELS_URL: http://models:8000
+      GOOGLE_RECAPTCHA_SECRET_FILE: /run/secrets/google_recaptchaV3_secret
+      IMAGE_PATH: /app/uploads/
+      UPLOAD_DIR: /app/uploads/
+      RESETPASSWORD_URL: https://temposphere.tn/reset-password
+      VALIDATEACCOUNT_URL: https://temposphere.tn/activate
+      JAVA_OPTS: "-Xmx1024m -Xms512m -XX:+UseG1GC"
+      SEND_MAIL_PASSWORD: utsh ibtu hzqv lncx
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`api.temposphere.tn`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=8080"
+      - "traefik.http.routers.backend.middlewares=rate-limit"
+      # CORS Headers
+      - "traefik.http.middlewares.backend-headers.headers.accesscontrolallowmethods=GET,POST,PUT,DELETE,OPTIONS"
+      - "traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=https://temposphere.tn"
+      - "traefik.http.middlewares.backend-headers.headers.accesscontrolalloworiginlist=https://www.temposphere.tn"
+      - "traefik.http.middlewares.backend-headers.headers.accesscontrolmaxage=100"
+      - "traefik.http.middlewares.backend-headers.headers.addvaryheader=true"
+    volumes:
+      - /var/www/images:/app/uploads
+    networks:
+      - backend
+      - db
+      - frontend
+    secrets:
+      - google_recaptchaV3_secret
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  frontend-temporise:
+    image: ghcr.io/temporise/tempo-rise-webapp:latest
+    container_name: frontend-temporise
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`temposphere.tn`) || Host(`www.temposphere.tn`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.frontend.middlewares=rate-limit"  
+      # Security Headers
+      - "traefik.http.middlewares.frontend-headers.headers.customResponseHeaders.X-Frame-Options=SAMEORIGIN"
+      - "traefik.http.middlewares.frontend-headers.headers.customResponseHeaders.X-Content-Type-Options=nosniff"
+      - "traefik.http.middlewares.frontend-headers.headers.customResponseHeaders.X-XSS-Protection=1; mode=block"
+      - "traefik.http.middlewares.frontend-headers.headers.sslredirect=true"
+      - "traefik.http.middlewares.frontend-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.frontend-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.frontend-headers.headers.stsPreload=true"
+      # WWW redirect
+      - "traefik.http.middlewares.redirect-www.redirectregex.regex=^https://www\\.(.+)"
+      - "traefik.http.middlewares.redirect-www.redirectregex.replacement=https://$${1}"
+      - "traefik.http.middlewares.redirect-www.redirectregex.permanent=true"
+    networks:
+      - frontend
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 64M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  models:
+    image: ghcr.io/temporise/model:latest
+    container_name: models
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "ps aux | grep python || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: temporise
+    networks:
+      - db
+      - backend
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    networks:
+      - backend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.rule=Host(`monitoring.temposphere.tn`)"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.tls.certresolver=letsencrypt"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.http.routers.grafana.middlewares=rate-limit"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    environment:
+     - N8N_BASIC_AUTH_ACTIVE=true
+     - N8N_BASIC_AUTH_USER=n8nAdmin
+     - N8N_BASIC_AUTH_PASSWORD=n8nAdmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.n8n.rule=Host(`n8n.temposphere.tn`)"
+    #   - "traefik.http.routers.n8n.entrypoints=websecure"
+    #   - "traefik.http.routers.n8n.tls.certresolver=letsencrypt"
+    #   - "traefik.http.services.n8n.loadbalancer.server.port=5678"
+    #   - "traefik.http.routers.n8n.middlewares=rate-limit"
+    networks:
+      - db
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      
+
+volumes:
+  postgres_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+  letsencrypt:
+    driver: local
+  grafana_data:
+    driver: local
+  n8n_data:
+    driver: local
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+  db:
+    driver: bridge
+    internal: true
+  default:
+    driver: bridge
+secrets:
+  google_recaptchaV3_secret:
+    file: ./secrets/google_recaptchaV3_secret.txt

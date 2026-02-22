@@ -1,0 +1,43 @@
+@startuml
+actor Administrateur
+
+participant "Interface Utilisateur" as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Service Fidélité (Cas d’usage)" as FidelityService
+participant "Service Promo & Notification" as PromoService
+participant "Base de données" as DB
+participant "Service Email" as EmailService
+participant "Service Notification" as NotificationService
+
+== Consultation des niveaux de fidélité ==
+
+Administrateur -> UI : Consulter niveaux de fidélité
+UI -> Controller : requête getFidelityLevels()
+Controller -> FidelityService : récupérerNiveauxFidélité()
+FidelityService -> DB : récupérer données clustering et segments
+DB --> FidelityService : données fidélité
+FidelityService --> Controller : niveaux de fidélité
+Controller --> UI : afficher niveaux de fidélité
+UI --> Administrateur : affichage niveaux de fidélité
+
+== Envoi de code promo personnalisé à un utilisateur ==
+
+Administrateur -> UI : Sélectionner utilisateur
+UI -> Controller : requête sendPromoCode(userId)
+Controller -> FidelityService : générerCodePromo(userId)
+FidelityService -> PromoService : créerCodePromo(userId)
+PromoService -> DB : sauvegarder code promo
+DB --> PromoService : confirmation sauvegarde
+PromoService --> FidelityService : code promo créé
+
+FidelityService -> EmailService : envoyerEmailPromo(userId, codePromo)
+EmailService --> FidelityService : confirmation envoi email
+
+FidelityService -> NotificationService : envoyerNotifPromo(userId, codePromo)
+NotificationService --> FidelityService : confirmation envoi notification
+
+FidelityService --> Controller : confirmation envoi promos
+Controller --> UI : afficher confirmation envoi
+UI --> Administrateur : confirmation affichée
+
+@enduml

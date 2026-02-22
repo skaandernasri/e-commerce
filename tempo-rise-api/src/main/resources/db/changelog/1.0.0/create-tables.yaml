@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/schema.sql
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/changeColumnType.sql
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/changeRoleColumnSize.sql
+            stripComments: true
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/addcolumnquantitytopanier.sql
+            stripComments: true
+  - changeSet:
+      id: 5
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/dateToDateTime.sql
+            stripComments: true
+  - changeSet:
+      id: 6
+      author: postgres
+      changes:
+        - sqlFile:
+            dbms: 'postgresql'
+            endDelimiter: \nGO
+            splitStatements: true
+            path: classpath:/db/changelog/1.0.0/scripts/updatePanierProduitAndPanierTable.sql
+            stripComments: true

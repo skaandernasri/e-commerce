@@ -1,0 +1,63 @@
+<div class="p-4 bg-[var(--background)] rounded-lg space-y-4">
+        <label class="block text-sm font-medium text-[var(--text)] mb-4">{{titre}}</label>
+        
+        <!-- Upload Button -->
+        <label class="cursor-pointer inline-block mb-4">
+          <span class="px-4 py-2 text-sm md:text-base bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors">
+            {{buttonText}}
+          </span>
+          <input 
+            type="file"
+            (change)="onFileEvent($event)"
+            accept="image/*"
+            class="hidden">
+        </label>
+
+        <!-- Image Preview -->
+        <div class="w-full max-w-[200px]">
+          <!-- New uploaded image preview -->
+          @if (imagePreview && imagePreview.trim() !== '') {
+            <div class="relative group">
+              <img 
+                [src]="imagePreview" 
+                alt="Image preview"
+                class="w-full object-cover rounded-lg border border-[var(--background)] shadow-sm transition-transform duration-200 group-hover:scale-105"
+              />
+              <button 
+                type="button"
+                (click)="removeFile()"
+                class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                ✕
+              </button>
+            </div>
+          }
+          
+          <!-- Existing image from form -->
+          @else if (imageUrl) {
+            <div class="relative group">
+              <img 
+                [src]="imagesBaseUrl + imageUrl" 
+                alt="Logo image"
+                class="w-full object-cover rounded-lg border border-[var(--background)] shadow-sm transition-transform duration-200 group-hover:scale-105"
+              />
+              <button 
+                type="button"
+                (click)="removeFile()"
+                class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                ✕
+              </button>
+            </div>
+          }
+          
+          <!-- No image placeholder -->
+          @else {
+            <div class="flex aspect-square items-center justify-center bg-gray-100 rounded-lg border border-dashed border-[var(--background)]">
+              <img 
+                src="/assets/images/no-image.png" 
+                alt="No image available"
+                class="opacity-70 object-contain"
+              />
+            </div>
+          }
+        </div>
+      </div>

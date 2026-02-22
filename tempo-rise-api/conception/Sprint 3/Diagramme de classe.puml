@@ -1,0 +1,54 @@
+@startuml Sprint3_Recommendation
+
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +email: String
+    +date_inscription: Date
+}
+
+class Produit {
+    +id: Long
+    +nom: String
+    +description: String
+    +marque: String
+    +composition: String
+    +guide: String
+    +faq: String
+    +categorie: Categorie
+    +prix: Double
+}
+class Variant {
+    +id: Long
+    +produit: Produit
+    +taille: String
+    +couleur: String
+    +stock: long
+}
+
+class SuiviClient {
+    +id: Long
+    +utilisateur: Utilisateur
+    +produit: Produit
+    +typeAction: TypeAction
+    +score: Double
+    +date: Date
+}
+
+enum TypeAction {
+    VIEW_PRODUCT
+    ADD_TO_CART
+    PURCHASE
+    LEAVE_REVIEW
+}
+
+
+
+
+
+Utilisateur "1" -- "*" SuiviClient : effectue
+Produit "1" -- "*" SuiviClient : est concerné par
+Produit "1" -- "*" Variant : possède
+SuiviClient "*" -- "1" TypeAction : est de type
+
+@enduml

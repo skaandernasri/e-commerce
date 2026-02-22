@@ -1,0 +1,4 @@
+ALTER TABLE produit
+    DROP COLUMN IF EXISTS stock,
+    DROP COLUMN IF EXISTS couleur,
+    DROP COLUMN IF EXISTS taille;

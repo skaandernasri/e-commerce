@@ -1,0 +1,551 @@
+@if(!isCartEmpty()){
+<div class="min-h-screen py-4 sm:py-6 md:py-10 px-3 sm:px-4 md:px-6 bg-[var(--background)] text-[var(--text)]">
+  <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+    <!-- Form section -->
+    <div class="lg:col-span-2 bg-[var(--surface)] shadow-md rounded-xl sm:rounded-2xl p-4 sm:p-6">
+      <h1 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8">{{ 'CHECKOUT.TITLE' | translate }}</h1>
+      <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" class="space-y-4 sm:space-y-6">
+        <!-- Email -->
+        <div>
+          <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.EMAIL.LABEL' | translate }} <span class="text-red-500 text-sm">*</span></label>  
+          
+          <input type="email" formControlName="email" 
+          class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+          placeholder="{{ 'CHECKOUT.EMAIL.PLACEHOLDER' | translate }}">
+          <p class="text-xs text-gray-500 mt-1">{{ 'CHECKOUT.EMAIL.HINT' | translate }}</p>
+        @if (checkoutForm.get('email')?.touched && checkoutForm.get('email')?.errors) {
+          @if(checkoutForm.get('email')?.errors?.['required']){
+            <div class="text-red-500 text-sm mt-1">
+              {{ 'CHECKOUT.EMAIL.REQUIRED' | translate }}
+            </div>
+          }
+          @if(checkoutForm.get('email')?.errors?.['email']){
+            <div class="text-red-500 text-sm mt-1">
+              {{ 'CHECKOUT.EMAIL.INVALID' | translate }}
+            </div>
+          }
+        }
+        </div>
+
+        <!-- First & Last Name -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.FIRSTNAME.LABEL' | translate }} <span class="text-red-500 text-sm">*</span></label>
+            <input type="text" formControlName="prenom" class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+            placeholder="{{ 'CHECKOUT.FIRSTNAME.PLACEHOLDER' | translate }}">
+            <p class="text-xs text-gray-500 mt-1">{{ 'CHECKOUT.FIRSTNAME.HINT' | translate }}</p>
+          @if(checkoutForm.get('prenom')?.touched && checkoutForm.get('prenom')?.errors){
+            @if(checkoutForm.get('prenom')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.FIRSTNAME.REQUIRED' | translate }}
+              </div>
+            }
+            @if(checkoutForm.get('prenom')?.errors?.['minlength']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.FIRSTNAME.MINLENGTH' | translate }}
+              </div>
+            }
+            @if(checkoutForm.get('prenom')?.errors?.['pattern']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.FIRSTNAME.PATTERN' | translate }}
+              </div>
+            }
+          }
+          </div>
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.LASTNAME.LABEL' | translate }} <span class="text-red-500 text-sm">*</span></label>
+            <input type="text" formControlName="nom" 
+            class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+            placeholder="{{ 'CHECKOUT.LASTNAME.PLACEHOLDER' | translate }}">
+            <p class="text-xs text-gray-500 mt-1">{{ 'CHECKOUT.LASTNAME.HINT' | translate }}</p>
+            @if(checkoutForm.get('nom')?.touched && checkoutForm.get('nom')?.errors){
+              @if(checkoutForm.get('nom')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">
+                    {{ 'CHECKOUT.LASTNAME.REQUIRED' | translate }}
+                </div>
+              }
+              @if(checkoutForm.get('nom')?.errors?.['minlength']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.LASTNAME.MINLENGTH' | translate }}
+                </div>
+              }
+              @if(checkoutForm.get('nom')?.errors?.['pattern']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.LASTNAME.PATTERN' | translate }}
+                </div>
+              }
+            }
+          </div>
+        </div>
+
+        <!-- Phone Input -->
+        <div>
+          <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.PHONE.MAIN_LABEL' | translate }} <span class="text-red-500 text-sm">*</span></label>
+          <ngx-material-intl-tel-input
+            [fieldControl]="checkoutForm.controls['telephone']"
+            [required]="true"
+            [autoIpLookup]="false"
+            [autoSelectCountry]="true"
+            [autoSelectedCountry]="defaultCountry"
+            [numberValidation]="true"
+            [enableSearch]="true"
+            [includeDialCode]="false"
+            [emojiFlags]="false"
+            [hidePhoneIcon]="false"
+            [preferredCountries]="preferredCountries"
+            [enablePlaceholder]="true"
+            [textLabels]="{
+              mainLabel: '',
+              codePlaceholder: ('CHECKOUT.PHONE.CODE_PLACEHOLDER' | translate),
+              searchPlaceholderLabel: ('CHECKOUT.PHONE.SEARCH_PLACEHOLDER' | translate),
+              noEntriesFoundLabel: ('CHECKOUT.PHONE.NO_ENTRIES' | translate),
+              nationalNumberLabel: ('CHECKOUT.PHONE.NATIONAL_NUMBER' | translate),
+              hintLabel: ('CHECKOUT.PHONE.HINT' | translate),
+              invalidNumberError: ('CHECKOUT.PHONE.INVALID_NUMBER' | translate),
+              requiredError: ('CHECKOUT.PHONE.REQUIRED_ERROR' | translate)
+            }">
+          </ngx-material-intl-tel-input> 
+          @if (checkoutForm.get('telephone')?.touched && checkoutForm.get('telephone')?.errors) {
+            <div class="text-red-500 text-sm mt-1">
+              @if (checkoutForm.get('telephone')?.errors?.['required']) {
+                {{ 'CHECKOUT.PHONE.REQUIRED_ERROR' | translate }}
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Legal Conditions -->
+        <div class="flex items-start sm:items-center">
+          <label for="legal_conditions" 
+                 class="flex items-start sm:items-center gap-2 text-xs sm:text-sm font-medium text-[var(--text)]">
+            <input type="checkbox" formControlName="legal_conditions" id="legal_conditions" class="mt-1 sm:mt-0">
+            <span>{{ 'CHECKOUT.LEGAL_CONDITIONS' | translate }} <span class="text-red-500">*</span></span>
+          </label>
+        </div>
+
+        <!-- Delivery Address Section -->
+        <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h2 class="text-lg sm:text-xl font-semibold">{{ 'CHECKOUT.DELIVERY.TITLE' | translate }}</h2>
+            <button type="button" (click)="openAddressForm('LIVRAISON')" 
+                    class="text-[var(--primary)] hover:text-[var(--primary-dark)] font-medium text-sm text-left sm:text-right">
+              {{ 'CHECKOUT.DELIVERY.ADD_NEW' | translate }}
+            </button>
+          </div>
+
+          <div class="mb-4">
+            @if (deliveryAddresses.length > 0) {  
+              <div class="relative">
+                <div class="max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-2 sm:pr-4 -mr-2 sm:-mr-4 scrollbar-thin scrollbar-thumb-[var(--primary)] scrollbar-track-[var(--surface)]">
+                  <div class="space-y-3">
+                    @for (address of deliveryAddresses; track address.id) {
+                      <div class="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 border rounded-lg cursor-pointer hover:border-[var(--primary)]"
+                           [class.border-[var(--primary)]]="selectedDeliveryAddress?.id === address.id"
+                           (click)="selectDeliveryAddress(address)">
+                        <div class="mt-1">
+                          <input type="radio" 
+                                 [id]="'delivery-' + address.id"
+                                 name="deliveryAddress"
+                                 [checked]="selectedDeliveryAddress?.id === address.id"
+                                 class="sr-only peer">
+                          <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:bg-[var(--primary)]"></div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <label [for]="'delivery-' + address.id" class="block font-medium cursor-pointer text-sm sm:text-base break-words">
+                            {{ address.ligne1 }}
+                          </label>
+                          @if (address.ligne2) {
+                            <p class="text-xs sm:text-sm break-words">{{ address.ligne2 }}</p>
+                          }
+                          <p class="text-xs sm:text-sm break-words">{{ address.ville }}, {{ address.codePostal }}, {{ address.pays }}</p>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+              @if(!selectedDeliveryAddress) {
+                <p class="text-sm text-red-500 mt-2">{{ 'CHECKOUT.DELIVERY.NOT_SELECTED' | translate }}</p>
+              }
+            } @else {
+              <p class="text-sm text-red-500">{{ 'CHECKOUT.DELIVERY.NO_ADDRESS' | translate }}</p>
+            }
+          </div>
+        </div>
+
+        <!-- Billing Address Section -->
+        <div class="mt-6 sm:mt-8">
+          <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-4">
+            <h2 class="text-lg sm:text-xl font-semibold">{{ 'CHECKOUT.BILLING.TITLE' | translate }}</h2>
+            <button type="button" (click)="openAddressForm('FACTURATION')" 
+                    class="text-[var(--primary)] hover:text-[var(--primary-dark)] font-medium text-sm text-left sm:text-right">
+               {{ 'CHECKOUT.BILLING.ADD_NEW' | translate }}
+            </button>
+          </div>
+          
+          <!-- Address Type Selection -->
+          <div class="space-y-3 mb-6">
+            <div>
+              <input type="radio" 
+                     id="sameAdresse" 
+                     name="AdresseType" 
+                     class="hidden peer"
+                     (click)="checkSameAdresse()" 
+                     [checked]="sameAdresseChecked">
+              <label for="sameAdresse" 
+                     class="flex items-center p-3 sm:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[var(--primary)] peer-checked:border-[var(--primary)] text-sm sm:text-base">
+                <span>{{ 'CHECKOUT.BILLING.SAME' | translate }}</span>
+              </label>
+            </div>
+            
+            <div>
+              <input type="radio" 
+                     id="differentAdresse" 
+                     name="AdresseType" 
+                     class="hidden peer"
+                     (click)="checkDifferentAdresse()" 
+                     [checked]="differentAdresseChecked">
+              <label for="differentAdresse" 
+                     class="flex items-center p-3 sm:p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-[var(--primary)] peer-checked:border-[var(--primary)] text-sm sm:text-base">
+                <span>{{ 'CHECKOUT.BILLING.DIFFERENT' | translate }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Different Address Form -->
+          @if (differentAdresseChecked) {
+            <div @expandAnimation>
+              @if (billingAddresses.length > 0) {
+                <div class="relative">
+                  <div class="max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-2 sm:pr-4 -mr-2 sm:-mr-4 scrollbar-thin scrollbar-thumb-[var(--primary)] scrollbar-track-[var(--surface)]">
+                    <div class="space-y-3 mb-6">
+                      @for (address of billingAddresses; track address.id) {
+                        <div class="flex items-start gap-2 sm:gap-3 p-3 sm:p-4 border rounded-lg cursor-pointer hover:border-[var(--primary)]"
+                             [class.border-[var(--primary)]]="selectedBillingAddress?.id === address.id"
+                             (click)="selectBillingAddress(address)">
+                          <div class="mt-1">
+                            <input type="radio" 
+                                   [id]="'billing-' + address.id"
+                                   name="billingAddress"
+                                   [checked]="selectedBillingAddress?.id === address.id"
+                                   class="sr-only peer">
+                            <div class="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:bg-[var(--primary)]"></div>
+                          </div>
+                          <div class="flex-1 min-w-0">
+                            <label [for]="'billing-' + address.id" class="block font-medium cursor-pointer text-sm sm:text-base break-words">
+                              {{ address.ligne1 }}
+                            </label>
+                            @if (address.ligne2) {
+                              <p class="text-xs sm:text-sm break-words">{{ address.ligne2 }}</p>
+                            }
+                            <p class="text-xs sm:text-sm break-words">{{ address.ville }}, {{ address.codePostal }}, {{ address.pays }}</p>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+                @if(!selectedBillingAddress) {
+                  <p class="text-sm text-red-500 mb-6">{{ 'CHECKOUT.BILLING.NOT_SELECTED' | translate }}</p>
+                }
+              } @else {
+                <p class="text-sm text-red-500 mb-6">{{ 'CHECKOUT.BILLING.NO_ADDRESS' | translate }}</p>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Payment Method -->
+        <div class="mt-4 sm:mt-6">
+          <label class="block mb-2 text-sm font-medium">{{ 'CHECKOUT.PAYMENT.LABEL' | translate }}</label>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <!-- Cash on Delivery -->
+            <div class="flex-1">
+              <label (click)="checkmodePaiement('A_LIVRAISON')" for="LIVRAISON" 
+                     class="flex items-center p-3 sm:p-4 border-2 rounded-lg cursor-pointer hover:border-[var(--primary)] transition text-sm sm:text-base"
+                     [ngClass]="{ 'border-[var(--primary)]': livraisonChecked }">
+                <input id="LIVRAISON" type="radio" formControlName="modePaiement" value="A_LIVRAISON"
+                       class="hidden peer" [checked]="livraisonChecked">
+                <span class="ml-2 text-[var(--text)]">{{ 'CHECKOUT.PAYMENT.CASH' | translate }}</span>
+              </label>
+            </div>
+
+            <!-- Card Payment -->
+            <div class="flex-1" [ngClass]="{ 'opacity-50 cursor-not-allowed disabled pointer-events-none': true }">
+              <label (click)="checkmodePaiement('CARTE_BANCAIRE')" for="CARTE_BANCAIRE" 
+                     class="flex flex-col sm:flex-row items-start sm:items-center gap-2 p-3 sm:p-4 border-2 rounded-lg cursor-pointer hover:border-[var(--primary)] transition"
+                     [ngClass]="{ 'border-[var(--primary)]': !livraisonChecked }">
+                <input id="CARTE_BANCAIRE" type="radio" formControlName="modePaiement" value="CARTE_BANCAIRE"
+                       class="hidden peer" [checked]="!livraisonChecked">
+                <div class="flex gap-2 sm:gap-4 items-center">
+                  <span class="text-[var(--text)] text-sm sm:text-base">{{ 'CHECKOUT.PAYMENT.CARD' | translate }}</span>
+                  <img src="assets/payment images/mastercard-svgrepo-com.svg" alt="Mastercard" class="w-6 h-6 sm:w-8 sm:h-8">
+                  <img src="assets/payment images/visa-svgrepo-com.svg" alt="Visa" class="w-6 h-6 sm:w-8 sm:h-8">
+                  <img src="assets/payment images/paypal-svgrepo-com.svg" alt="Paypal" class="w-6 h-6 sm:w-8 sm:h-8">
+                </div>
+              </label>
+            </div>
+          </div>
+
+          @if (checkoutForm.get('paymentMethod')?.touched && checkoutForm.get('paymentMethod')?.errors?.['required']) {
+            <div class="text-red-500 text-sm mt-1">
+              {{ 'CHECKOUT.PAYMENT.ERROR' | translate }}
+            </div>
+          }
+        </div>
+
+        <!-- Promo Code -->
+        <div class="mt-4 sm:mt-6">
+          <label class="block mb-2 text-sm font-medium">{{ 'CHECKOUT.PROMO.LABEL' | translate }}</label>
+          <div class="flex flex-col sm:flex-row gap-2">
+            <input type="text" formControlName="promoCode" 
+                   class="flex-1 border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base uppercase focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                   placeholder="{{ 'CHECKOUT.PROMO.PLACEHOLDER' | translate }}">
+            <button type="button" (click)="applyPromoCode()" 
+                    class="px-4 py-2.5 sm:py-3 bg-[var(--primary)] text-white rounded-md hover:opacity-90 transition text-sm sm:text-base whitespace-nowrap">
+              {{ 'CHECKOUT.PROMO.APPLY' | translate }}
+            </button>
+          </div>
+          @if (promoCodeError) {
+            <div class="text-red-500 text-sm mt-1">{{ promoCodeError }}</div>
+          }
+          @if (promoCodeSuccess) {
+            <div class="text-green-500 text-sm mt-1">{{ promoCodeSuccess }}</div>
+          }
+        </div>
+
+        <!-- Submit Button -->
+        @if(!purchaseIsLoading) {
+          <button type="submit" [disabled]="checkoutForm.invalid" [class.opacity-50]="checkoutForm.invalid"
+                  class="mt-4 sm:mt-6 w-full bg-[var(--primary)] text-white py-3 sm:py-3.5 rounded-lg text-base sm:text-lg font-semibold hover:bg-[var(--secondary)] transition">
+            {{ 'CHECKOUT.BUTTON.COMPLETE' | translate }}
+          </button>
+        } @else {
+          <button [disabled]="true" type="submit" class="mt-4 sm:mt-6 w-full bg-[var(--primary)] text-white py-3 sm:py-3.5 rounded-lg text-base sm:text-lg font-semibold opacity-60 transition">
+            <div class="flex justify-center items-center">
+              <div class="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-t-2 border-b-2"></div>
+            </div>
+          </button>
+        }
+      </form>
+    </div>
+
+    <!-- Order Summary -->
+    @if(!isLoading) {
+      <div class="bg-[var(--surface)] shadow-md rounded-xl sm:rounded-2xl p-4 sm:p-6 h-fit lg:sticky lg:top-4">
+        <h3 class="text-lg sm:text-xl font-semibold mb-4">{{ 'CHECKOUT.SUMMARY.TITLE' | translate }}</h3>
+        
+        <!-- Cart Items List -->
+        <div class="space-y-4 mb-4">
+          @if (cart().articles.length === 0) {
+            <p class="text-sm text-gray-500">{{ 'CHECKOUT.SUMMARY.EMPTY' | translate }}</p>
+          } @else {
+            <div class="relative">
+              <div class="max-h-[300px] sm:max-h-[400px] lg:max-h-[500px] overflow-y-auto pr-2 sm:pr-4 -mr-2 sm:-mr-4 scrollbar-thin scrollbar-thumb-[var(--primary)] scrollbar-track-[var(--surface)]">
+                @for (product of cart().articles; track product.id) {
+                  <div class="mb-4 sm:mb-6">
+                    <!-- Product Header -->
+                    <div class="flex items-center gap-2 sm:gap-4 border-b border-gray-300 pb-2 mb-2">
+                      <img [src]="product.imageProduits.length > 0 ? imagesBaseUrl+product.imageProduits[0].url : 'assets/default-product.png'"
+                           [alt]="product.nom"
+                           class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg flex-shrink-0">
+                      <p class="font-semibold text-sm sm:text-base lg:text-lg break-words">{{ product.nom }}</p>
+                    </div>
+
+                    <!-- Variants List -->
+                    <div class="space-y-2 sm:space-y-3 pl-2 sm:pl-4">
+                      @for (variant of product.variants; track variant.id) {
+                        <div class="flex items-start sm:items-center justify-between gap-2">
+                          <div class="flex-1 min-w-0">
+                            <p class="font-medium text-xs sm:text-sm break-words">
+                              {{ 'CHECKOUT.SUMMARY.VARIANT' | translate }}: {{ variant.color }} - {{ variant.size }}
+                            </p>
+                            <p class="text-xs text-gray-500">
+                              {{ 'CHECKOUT.SUMMARY.QUANTITY' | translate }}: {{ variant.cartQuantity || variant.reservedQuantity || 0 }}
+                            </p>
+                          </div>
+                          <div class="font-medium text-xs sm:text-sm whitespace-nowrap">
+                            {{ (variant.cartQuantity || variant.reservedQuantity || 0) * (product.newPrice) | currencyFormat }}
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Summary -->
+        <div class="text-xs sm:text-sm space-y-2">
+          <div class="flex justify-between">
+            <span>{{ 'CHECKOUT.SUMMARY.SUBTOTAL' | translate }}</span>
+            <span>{{ subtotal() | currencyFormat }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span [ngClass]="{ 'text-green-500 line-through': shipping() === 0 }">
+              {{ 'CHECKOUT.SUMMARY.SHIPPING' | translate }}
+            </span>
+            <span [ngClass]="{ 'text-green-500 line-through': shipping() === 0 }">
+              {{ configGlobalSignal().valeurLivraison | currencyFormat }}
+            </span>
+          </div>
+          
+          @if (promoCodeApplied()) {
+            <div class="flex justify-between text-green-500">
+              <span>{{ 'CHECKOUT.SUMMARY.DISCOUNT' | translate }} ({{ currentDiscount }}%)</span>
+              <span>-{{ currentDiscountAmmount() | currencyFormat }}</span>
+            </div>
+            <div class="flex justify-between font-bold text-sm sm:text-base lg:text-lg pt-2 border-t border-gray-300">
+              <span>{{ 'CHECKOUT.SUMMARY.TOTAL' | translate }}</span>
+              <span>{{ totalWithCodePromo() + shipping() | currencyFormat }}</span>
+            </div>
+          } @else {
+            <div class="flex justify-between font-bold text-sm sm:text-base lg:text-lg pt-2 border-t border-gray-300">
+              <span>{{ 'CHECKOUT.SUMMARY.TOTAL' | translate }}</span>
+              <span>{{ total() | currencyFormat }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+    
+    @if (isLoading) {
+      <div class="bg-[var(--surface)] shadow-md rounded-xl sm:rounded-2xl p-4 sm:p-6 h-fit">
+        <h3 class="text-lg sm:text-xl font-semibold mb-4">{{ 'HEADER.LOADING' | translate }}</h3>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Address Form Modal -->
+@if (showAddressForm) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-3 sm:p-4 z-50">
+    <div class="bg-[var(--surface)] rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div class="p-4 sm:p-6">
+        <h3 class="text-lg sm:text-xl font-semibold mb-4">
+          {{ editingAddress ? ('CHECKOUT.ADDRESS_FORM.EDIT' | translate) : ('CHECKOUT.ADDRESS_FORM.ADD_NEW' | translate) }} 
+          {{ addressFormType === 'LIVRAISON' ? ('CHECKOUT.ADDRESS_FORM.DELIVERY' | translate) : ('CHECKOUT.ADDRESS_FORM.BILLING' | translate) }} 
+          {{ 'CHECKOUT.ADDRESS_FORM.ADDRESS' | translate }}
+        </h3>
+        
+        <form [formGroup]="addressForm" (ngSubmit)="submitAddress()" class="space-y-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE1' | translate }}</label>
+            <input type="text" formControlName="ligne1" 
+                   class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                   placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE1_PLACEHOLDER' | translate }}">
+            @if(addressForm.get('ligne1')?.touched && addressForm.get('ligne1')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ADDRESS_REQUIRED' | translate }}
+              </div>
+            }
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE2' | translate }}</label>
+            <input type="text" formControlName="ligne2" 
+                   class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                   placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE2_PLACEHOLDER' | translate }}">
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <div>
+              <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.CITY' | translate }}</label>
+              <input type="text" formControlName="ville" 
+                     class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                     placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.CITY_PLACEHOLDER' | translate }}">
+              @if(addressForm.get('ville')?.touched && addressForm.get('ville')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.CITY_REQUIRED' | translate }}
+                </div>
+              }
+            </div>
+            
+            <div>
+              <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.ZIP' | translate }}</label>
+              <input type="text" formControlName="codePostal" 
+                     (keypress)="allowOnlyNumbers($event)"
+                     maxlength="5"
+                     class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                     placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.ZIP_PLACEHOLDER' | translate }}">
+              @if(addressForm.get('codePostal')?.touched && addressForm.get('codePostal')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ZIP_REQUIRED' | translate }}
+                </div>
+              }
+              @if(addressForm.get('codePostal')?.errors?.['pattern']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ZIP_PATTERN' | translate }}
+                </div>
+              }
+            </div>
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.COUNTRY' | translate }}</label>
+            <select formControlName="pays" 
+                    [value]="addressForm.get('pays')?.value"
+                    class="w-full border border-gray-300 p-2.5 sm:p-3 rounded-md bg-[var(--background)] text-[var(--text)] text-sm sm:text-base pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all">
+              @for (country of countries; track country.code) {
+                <option [value]="country.name">{{ country.name }}</option>
+              }
+            </select>
+            @if(addressForm.get('pays')?.touched && addressForm.get('pays')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.COUNTRY_REQUIRED' | translate }}
+              </div>
+            }
+          </div>
+          
+          <div class="flex flex-col-reverse sm:flex-row justify-end gap-2 sm:gap-3 pt-4">
+            <button type="button" 
+                    (click)="closeAddressForm()"
+                    class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-[var(--text)] hover:bg-gray-100 transition text-sm sm:text-base">
+              {{ 'CHECKOUT.ADDRESS_FORM.ACTIONS.CANCEL' | translate }}
+            </button>
+            <button type="submit" 
+                    [disabled]="addressForm.invalid"
+                    class="w-full sm:w-auto px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:opacity-90 transition text-sm sm:text-base disabled:opacity-50">
+              {{ editingAddress ? ('CHECKOUT.ADDRESS_FORM.ACTIONS.UPDATE' | translate) : ('CHECKOUT.ADDRESS_FORM.ACTIONS.SAVE' | translate) }} 
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+} @else {
+  <!-- EMPTY CART -->
+  <div class="flex flex-col items-center justify-center gap-4 sm:gap-6 p-4 sm:p-6 text-center min-h-[60vh]">
+    <!-- Illustration (inline SVG) -->
+    <div class="w-32 h-32 sm:w-40 sm:h-40 flex items-center justify-center bg-[var(--surface)] rounded-full shadow-inner">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-20 h-20 sm:w-24 sm:h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 6h15l-1.5 9h-13z"></path>
+        <circle cx="9" cy="20" r="1"></circle>
+        <circle cx="19" cy="20" r="1"></circle>
+        <path d="M6 6L4 2H2"></path>
+      </svg>
+    </div>
+
+    <div class="max-w-xs px-4">
+      <h4 class="text-base sm:text-lg font-semibold">{{ 'CHECKOUT.EMPTY_CART.TITLE' | translate }}</h4>
+      <p class="text-xs sm:text-sm text-gray-500 mt-1">
+        {{ 'CHECKOUT.EMPTY_CART.MESSAGE' | translate }}
+      </p>
+    </div>
+
+    <div class="flex gap-3 px-4">
+      <button routerLink="/products"
+              class="px-4 sm:px-6 py-2 sm:py-2.5 bg-[var(--primary)] text-white rounded-lg font-medium hover:opacity-90 transition text-sm sm:text-base">
+        {{ 'CHECKOUT.EMPTY_CART.BUTTON' | translate }}
+      </button>
+    </div>
+
+    <!-- Optional: quick recommendations -->
+    <div class="w-full px-4">
+      <app-recommanded-products></app-recommanded-products>
+    </div>
+  </div>
+}

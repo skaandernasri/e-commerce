@@ -1,0 +1,1 @@
+ALTER TABLE image_blogpost ADD COLUMN main_image BOOLEAN DEFAULT FALSE;

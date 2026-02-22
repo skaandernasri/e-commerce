@@ -1,0 +1,4 @@
+ALTER TABLE blogpost ALTER COLUMN date_publication DROP NOT NULL;
+ALTER TABLE blogpost ALTER COLUMN date_publication TYPE TIMESTAMP;
+
+ALTER TABLE blogpost ALTER COLUMN titre TYPE VARCHAR(100);

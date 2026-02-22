@@ -1,0 +1,63 @@
+<form [formGroup]="contentForm" (ngSubmit)="saveContent()">
+              <div class="space-y-4">
+                <!-- Contenu -->
+    <div class="space-y-2 flex-1 flex flex-col min-h-[400px]">
+      <label for="contenuHtml" class="block text-[var(--text)] font-semibold text-sm sm:text-base">
+        Contenu <span class="text-red-500">*</span>
+      </label>
+            <div class=" border-gray-300 rounded-lg overflow-hidden hover:border-[var(--primary)] transition-colors duration-200 bg-white shadow-sm"
+           [class.border-red-500]="contentForm.get('contenuHtml')?.invalid && contentForm.get('contenuHtml')?.touched">
+        <!-- Toolbar -->
+        <div id="toolbar" class="border-b border-gray-200 p-2 bg-gray-50 flex flex-wrap gap-1">
+
+          <span class="ql-formats flex gap-1">
+            <button id="insertRowAboveBtn" type="button" title="Insérer ligne au-dessus"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Ligne ↑</button>
+            <button id="insertRowBelowBtn" type="button" title="Insérer ligne en-dessous"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Ligne ↓</button>
+            <button id="insertColumnLeftBtn" type="button" title="Insérer colonne à gauche"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Col ←</button>
+            <button id="insertColumnRightBtn" type="button" title="Insérer colonne à droite"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Col →</button>
+            <button id="deleteRowBtn" type="button" title="Supprimer ligne"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Suppr Ligne</button>
+            <button id="deleteColumnBtn" type="button" title="Supprimer colonne"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-gray-300 rounded hover:bg-gray-100 transition-all">Suppr Col</button>
+            <button id="deleteTableBtn" type="button" title="Supprimer tableau"
+                    class="px-2 h-7 text-xs font-semibold bg-white border border-red-300 rounded hover:bg-red-50 transition-all text-red-600">Suppr Table</button>
+          </span>
+
+          <span class="ql-formats flex gap-1">
+            <button class="ql-link w-7 h-7 hover:bg-gray-200 rounded transition-colors" type="button"></button>
+            <button class="ql-image w-7 h-7 hover:bg-gray-200 rounded transition-colors" type="button"></button>
+            <button class="ql-video w-7 h-7 hover:bg-gray-200 rounded transition-colors" type="button"></button>
+            <button class="ql-clean w-7 h-7 hover:bg-gray-200 rounded transition-colors" type="button"></button>
+          </span>
+        </div>
+      <div class="border border-gray-300 rounded-lg overflow-hidden hover:border-[var(--primary)] transition-colors duration-200 flex-1 flex flex-col bg-white shadow-sm">
+        <quill-editor
+          #quillEditor
+          formControlName="contenuHtml"
+          [modules]="modules"
+          theme="snow"
+          placeholder="Écrivez votre article ici... Utilisez la barre d'outils pour formater le texte."
+          class="w-full h-full"
+          (onEditorCreated)="onEditorCreated($event)"
+        ></quill-editor>
+      </div>
+    </div>
+    </div>
+                  </div>
+            
+
+              <!-- Save Button -->
+              <div class="mt-6">
+                <button 
+                  type="submit"
+                  [disabled]="!contentForm.valid"
+                  class="w-full px-6 py-3 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                  💾 Enregistrer le contenu
+                </button>
+              </div>
+            
+            </form>

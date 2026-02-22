@@ -1,0 +1,2 @@
+ALTER TABLE section
+ADD COLUMN image_url VARCHAR(255);

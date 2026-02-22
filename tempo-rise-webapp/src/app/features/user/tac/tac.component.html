@@ -1,0 +1,12 @@
+@if(activeTacPageContent()){
+<quill-view-html [id]="activeTacPageContent()?.type" [content]="activeTacPageContent()?.contenuHtml!"></quill-view-html>
+}
+<!-- old html code-->
+<!-- @if(activeTacPageContent()){
+<article class="bg-[var(--surface)] rounded-lg shadow-md overflow-hidden flex flex-col items-center">
+
+  <div class="p-6 sm:p-8 min-h-[580px]">
+    <div class="ql-editor max-w-none" [innerHTML]="activeTacPageContent()?.contenuHtml"></div>
+  </div>
+</article>
+} -->

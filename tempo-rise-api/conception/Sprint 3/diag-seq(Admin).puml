@@ -1,0 +1,49 @@
+@startuml
+actor Administrateur
+
+participant "Interface Utilisateur " as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "Microservice Recommandation (Python)" as PythonService
+participant "Base de données" as DB
+
+== Réentraîner le modèle (Administrateur) ==
+
+Administrateur -> UI : Demande de réentraînement du modèle
+UI -> Controller : requête retrainModel()
+Controller -> Service : lancerRéentraînement()
+Service -> PythonService : appeler API /retrainModel
+PythonService -> DB : récupérer données mises à jour
+DB --> PythonService : données extraites
+PythonService --> Service : confirmation lancement réentraînement
+Service --> Controller : confirmation
+Controller --> UI : afficher confirmation
+UI --> Administrateur : confirmation affichée
+
+== Évaluer le modèle (Administrateur) ==
+
+Administrateur -> UI : Demande d’évaluation du modèle
+UI -> Controller : requête evaluateModel()
+Controller -> Service : évaluerModèle()
+Service -> PythonService : appeler API /evaluateModel
+PythonService -> DB : récupérer données test
+DB --> PythonService : données test extraites
+PythonService --> Service : métriques (précision, rappel, AUC)
+Service --> Controller : métriques
+Controller --> UI : afficher métriques
+UI --> Administrateur : affichage métriques
+
+== Tuner le modèle (Optimisation automatique) ==
+
+Administrateur -> UI : Demande d’optimisation du modèle
+UI -> Controller : requête tuneModel()
+Controller -> Service : lancerTuning()
+Service -> PythonService : appeler API /tuneModel
+PythonService -> DB : récupérer données pour tuning
+DB --> PythonService : données extraites
+PythonService --> Service : meilleure configuration (paramètres, score AUC)
+Service --> Controller : configuration optimale et score
+Controller --> UI : afficher résultats tuning
+UI --> Administrateur : affichage configuration et score optimaux
+
+@enduml

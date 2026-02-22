@@ -1,0 +1,2 @@
+ALTER TABLE commande
+ALTER COLUMN mode_paiement TYPE VARCHAR(20);

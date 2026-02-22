@@ -1,0 +1,30 @@
+@if(visible()){
+<div
+ class="fixed bottom-0 left-0 w-full z-[99999] !pointer-events-auto !visible">
+>
+  <div class="max-w-4xl mx-auto p-4 flex flex-col md:flex-row items-center gap-4">
+    <!-- Text -->
+    <p class="text-sm flex-1">
+      We use cookies to improve your experience, analyze traffic, and for marketing purposes.
+      You can accept or decline these cookies at any time.
+    </p>
+
+    <!-- Buttons -->
+    <div class="flex gap-3">
+      <button
+        (click)="accept()"
+        class="px-4 py-2 rounded-md bg-[var(--primary)] text-white hover:opacity-90 transition"
+      >
+        Accept
+      </button>
+
+      <button
+        (click)="decline()"
+        class="px-4 py-2 rounded-md bg-gray-300 text-gray-900 dark:bg-gray-600 dark:text-white hover:opacity-80 transition"
+      >
+        Decline
+      </button>
+    </div>
+  </div>
+</div>
+}

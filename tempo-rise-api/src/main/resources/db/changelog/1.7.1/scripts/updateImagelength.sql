@@ -1,0 +1,1 @@
+ALTER TABLE image_blogpost ALTER COLUMN url TYPE VARCHAR(255);

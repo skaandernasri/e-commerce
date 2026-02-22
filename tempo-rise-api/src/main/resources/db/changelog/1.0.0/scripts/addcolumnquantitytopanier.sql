@@ -1,0 +1,1 @@
+ALTER table Panier_Produit add column quantite INT NOT NULL DEFAULT 1;

@@ -1,0 +1,60 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+rectangle "Sprint 2" {
+actor Rédacteur
+actor Utilisateur
+actor Administrateur
+actor Gestionnaire
+actor "Super Administrateur" as SuperAdmin
+package "Configuration" {
+    usecase " Configurer les templates du site" as UC14
+}
+package "Suivi ventes" {
+    usecase "Suivre les ventes et stocks des produits " as UC13
+}
+package "Gestion Blog" {
+    usecase "Gérer les articles du blog" as UC1
+    usecase "Uploader des images" as UC2
+    usecase "Valider/Modérer les articles" as UC3
+}
+
+package "Consultation & Interaction" {
+    usecase "Consulter les articles" as UC4
+    usecase "Commenter les articles" as UC5
+    usecase "Partager les articles" as UC6
+    usecase "Donner un avis sur un produit" as UC7
+    usecase "Voir la note moyenne du produit" as UC8
+}
+
+package "Administration" {
+    usecase "Suivre l’activité des utilisateurs" as UC9
+    usecase "Gérer les rôles utilisateurs" as UC11
+}
+
+' Associations
+Gestionnaire --> UC13
+
+SuperAdmin --> UC14
+
+Rédacteur --> UC1
+Rédacteur --> UC2
+Rédacteur --> UC3
+
+Utilisateur --> UC4
+Utilisateur --> UC5
+Utilisateur --> UC6
+Utilisateur --> UC7
+Utilisateur --> UC8
+
+Administrateur --> UC9
+Administrateur --> UC11
+
+SuperAdmin --|> Administrateur
+Administrateur --|> Gestionnaire
+Administrateur --|> Rédacteur
+note right of "Sprint 2"
+ Toutes ces actions nécessitent une connexion.
+end note
+}
+@enduml

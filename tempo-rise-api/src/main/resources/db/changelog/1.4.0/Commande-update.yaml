@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.0/scripts/commande-update.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true

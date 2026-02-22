@@ -1,0 +1,284 @@
+<form [formGroup]="contentForm" (ngSubmit)="saveContent()">
+  <div class="space-y-8">
+    
+    <!-- LOGO SECTION -->
+    <section class="space-y-4">
+      <h3 class="text-lg font-semibold text-[var(--text)]">Logo</h3>
+      
+      <app-upload-image 
+        [titre]="'Image de logo'"
+        [buttonText]="'Télécharger une image'"
+        [imageUrl]="contentForm.get('logoUrl')?.value"
+        (onFileSelected)="onFileSelected($event)"
+        (onFileRemoved)="removeFile()"
+      ></app-upload-image>
+    </section>
+
+    <!-- SOCIAL LINKS SECTION -->
+    <section class="space-y-4">
+      <h3 class="text-lg font-semibold text-[var(--text)]">Réseaux sociaux</h3>
+      
+      <div formArrayName="socials" class="space-y-6">
+        @for (group of footerSocialLinkArray.controls; track group.value.index; let i = $index) {
+          <div [formGroupName]="i" class="p-4 bg-[var(--background)] rounded-lg space-y-4">
+            
+            <!-- Social Image Upload -->
+             <app-upload-image 
+        [titre]="'Image du réseau social'"
+        [buttonText]="'Télécharger une image'"
+        [imageUrl]="group.value.url"
+        (onFileSelected)="onFileEventSocials($event,i)"
+        (onFileRemoved)="removeFileSocials(i)"
+      ></app-upload-image>
+        
+
+            <!-- Alt Text -->
+            <div>
+              <label class="block text-sm font-medium text-[var(--text)] mb-2">
+                Alt de l'image
+              </label>
+              <select 
+                formControlName="alt"
+                class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 focus:border-[var(--primary)] focus:outline-none"
+              >
+                <option value="facebook">Facebook</option>
+                <option value="x">X (twitter)</option>
+                <option value="instagram">Instagram</option>
+                <option value="linkedin">Linkedin</option>
+                <option value="tiktok">Tiktok</option>
+                <option value="autre">Autre</option>
+              </select>
+              <!-- <input   
+                type="text" 
+                formControlName="alt"
+                class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none"
+              /> -->
+            </div>
+
+            <!-- Link -->
+            <div>
+              <label class="block text-sm font-medium text-[var(--text)] mb-2">
+                Lien du réseau social
+              </label>
+              <input 
+                type="text" 
+                formControlName="link"
+                class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 focus:border-[var(--primary)] focus:outline-none"
+              />
+            </div>
+
+            <!-- Remove Button -->
+            <button 
+              type="button" 
+              (click)="removeSocial(i)" 
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:opacity-90 transition-all">
+              Supprimer
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- Add Social Button -->
+      @if (footerSocialLinkArray.controls.length < limitSocials) {
+        <button 
+          type="button" 
+          (click)="addSocial()"
+          class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all">
+          Ajouter un réseau social
+        </button>
+      }
+    </section>
+
+    <!-- GROUPS SECTION -->
+    <section class="space-y-4">
+      <h3 class="text-lg font-semibold text-[var(--text)]">Groupes de liens</h3>
+      
+      <div formArrayName="groups" class="space-y-6">
+        @for (group of footerGroupArray.controls; track group.value.index; let groupIndex = $index) {
+          <div [formGroupName]="groupIndex" class="p-4 bg-gray-50 rounded-lg space-y-4">
+            
+            <!-- Group Header -->
+            <div>
+              <label class="block text-sm font-medium text-[var(--text)] mb-2">
+                Titre du groupe
+              </label>
+              <input 
+                type="text" 
+                formControlName="groupHeaderText"
+                class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none"
+              />
+            </div>
+
+            <!-- Text and Links -->
+            <div formArrayName="textAndLinks" class="space-y-4 ml-4">
+              <h4 class="text-sm font-medium text-[var(--text)]">Liens du groupe</h4>
+              
+              @for (item of footerTextAndLinkArray(groupIndex).controls; track item.value.index; let itemIndex = $index) {
+                <div [formGroupName]="itemIndex" class="p-3 bg-white rounded-lg space-y-3">
+                  <!-- Social Image Upload -->
+             <app-upload-image 
+        [titre]="'Image du réseau social'"
+        [buttonText]="'Télécharger une image'"
+        [imageUrl]="item.value.imageUrl"
+        (onFileSelected)="onFileItemSelected($event,groupIndex,itemIndex)"
+        (onFileRemoved)="removeFileItem(groupIndex,itemIndex)"
+      ></app-upload-image>
+                  <div>
+                    <label class="block text-xs font-medium text-[var(--text)] mb-1">
+                      Texte du lien
+                    </label>
+                    <input 
+                      type="text" 
+                      formControlName="text"
+                      class="w-full px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm"
+                    />
+                  </div>    
+            <!-- isLink checkbox -->
+             <div>
+              <label class="block text-xs font-medium text-[var(--text)] mb-1">
+                Lien ?
+              </label>
+              <input 
+                type="checkbox" 
+                (change)="onIsLinkChange($event,groupIndex, itemIndex)"
+                [checked]="isLink(groupIndex, itemIndex)"
+                class=" px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm"
+              />
+             </div> 
+@if(isLink(groupIndex, itemIndex)) {  
+<div>
+  <label class="block text-xs font-medium text-[var(--text)] mb-1">
+    Type du lien
+  </label>
+  <select 
+    formControlName="linkType"
+    (change)="onLinkTypeChange(groupIndex, itemIndex)"
+    class="w-full px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm"
+  > 
+    <option value="">Sélectionner un type de lien</option>
+    <option value="EXTERNAL_LINK">External</option>
+    <option value="PAGE_LINK">Page</option>
+    <option value="SECTION_LINK">Section</option>
+  </select>
+</div>
+<!-- Page Selection (always show) -->
+ @if(!isExternalLink(groupIndex, itemIndex)) {
+<div>
+  <label class="block text-xs font-medium text-[var(--text)] mb-1">
+    Sélectionner une page
+  </label>
+  <select 
+    formControlName="selectedPage"
+    (change)="onPageChange(groupIndex, itemIndex, $event)"
+    class="w-full px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm"
+  >
+    <option value="">Sélectionner une page</option>
+    @for(page of pageTypes; track page) {
+      <option [value]="page">{{ page }}</option>
+    }
+  </select>
+</div>
+
+<!-- Section Selection (only if SECTION_LINK is selected) -->
+@if(isSectionLink(groupIndex, itemIndex)) {
+  <div>
+    <label class="block text-xs font-medium text-[var(--text)] mb-1">
+      Sélectionner une section
+    </label>
+    <select 
+      formControlName="selectedSection"
+      (change)="onSectionChange(groupIndex, itemIndex, $event)"
+      class="w-full px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm"
+    >
+      <option value="">Sélectionner une section</option>
+      @for(section of getPageSections(groupIndex, itemIndex); track section) {
+        <option [value]="section">{{ section }}</option>
+      }
+    </select>
+  </div>
+}
+}
+<!-- Display current link value (optional, for debugging) -->
+<div>
+  <label class="block text-xs font-medium text-[var(--text)] mb-1">
+    {{ isExternalLink(groupIndex, itemIndex) ? 'Lien externe' : 'Lien généré'}}
+  </label>
+  <input 
+    type="text" 
+    formControlName="link"
+    [readonly]="!isExternalLink(groupIndex, itemIndex)"
+    class="w-full px-3 py-2 bg-[var(--background-secondary)] text-[var(--text)] rounded-lg border-2  text-sm "
+    [ngClass]="{
+      'opacity-50 cursor-not-allowed disabled pointer-events-none': !isExternalLink(groupIndex, itemIndex)}"
+  />
+</div>
+}  
+
+                  <!-- Remove Item Button -->
+                  <button 
+                    type="button" 
+                    (click)="removeGroupTextAndLinks(groupIndex, itemIndex)" 
+                    class="px-3 py-1 text-sm bg-red-500 text-white rounded hover:opacity-90 transition-all">
+                    Supprimer ce lien
+                  </button>
+                </div>
+              }
+
+              <!-- Add Link Button -->
+              @if (footerTextAndLinkArray(groupIndex).controls.length < limitGroupItems) {
+                <button 
+                  type="button" 
+                  (click)="addFooterGroupTextAndLinks(groupIndex)"
+                  class="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:opacity-90 transition-all">
+                  Ajouter un lien
+                </button>
+              }
+            </div>
+
+            <!-- Remove Group Button -->
+            <button 
+              type="button" 
+              (click)="removeGroup(groupIndex)" 
+              class="px-4 py-2 bg-red-500 text-white rounded-lg hover:opacity-90 transition-all">
+              Supprimer le groupe
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- Add Group Button -->
+      @if (footerGroupArray.controls.length < limitGroups) {
+        <button 
+          type="button" 
+          (click)="addGroup()"
+          class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all">
+          Ajouter un groupe
+        </button>
+      }
+    </section>
+
+    <!-- COPYRIGHT SECTION -->
+    <section class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-[var(--text)] mb-2">
+          Texte de copyright
+        </label>
+        <input 
+          type="text" 
+          formControlName="copyright"
+          class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none"
+        />
+      </div>
+    </section>
+
+    <!-- SAVE BUTTON -->
+    <div class="mt-6">
+      <button 
+        type="submit"
+        [disabled]="!contentForm.valid"
+        class="w-full px-6 py-3 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+        💾 Enregistrer le contenu
+      </button>
+    </div>
+  </div>
+</form>

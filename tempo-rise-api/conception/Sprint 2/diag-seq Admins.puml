@@ -1,0 +1,64 @@
+@startuml Administration_Roles
+
+actor Rédacteur
+actor Administrateur
+
+participant "Interface Utilisateur" as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "Port de sortie : EntitéRepository" as EntitéRepo
+participant "Google Analytics"
+
+== RÉDACTEUR GÈRE LES ARTICLES ==
+
+Rédacteur -> UI : Accéder à l’interface de gestion d’articles
+UI -> Controller : afficherFormulaireArticle()
+Controller -> Service : récupérerArticles()
+Service -> EntitéRepo : SELECT * FROM articles
+EntitéRepo --> Service : Liste des articles
+Service --> Controller : Liste articles
+Controller --> UI : Afficher la liste
+
+Rédacteur -> UI : Ajouter un article (titre, contenu, image)
+UI -> Controller : ajouterArticle(données)
+Controller -> Service : validerEtAjouter(données)
+Service -> EntitéRepo : INSERT INTO articles (...)
+EntitéRepo --> Service : Confirmation
+Service --> Controller : Succès
+Controller --> UI : Afficher confirmation
+
+Rédacteur -> UI : Soumettre pour validation
+UI -> Controller : soumettrePourValidation(articleId)
+Controller -> Service : marquerCommeÀValider(articleId)
+Service -> EntitéRepo : UPDATE articles SET status = 'en attente'
+EntitéRepo --> Service : OK
+Service --> Controller : OK
+Controller --> UI : Afficher message
+
+== ADMINISTRATEUR SUIVRE ACTIVITÉ ==
+
+Administrateur -> UI : Consulter dashboard
+UI -> Controller : getStats()
+Controller -> Service : récupérerDonnées()
+Service -> "Google Analytics" : récupérerTracking()
+"Google Analytics" --> Service : Données tracking
+Service --> Controller : Statistiques
+Controller --> UI : Affichage dashboard
+
+Administrateur -> UI : Gérer les rôles
+UI -> Controller : afficherUtilisateursEtRôles()
+Controller -> Service : getUtilisateursEtRôles()
+Service -> EntitéRepo : SELECT * FROM users, roles
+EntitéRepo --> Service : Données
+Service --> Controller : Liste
+Controller --> UI : Interface de gestion
+
+
+
+note right
+La gestion (CRUD) signifie :
+Créer, Lire, Mettre à jour et Supprimer.
+Toutes les actions nécessitent une connexion.
+end note
+
+@enduml

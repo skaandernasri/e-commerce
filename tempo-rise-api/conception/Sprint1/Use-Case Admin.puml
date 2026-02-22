@@ -1,0 +1,22 @@
+@startuml UseCase_Administrateur
+
+actor "Administrateur" as Administrateur
+
+usecase "Gérer utilisateur" as UC14
+usecase "Gérer promotions" as UC15
+usecase "Gérer stock" as UC13
+usecase "Suivre action client" as UC18
+usecase "Gérer les droits" as UC19
+
+Administrateur -- UC14
+Administrateur -- UC15
+Administrateur -- UC13
+Administrateur -- UC18
+Administrateur -- UC19
+
+note right
+  "Gérer" = CRUD (Créer, Lire, Mettre à jour, Supprimer)
+  Toutes ces actions nécessitent une connexion.
+end note
+
+@enduml

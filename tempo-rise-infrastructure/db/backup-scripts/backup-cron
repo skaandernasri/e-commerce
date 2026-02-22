@@ -1,0 +1,2 @@
+0 0 * * * root pg_dump -h postgres -U postgres -d temporise -F c -f /backups/backup_$(date +\%F_\%H-\%M-\%S).dump
+&& echo "Backup done at $(date)" >> /backups/backup.log 2>&1 && find /backups -name "backup_*.dump" -type f -mtime +7 -delete

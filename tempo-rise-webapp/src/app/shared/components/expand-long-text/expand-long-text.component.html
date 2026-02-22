@@ -1,0 +1,13 @@
+<div class="text-[var(--text)]">
+
+  <div>
+<quill-view-html class="whitespace-pre-wrap break-words" [content]="isExpanded() ? text : stripHtmlPreserveTags(text)"></quill-view-html>
+</div>
+  @if (shouldShowToggle()) {
+    <button 
+      class="text-[var(--secondary)] text-sm mt-1 hover:underline"
+      (click)="onToggleClick($event)">
+      {{ (isExpanded() ? 'SHOW_LESS' : 'SHOW_MORE') | translate}}
+    </button>
+  }
+</div>

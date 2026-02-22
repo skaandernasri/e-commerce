@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/updateSectionTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/updatedAtNullable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/notnullable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/dropNotNull.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 5
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/addImageUrlForSection.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 6
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.9.1/scripts/inlineItems.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+
+

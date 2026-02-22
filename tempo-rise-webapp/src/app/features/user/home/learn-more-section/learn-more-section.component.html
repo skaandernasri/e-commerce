@@ -1,0 +1,21 @@
+ @if(activeContent7Section()){
+<section [id]="activeContent7Section()?.type" class="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12">
+      {{ content7Content()?.title }}
+    </h2>
+
+    <!-- Products Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+      @for(content7 of content7Content()?.imagesAndText ; track $index){
+      <div class="rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-lg transition">
+        <img [src]=" content7.imageUrl ? imageBaseUrl + content7.imageUrl: imageAltRecord['content7'][$index]" alt="info 1" class="w-full h-48 sm:h-56 md:h-64 object-cover rounded-t-lg" />
+        <div class="p-4">
+          <p class="text-base sm:text-lg font-semibold">{{ content7.subtitle }}</p>
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+</section>
+ }

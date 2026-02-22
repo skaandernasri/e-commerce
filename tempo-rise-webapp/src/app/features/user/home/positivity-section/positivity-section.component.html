@@ -1,0 +1,59 @@
+ @if(activeContent4Section()){
+<section [id]="activeContent4Section()?.type" class="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-center relative max-w-6xl mx-auto">
+<div class="group overflow-hidden rounded-lg relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+  
+    <!-- SVG Left Control - Hidden on mobile -->
+    <div
+      class="hidden md:block absolute top-1/2 -translate-y-1/2 z-10 cursor-pointer hover:scale-110 transition-transform duration-300"
+      [class.left-0]="!svgMovedRight"
+      [class.right-0]="svgMovedRight"
+      (click)="changeImage1()"
+>      <!-- SVG code remains the same -->
+       <svg width="36" height="583" viewBox="0 0 36 583" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <line x1="18.5" y1="-6.55671e-08" x2="18.5" y2="583" stroke="white" stroke-width="3"/>
+        <circle cx="18" cy="296" r="18" fill="white"/>
+        <rect x="15.668" y="306.724" width="20.7238" height="19.3314" transform="rotate(-90 15.668 306.724)" fill="url(#pattern0_64_372)"/>
+        <rect x="20.332" y="286" width="20.7238" height="19.3314" transform="rotate(90 20.332 286)" fill="url(#pattern1_64_372)"/>
+        <defs>
+          <pattern id="pattern0_64_372" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_64_372" transform="matrix(0.0103646 0 0 0.0111111 0.0335938 0)"/>
+          </pattern>
+          <pattern id="pattern1_64_372" patternContentUnits="objectBoundingBox" width="1" height="1">
+            <use xlink:href="#image0_64_372" transform="matrix(0.0103646 0 0 0.0111111 0.0335938 0)"/>
+          </pattern>
+          <image id="image0_64_372" width="90" height="90" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWklEQVR4nO3avUoDQRRA4aPFHfXFBRGsLfQhLMI+kY2F4A+WkYWtQv5A9+7M7PlgId3ce9hkAwlIkiRJkiRJkiRJkiRJkupxMV1proFH4At4A+6AQr8KcA+8Az/AE3CTcfAYebtzbTqNXabddvd9nvvg8a3zuefgHmOXA5HH6xu4nHuAjwOH9xS7HIm8nRrM7uHIAD3ELicib6cGVQzSauxS224BvJwYaACuaEfUulO1g/W4S/UD9rRDM4P2MHtzA9PmzM0NHg3N2uwC0cCMzS8SFc/WzUJR4UzdLRYVzdLtglHBDCliwUVXE3nJhWNtkZdYfLWRMwOsPnJGCCMnBDFyQhgjJ4QxckKgWPuD71zxh1BGTogd3snz39lh5Jyf+zed/t0hVZxxt/rgWzj24LeL+WMbOSG2kRNiD35czB97MPL/K8At8Dpd42u/wkmSJEmSJEmSJEmSJEmSJJL9Hn9RfMeY/CcCAAAAAElFTkSuQmCC"/>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- Image Container -->
+    <div class="group overflow-hidden rounded-lg relative h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+      <!-- Current Image -->
+      <div class="absolute inset-0 bg-cover bg-center rounded-lg p-4 sm:p-6 flex items-end justify-center text-white font-bold text-lg sm:text-xl h-full transition-opacity duration-500 ease-in-out"
+          [style.background-image]="safeBackground(content4Content()!.imagesAndText[0].imageUrl,0,'content4')"
+          [class.opacity-100]="currentImageIndex1 === 0"
+          [class.opacity-0]="currentImageIndex1 !== 0">
+      </div>
+      
+      <!-- Next Image -->
+      <div class="absolute inset-0 bg-cover bg-center rounded-lg p-4 sm:p-6 flex items-end justify-center text-white font-bold text-lg sm:text-xl h-full transition-opacity duration-500 ease-in-out"
+          [style.background-image]="safeBackground(content4Content()!.imagesAndText[1].imageUrl,1,'content4')"
+            [class.opacity-100]="currentImageIndex1 === 1"
+           [class.opacity-0]="currentImageIndex1 !== 1">
+      </div>
+    </div>
+</div>
+
+    <!-- Text Content -->
+    <div class="flex items-center justify-center h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+      <div class="text-center bg-white/40 px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-6 rounded-lg border-2 border-white max-w-xl">
+        <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">{{ content4Content()?.title }}</h3>
+        <p class="text-gray-800 text-sm sm:text-base">
+         {{ content4Content()?.subtitle }}     
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+ }

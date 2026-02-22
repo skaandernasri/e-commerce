@@ -1,0 +1,1 @@
+ALTER TABLE image_produit ADD COLUMN url VARCHAR(255) ;

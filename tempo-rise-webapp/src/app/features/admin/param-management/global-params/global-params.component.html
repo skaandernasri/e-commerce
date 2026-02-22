@@ -1,0 +1,165 @@
+<!-- admin-global-settings.component.html -->
+<div class="min-h-screen p-6 bg-[var(--background)]">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[var(--text)] mb-2">Paramètres Globaux</h1>
+      <p class="text-[var(--text)] opacity-70">Gérez les paramètres généraux de votre site</p>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="bg-[var(--surface)] rounded-lg shadow-md p-12 text-center">
+      <div class="animate-spin inline-block w-12 h-12 border-4 border-[var(--primary)] border-t-transparent rounded-full"></div>
+      <p class="mt-4 text-[var(--text)] opacity-70">Chargement...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage()" class="mb-6 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded transition-all duration-300">
+      <div class="flex items-center">
+        <span class="text-2xl mr-2">⚠️</span>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="saveSuccess()" class="mb-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded transition-all duration-300 animate-fade-in">
+      <div class="flex items-center">
+        <span class="text-2xl mr-2">✓</span>
+        <span>Configuration sauvegardée avec succès!</span>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!isLoading()" class="bg-[var(--surface)] rounded-lg shadow-md">
+      <div class="p-6 border-b border-[var(--background)]">
+        <h2 class="text-xl font-semibold text-[var(--text)] flex items-center">
+          <span class="text-2xl mr-2">🚚</span>
+          Configuration de la Livraison
+        </h2>
+      </div>
+
+      <form [formGroup]="configForm" (ngSubmit)="saveConfig()" class="p-6">
+        <div class="space-y-6">
+          <!-- Valeur de Livraison -->
+          <div class="transition-all duration-200">
+            <label class="block text-sm font-medium text-[var(--text)] mb-2">
+              Frais de livraison (en TND) *
+            </label>
+            <div class="relative">
+              <input 
+                type="number" 
+                formControlName="valeurLivraison"
+                step="0.01"
+                min="0"
+                placeholder="Ex: 7.00"
+                class="w-full px-4 py-3 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-20 transition-all duration-200"
+                [class.border-red-500]="valeurLivraisonControl?.invalid && valeurLivraisonControl?.touched"
+                [class.focus:border-red-500]="valeurLivraisonControl?.invalid && valeurLivraisonControl?.touched">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text)] opacity-50 font-medium pointer-events-none">
+                TND
+              </span>
+            </div>
+            <p class="mt-2 text-sm text-[var(--text)] opacity-60">
+              Le montant des frais de livraison standard appliqués aux commandes
+            </p>
+            <p *ngIf="valeurLivraisonControl?.invalid && valeurLivraisonControl?.touched" 
+               class="mt-1 text-sm text-red-500 animate-fade-in">
+              Veuillez entrer un montant valide (minimum 0)
+            </p>
+          </div>
+
+          <!-- Seuil Livraison Gratuite -->
+          <div class="transition-all duration-200">
+            <label class="block text-sm font-medium text-[var(--text)] mb-2">
+              Seuil de livraison gratuite (en TND) *
+            </label>
+            <div class="relative">
+              <input 
+                type="number" 
+                formControlName="seuilLivraisonGratuite"
+                step="0.01"
+                min="0"
+                placeholder="Ex: 100.00"
+                class="w-full px-4 py-3 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-20 transition-all duration-200"
+                [class.border-red-500]="seuilLivraisonGratuiteControl?.invalid && seuilLivraisonGratuiteControl?.touched"
+                [class.focus:border-red-500]="seuilLivraisonGratuiteControl?.invalid && seuilLivraisonGratuiteControl?.touched">
+              <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--text)] opacity-50 font-medium pointer-events-none">
+                TND
+              </span>
+            </div>
+            <p class="mt-2 text-sm text-[var(--text)] opacity-60">
+              Montant minimum de commande pour bénéficier de la livraison gratuite
+            </p>
+            <p *ngIf="seuilLivraisonGratuiteControl?.invalid && seuilLivraisonGratuiteControl?.touched" 
+               class="mt-1 text-sm text-red-500 animate-fade-in">
+              Veuillez entrer un montant valide (minimum 0)
+            </p>
+          </div>
+
+          <!-- Preview Section -->
+          <div class="mt-8 p-4 bg-[var(--background)] rounded-lg border-2 border-dashed border-[var(--primary)] border-opacity-30 transition-all duration-200 hover:border-opacity-50">
+            <h3 class="text-sm font-semibold text-[var(--text)] mb-3 flex items-center">
+              <span class="text-xl mr-2">👁️</span>
+              Aperçu
+            </h3>
+            <div class="space-y-2 text-sm text-[var(--text)]">
+              <p class="flex justify-between items-center">
+                <span class="opacity-70">Frais de livraison standard:</span>
+                <span class="font-bold">{{ configForm.value.valeurLivraison || 0 | number:'1.2-2' }} TND</span>
+              </p>
+              <p class="flex justify-between items-center">
+                <span class="opacity-70">Livraison gratuite à partir de:</span>
+                <span class="font-bold">{{ configForm.value.seuilLivraisonGratuite || 0 | number:'1.2-2' }} TND</span>
+              </p>
+              <p *ngIf="configForm.value.valeurLivraison > 0 && configForm.value.seuilLivraisonGratuite > 0" 
+                 class="mt-3 p-3 bg-[var(--primary)] bg-opacity-10 rounded text-[var(--text)] transition-all duration-200">
+                💡 Les clients économiseront <strong>{{ configForm.value.valeurLivraison | number:'1.2-2' }} TND</strong> 
+                en commandant pour au moins <strong>{{ configForm.value.seuilLivraisonGratuite | number:'1.2-2' }} TND</strong>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[var(--background)]">
+          <button 
+            type="button"
+            (click)="resetForm()"
+            [disabled]="isSaving()"
+            class="px-6 py-2.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 active:scale-100">
+            Réinitialiser
+          </button>
+          <button 
+            type="submit"
+            [disabled]="!configForm.valid || isSaving()"
+            class="px-6 py-2.5 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transform hover:scale-105 active:scale-100">
+            <span *ngIf="isSaving()" class="animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+            <span>{{ isSaving() ? 'Enregistrement...' : 'Enregistrer' }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Additional Info Card -->
+    <!-- <div class="mt-6 bg-[var(--surface)] rounded-lg shadow-md p-6 transition-all duration-200 hover:shadow-lg">
+      <h3 class="text-lg font-semibold text-[var(--text)] mb-3 flex items-center">
+        <span class="text-xl mr-2">ℹ️</span>
+        Informations
+      </h3>
+      <div class="space-y-2 text-sm text-[var(--text)] opacity-70">
+        <p class="flex items-start">
+          <span class="mr-2">•</span>
+          <span>Les modifications seront appliquées immédiatement sur tout le site</span>
+        </p>
+        <p class="flex items-start">
+          <span class="mr-2">•</span>
+          <span>Les frais de livraison s'appliquent automatiquement aux commandes</span>
+        </p>
+        <p class="flex items-start">
+          <span class="mr-2">•</span>
+          <span>La livraison gratuite est offerte lorsque le montant total de la commande atteint le seuil défini</span>
+        </p>
+      </div>
+    </div> -->
+  </div>
+</div>

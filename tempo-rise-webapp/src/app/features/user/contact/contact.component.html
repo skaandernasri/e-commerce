@@ -1,0 +1,120 @@
+<div class="p-4 md:p-8 max-w-2xl mx-auto">
+  <ng-container>
+    <h2 class="text-xl md:text-2xl font-semibold mb-4">{{ 'CONTACT.TITLE' | translate }}</h2>
+
+    <!-- Society Information Section -->
+     @if(activeSocietyInfoSection()){
+    <div [id]="activeSocietyInfoSection()?.type" class="mb-6 p-4 bg-[var(--background)] border border-gray-200 rounded-md">
+      <h3 class="text-lg font-medium mb-3">{{ 'CONTACT.SOCIETY_INFO' | translate }}</h3>
+      <div class="space-y-2">
+        <div class="flex items-start">
+          <span class="font-medium mr-2">{{ 'CONTACT.SOCIETY_NUMBER' | translate }}:</span>
+          <span class="text-[var(--text)]">{{ sociatyInfoContent()?.telephone }}</span>
+        </div>
+        <div class="flex items-start">
+          <span class="font-medium mr-2">{{ 'CONTACT.SOCIETY_EMAIL' | translate }}:</span>
+          <span class="text-[var(--text)]">{{ sociatyInfoContent()?.adressMail }}</span>
+        </div>
+      </div>
+    </div>
+}
+
+    <!-- Contact Form Section -->
+    <form [formGroup]="contactForm" (ngSubmit)="submit()" class="space-y-4">
+      <!-- email field-->
+       <div>
+        <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.EMAIL.LABEL' | translate }}</label>
+        <input
+          formControlName="email"
+          type="text"
+          class="w-full p-2 border rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+        />
+        @if(contactForm.get('email')?.touched){
+          <div class="text-red-500 text-sm mt-1">
+            @if(contactForm.get('email')?.errors?.['required']){
+              {{ 'CHECKOUT.EMAIL.REQUIRED' | translate }}
+            }
+            @if(contactForm.get('email')?.errors?.['email']){
+              {{ 'CHECKOUT.EMAIL.INVALID' | translate }}
+            }
+          </div>
+        }
+       </div>
+      <div>
+        <label class="block mb-1 text-sm font-medium">{{ 'CONTACT.SUBJECT' | translate }}</label>
+        <input
+          formControlName="subject"
+          type="text"
+          class="w-full p-2 border rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+        />
+      </div>
+
+      <div>
+        <label class="block mb-1 text-sm font-medium">{{ 'CONTACT.MESSAGE' | translate }}</label>
+        <textarea
+          formControlName="message"
+          rows="4"
+          class="w-full p-2 border rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+        ></textarea>
+      </div>
+
+      <!-- <div>
+        <label class="block mb-1 text-sm font-medium">{{ 'CONTACT.TYPE' | translate }}</label>
+        <select
+          formControlName="type"
+          class="w-full p-2 border rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+        >
+          <option value="AIDE">{{ 'CONTACT.HELP' | translate }}</option>
+          <option value="RETOUR">{{ 'CONTACT.RETURN' | translate }}</option>
+        </select>
+      </div>
+
+      @if(contactForm.get('type')?.value === 'RETOUR'){
+      <div>
+        <label class="block mb-1 text-sm font-medium">{{ 'CONTACT.ORDER' | translate }}</label>
+        <select
+          formControlName="commandeId"
+          class="w-full p-2 border rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+        >
+          <option [value]="null">{{ 'CONTACT.SELECT_ORDER' | translate }}</option>
+          @for(cmd of commandes; track cmd.id) {
+          <option [value]="cmd.id">{{ 'CONTACT.ORDER_NUMBER' | translate }} #{{ cmd.id }}</option>
+          }
+        </select>
+      </div>
+      } -->
+
+      @if(sendButtonIsLoading){
+      <div class="flex justify-center">
+        <div
+          class="animate-spin inline-block w-6 h-6 border-[3px] border-current border-t-transparent text-[var(--primary)] rounded-full"
+          role="status"
+          aria-label="loading"
+        >
+          <span class="sr-only">{{ 'CONTACT.LOADING' | translate }}</span>
+        </div>
+      </div>
+      } @else {
+      <button
+        type="submit"
+        [disabled]="contactForm.invalid"
+        class="bg-[var(--primary)] hover:bg-[var(--hover)] text-white font-medium px-4 py-2 rounded"
+      >
+        {{ 'CONTACT.SEND' | translate }}
+      </button>
+      }
+    </form>
+  </ng-container>
+
+   <!-- @else {
+  <div class="text-center mt-12">
+    <p class="text-lg font-medium mb-4">{{ 'CONTACT.LOGIN_PROMPT' | translate }}</p>
+    <button
+      (click)="redirectToLogin()"
+      class="bg-[var(--primary)] hover:bg-[var(--hover)] text-white font-medium px-4 py-2 rounded"
+    >
+      {{ 'CONTACT.GO_TO_LOGIN' | translate }}
+    </button>
+  </div>
+  } -->
+</div>

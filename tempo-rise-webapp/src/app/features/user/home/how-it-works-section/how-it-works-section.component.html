@@ -1,0 +1,16 @@
+ @if(activeContent3Section()){
+<section [id]="activeContent3Section()?.type" class="py-12 sm:py-16 px-4 sm:px-6 rounded-lg">
+  <div class="max-w-6xl mx-auto">
+    <img [src]="activeContent3Section()?.imageUrl ? imageBaseUrl + activeContent3Section()?.imageUrl: imageAltRecord['content3'][0]" alt="Comment ça marche ?" class="w-full">
+    <!-- @if(language() == 'fr'){
+    <img src="assets/images/home/Frame347(fr).png" alt="Comment ça marche ?" class="w-full">
+    }
+    @else if(language() == 'en'){
+    <img src="assets/images/home/Frame347(en).png" alt="How it works ?" class="w-full">
+    }
+    @else {
+    <img src="assets/images/home/Frame347(ar).png" alt="كيف يعمل؟" class="w-full">
+    } -->
+  </div>
+</section>
+}

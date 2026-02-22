@@ -1,0 +1,41 @@
+@startuml
+
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +prenom: String
+    +email: String
+    +loyaltyGroup: Integer
+}
+
+class CodePromo {
+    +id: Long
+    +code: String
+    +reduction: Double
+    +dateExpiration: Date
+    +utilisateur: Utilisateur
+    +envoye: Boolean
+}
+
+class Notification {
+    +id: Long
+    +message: String
+    +dateEnvoi: Date
+    +utilisateur: Utilisateur
+    +lu: Boolean
+}
+
+class Email {
+    +id: Long
+    +destinataire: String
+    +sujet: String
+    +contenu: String
+    +dateEnvoi: Date
+    +envoye: Boolean
+}
+
+Utilisateur "1" -- "0..*" CodePromo : reçoit
+Utilisateur "1" -- "0..*" Notification : reçoit
+Utilisateur "1" -- "0..*" Email : reçoit
+
+@enduml

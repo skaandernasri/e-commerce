@@ -1,0 +1,32 @@
+ @if(activeFAQSection()){
+<section  [id]="activeFAQSection()?.type" class="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4 sm:mb-6">{{ faqContent()?.title }}</h2>
+    <p class="text-base sm:text-lg text-gray-600 text-center mb-8 sm:mb-12">{{ faqContent()?.subtitle }}</p>
+    
+    <div class="space-y-3 sm:space-y-4">
+      <!-- FAQ Items - shortened for brevity, same pattern as before but with responsive text sizes -->
+       @for(faq of faqContent()?.qna; let i = $index ; track i) {
+         <div class="border-b border-gray-200 pb-3 sm:pb-4">
+        <button 
+          class="flex justify-between items-center w-full text-left font-semibold text-base sm:text-lg text-gray-800 hover:text-gray-900 py-3 sm:py-4"
+          (click)="toggleFAQ(i)"
+        >
+          <span>{{ faq.question }}</span>
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 ml-2 transition-transform duration-300" [ngClass]="{ 'rotate-180': activeFAQ === i }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <div class="overflow-hidden transition-all duration-300" [class]="activeFAQ === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'">
+          <div class="pb-3 sm:pb-4 text-gray-600 text-sm sm:text-base">
+            <p>{{ faq.answer }}</p>
+          </div>
+        </div>
+      </div>
+       }
+      
+      <!-- Additional FAQ items follow same pattern -->
+    </div>
+  </div>
+</section>
+ }

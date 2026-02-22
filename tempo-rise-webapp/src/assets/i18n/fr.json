@@ -1,0 +1,695 @@
+{
+    "TITLE": "Site E-commerce",
+    "WELCOME_HEADING": "Bienvenue dans notre magasin",
+    "FEATURED_PRODUCTS_TITLE": "Produits phares",
+    "FEATURED_PRODUCTS_DESCRIPTION": "Découvrez notre dernière collection de produits.",
+    "SHOP_NOW_BUTTON": "Achetez maintenant",
+    "SPECIAL_OFFERS_TITLE": "Offres spéciales",
+    "SPECIAL_OFFERS_DESCRIPTION": "Découvrez nos offres et réductions actuelles.",
+    "VIEW_OFFERS_BUTTON": "Voir les offres",
+    "LATEST_BLOG_POSTS_TITLE": "Derniers articles du blog",
+    "LATEST_BLOG_POSTS_DESCRIPTION": "Lisez nos derniers articles et mises à jour.",
+    "READ_BLOG_BUTTON": "Lire le blog",
+    "HEADER": {
+      "HOME": "Accueil",
+      "PRODUCTS": "Produits",
+      "BLOG": "Blog",
+      "CONTACT": "Contact",
+      "TOGGLE_NAV": "Basculer la navigation",
+      "SEARCH_PLACEHOLDER": "Rechercher des produits...",
+      "SEARCH": "Rechercher",
+      "CART": "Panier",
+      "NOTIFICATIONS": "Notifications",
+      "LOAD_MORE": "Voir plus",
+      "NO_NOTIFICATIONS": "Aucune notification",
+      "LOADING": "Chargement...",
+      "DASHBOARD": "Tableau de bord"
+    },
+    "DASHBOARD": {
+      "ADMIN": "Admin"
+    },
+    "USER_MENU": {
+    "ACCOUNT":  "Compte",
+    "PROFILE": "Profil",
+    "ORDERS": "Commandes",
+    "LOGOUT": "Déconnexion",
+    "LOGIN": "Connexion",
+    "WHISHLIST": "Liste de souhaits"
+  },
+      "footer": {
+        "about": "À propos",
+        "description": "E-Store est votre destination en ligne pour des produits de qualité. Nous nous engageons à offrir une expérience d'achat exceptionnelle à nos clients.",
+        "quickLinks": "Liens rapides",
+        "home": "Accueil",
+        "products": "Produits",
+        "blog": "Blog",
+        "contact": "Contact",
+        "followUs": "Suivez-nous",
+        "socialMedia": {
+          "facebook": "Facebook",
+          "instagram": "Instagram",
+          "linkedin": "LinkedIn"
+        },
+        "copyright": "© {{ currentYear }} E-Store - Tous droits réservés"
+      },
+      
+  "HOME": {
+    "HERO": {
+      "TITLE": "PROTÉGEZ-VOUS ET LA PLANÈTE, EN TOUTE TRANSPARENCE.",
+      "SUBTITLE": "Une lingerie menstruelle innovante conçue pour le confort, le style et la durabilité.",
+      "BUTTON": "Acheter maintenant"
+    },
+    "PRODUCTS": {
+      "TITLE": "NOS PRODUITS",
+      "NOIMAGE": "Image non disponible",
+      "NODESCRIPTION": "Description non disponible",
+      "NOPRODUCTS": "Aucun produit disponible pour le moment",
+      "VIEWALL": "Voir tous les produits"
+    },
+    "FEATURES": {
+      "TITLE": "PARCE QUE VOTRE CORPS MÉRITE LE MEILLEUR, À CHAQUE CYCLE.",
+      "SUBTITLE": "Douce, naturelle et conçue pour vos règles.",
+      "INGREDIENTS": {
+        "TITLE": "Ingrédients",
+        "TEXT": "Naturel"
+      },
+      "PROTECTION": {
+        "TITLE": "Protection",
+        "TEXT": "Approuvée"
+      },
+      "OEKOTEX": {
+        "TITLE": "Oeko Tex",
+        "TEXT": "Certifiée"
+      },
+      "ODORFREE": {
+        "TITLE": "Sans odeur"
+      }
+    },
+    "ADVANTAGES": {
+      "TITLE": "6 AVANTAGES DES CULOTTES MENSTRUELLES",
+      "LONGTERMSAVINGS": "Économie à long terme",
+      "BODYPOSITIVITY": "Positivité corporelle",
+      "LESSEXPOSURE": "Exposition réduite aux produits",
+      "VERSATILITY": "Polyvalence et commodité",
+      "ECOFRIENDLY": "Solution écologique",
+      "COMFORT": "Confort et respirabilité"
+    },
+    "IMAGETEXT": {
+      "TITLE": "Positivité corporelle",
+      "DESCRIPTION": "En Europe et aux États-Unis, plus de 80 % des produits menstruels finissent dans des décharges, où les serviettes jetables peuvent mettre de 500 à 800 ans à se décomposer. Ceux qui ne le sont pas finissent souvent dans les systèmes d’eau."
+    },
+    "MISSION": {
+      "TITLE": "NOTRE MISSION",
+      "SUBTITLE": "Vivre la vie au rythme parfait.",
+      "COMFORT": {
+        "TITLE": "Confort",
+        "TEXT": "Créer une lingerie menstruelle confortable, parfaite pour toutes."
+      },
+      "DURABILITY": {
+        "TITLE": "Durabilité",
+        "TEXT": "Peut durer jusqu’à 2 à 5 ans."
+      },
+      "ECORESPONSIBILITY": {
+        "TITLE": "Écoresponsabilité",
+        "TEXT": "Fabriquée dans le respect de l’environnement."
+      }
+    },
+    "CTA": {
+      "TITLE": "Avancez avec force, confort et confiance.",
+      "BUTTON": "Acheter maintenant"
+    },
+    "LEARNMORE": {
+      "TITLE": "En savoir plus sur les règles",
+      "HEALTHHYGIENE": "Santé et hygiène menstruelles",
+      "ULTIMATEGUIDE": "Le guide ultime de l'utilisation des culottes menstruelles",
+      "CRAMPS": "Comment se débarrasser des crampes menstruelles"
+    },
+    "TESTIMONIALS": {
+      "TITLE": "NOS COMMENTAIRES",
+      "NOREVIEWS": "Aucun avis disponible."
+    },
+    "FAQ": {
+  "TITLE": "Questions fréquemment posées",
+  "SUBTITLE": "C’est normal de poser des questions. Voici tout ce que vous devez savoir sur Tempo et sur l’utilisation des culottes menstruelles.",
+  "ITEMS": [
+    {
+      "QUESTION": "Comment fonctionne la lingerie menstruelle Tempo ?",
+      "ANSWER": "La lingerie menstruelle Tempo utilise une technologie absorbante multicouche qui retient le flux menstruel tout en restant sèche au contact de la peau."
+    },
+    {
+      "QUESTION": "Comment choisir la bonne taille ?",
+      "ANSWER": "Consultez notre guide des tailles disponible sur notre site. Nous recommandons de prendre vos mesures naturelles sans ajustement et de les comparer à notre tableau."
+    },
+    {
+      "QUESTION": "Les produits Tempo sont-ils sécurisés pour la peau sensible ?",
+      "ANSWER": "Oui, nos produits sont hypoallergéniques et testés dermatologiquement. Ils ne contiennent pas de produits chimiques irritants."
+    },
+    {
+      "QUESTION": "Est-ce que vos produits respectent l'environnement ?",
+      "ANSWER": "Absolument. Nous utilisons des matériaux durables et notre processus de fabrication réduit considérablement l'impact environnemental par rapport aux protections jetables."
+    }
+  ]
+}
+,
+    "NEWSLETTER": {
+      "TITLE": "SOYEZ LA PREMIÈRE À SENTIR LA DIFFÉRENCE DE TEMPO !",
+      "SUBTITLE": "Inscrivez-vous pour recevoir les dernières mises à jour, des aperçus et des offres spéciales.",
+      "EMAILPLACEHOLDER": "Saisissez votre adresse e-mail",
+      "BUTTON": "S'inscrire maintenant"
+    }
+  },
+  "PRODUCTS": {
+  "TITLE": "Nos Produits",
+  "NO_MATCH": "Aucun produit ne correspond à vos filtres.",
+  "FILTERS": {
+    "TITLE": "Filtres",
+    "PRICE": "Prix",
+    "CATEGORIES": "Catégories",
+    "PROMOTION": "Promotion",
+    "RESET": "Réinitialiser les filtres"
+  }
+},
+"PAGINATION": {
+  "SHOWING": "Affichage de {{ start }} à {{ end }} sur {{ total }} entrées",
+  "PREVIOUS": "Précédent",
+  "NEXT": "Suivant"
+},
+"PRODUCT_DETAILS": {
+  "BREADCRUMB_HOME": "Accueil",
+  "BREADCRUMB_PRODUCTS": "Produits",
+  "REVIEWS": "avis",
+  "SIZE": "Taille",
+  "COLOR": "Couleur",
+  "QUANTITY": "Quantité",
+  "SELECT_SIZE": "Choisir la taille",
+  "SELECT_COLOR": "Choisir la couleur",
+  "SELECT_SIZE_COLOR": "Choisir la taille et la couleur",
+  "ADD_TO_CART": "Ajouter au panier",
+  "OUT_OF_STOCK": "Rupture de stock",
+  "ADD_TO_WISHLIST": "Ajouter à la liste de souhaits",
+  "REVIEWS_SECTION_TITLE": "Nos Avis",
+  "REVIEWS_SECTION_SUBTITLE": "Parlez-nous de votre expérience",
+  "CANCEL": "Annuler",
+  "WRITE_REVIEW": "Rédiger un avis",
+  "FIRST_REVIEW": "Soyez le premier à donner votre avis",
+  "WRITE_YOUR_REVIEW": "Écrire votre avis",
+  "RATING": "Note :",
+  "YOUR_REVIEW": "Votre avis",
+  "PLACEHOLDER_REVIEW": "Partagez vos impressions sur ce produit...",
+  "SUBMIT_REVIEW": "Soumettre l'avis",
+  "PRODUCT_NOT_FOUND": "Produit introuvable",
+  "PRODUCT_NOT_FOUND_DESC": "Le produit que vous recherchez n'existe pas ou a été supprimé.",
+  "BROWSE_PRODUCTS": "Voir les produits",
+  "RECOMMENDED_PRODUCTS": "Produits recommandés",
+  "IMAGE_NOT_AVAILABLE": "Image non disponible",
+  "DESCRIPTION_NOT_AVAILABLE": "Description non disponible",
+  "NO_RECOMMENDED": "Aucun produit recommandé",
+  "NO_RECOMMENDED_DESC": "Aucun produit recommandé disponible.",
+  "NO_REVIEWS": "Aucun avis disponible.",
+  "BACK_TO_PRODUCTS": "Retour aux produits",
+  "PRODUCT_NOT_FOUND_MESSAGE": "Le produit que vous recherchez n'existe pas ou a been supprimé."
+},
+  "SWAL": {
+    "SUCCESS": "Succès",
+    "ERROR": "Erreur",
+    "ORDER_ITEM_SUCCESS_UPDATE": "Article de la commande mis à jour",
+    "ORDER_ITEM_FAILED_UPDATE": "Échec de la mise à jour de l'article de la commande",
+    "WARNING": "Avertissement",
+    "INFO": "Info",
+    "ACTION_CONFIRM": "Exécuter",
+    "CANCEL": "Annuler",
+    "NOT_AVAILABLE": "Description non disponible",
+    "NO_RECOMMENDED": "Aucun produit recommandé",
+    "NO_RECOMMENDED_DESC": "Aucun produit recommandé pour le moment",
+    "PAYMENT_SUCCESS": "Paiement réussi",
+    "PAYMENT_ERROR": "Échec du paiement",
+    "LOGIN_REQUIRED": "Connexion requise",
+    "ACTION_REQUIRED": "Action requise",
+    "PROFILE_UPDATED": "Profil mis à jour avec succès",
+    "PASSWORD_CHANGED": "Mot de passe modifié avec succès",
+    "CHECKOUT_CONFIRM_MESSAGE": "Vous voulez vraiment confirmer cette commande ?",
+    "CHECKOUT_CONFIRM_TITLE": "Confirmer la commande",
+    "ORDER_CREATED": "Commande créée avec succès",
+    "ORDER_ERROR": "Échec de la création de la commande",
+    "ORDER_STATUS_UPDATED": "Statut de la commande mis à jour",
+    "ORDER_STATUS_UPDATE_ERROR": "Échec de la mise à jour du statut de la commande",
+    "ORDER_ITEM_DELETED": "Article de la commande supprimé",
+    "ORDER_ITEM_DELETED_FAILED": "Échec de la suppression de l'article de la commande",
+    "REVIEW_SUBMITTED": "Avis soumis avec succès",
+    "REVIEW_SUBMIT_FAILED": "Échec de l'envoi de l'avis",
+    "SELECT_SIZE_COLOR": "Veuillez sélectionner la taille et la couleur",
+    "LOGIN_REQUIRED_WISHLIST": "Vous devez vous connecter pour ajouter un article à la liste de souhaits !",
+    "WISHLIST_ADDED": "Article ajouté à la liste de souhaits avec succès",
+    "WISHLIST_ADD_FAILED": "Échec de l'ajout à la liste de souhaits",
+    "ACCOUNT_ACTIVATED": "Compte activé avec succès",
+    "INVALID_OR_EXPIRED_TOKEN": "Lien invalide ou jeton expiré",
+    "INVALID_CREDENTIALS": "Identifiants invalides",
+    "ACCOUNT_NOT_VERIFIED": "Un e-mail de vérification a été envoyé. Veuillez vérifier votre boîte de réception.",
+    "SIGNIN_FAILED": "Échec de la connexion. Veuillez réessayer.",
+    "EMAIL_SENT_SUCCESS": "E-mail envoyé avec succès",
+    "ERROR_SENDING_EMAIL": "Erreur lors de l’envoi de l’e-mail",
+    "GOOGLE_SIGNIN_FAILED": "La connexion Google a échoué. Veuillez réessayer.",
+    "INSUFFICIENT_STOCK": "Stock insuffisant",
+    "WISHLIST": {
+      "WISHLIST_ADDED": "Article ajouté à la liste de souhaits avec succès",
+      "WISHLIST_ADD_FAILED": "Échec de l'ajout à la liste de souhaits",
+      "ALREADY_IN_WISHLIST": "Article deja dans la liste de souhaits"
+    },
+
+      "CART": {
+    "FAILED_CREATE": "Échec de la création du panier",
+    "CLEARED": "Panier vidé avec succès",
+    "FAILED_UPDATE": "Échec de la mise à jour du panier",
+    "NOT_ENOUGH_QUANTITY": "Quantité disponible insuffisante",
+    "USER_ID_REQUIRED": "ID utilisateur requis",
+    "QUANTITY_POSITIVE": "La quantité doit être positive",
+    "FAILED_RETRIEVE": "Échec de la récupération du panier",
+    "FAILED_LOAD_IMAGES": "Échec du chargement des images du panier pour l’article {{id}}",
+    "ITEM_ADDED_CART": "Article ajouté au panier",
+    "ITEM_REMOVED_CART": "Article retiré du panier",
+    "CART_MERGE_FAILED": "Échec de la fusion des paniers",
+    "ITEM_QUANTITY_UPDATED": "Quantité de l'article mise à jour avec succès",
+    "INVALID_FORM_OR_EMPTY_CART": "Formulaire invalide ou panier vide",
+    "CART_MERGED_SUCCESS": "Panier fusionné avec succès",
+    "ADD_CART_FAILED": "Échec de l'ajout de l'article au panier"
+
+
+  },
+  "PROMOTION": {
+    "SAVED_SUCCESSFULLY": "Promotion enregistrée avec succès",
+    "FAILED_SAVE": "Échec de l'enregistrement de la promotion",
+    "PROMOCODE_APPLIED": "Code promo appliqué!"
+  },
+  "USER": {
+    "FAILED_LOAD": "Échec de la chargement de l'utilisateur",
+    "SUCCESS_UPDATE": "Utilisateur mis à jour avec succès",
+    "SUCCESS_DELETE": "Utilisateur supprimé avec succès",
+    "FAILED_DELETE": "Échec de la suppression de l'utilisateur",
+    "FAILED_UPDATE": "Échec de la mise à jour de l'utilisateur"
+  },
+  "ADDRESS": {
+    "FAILED_LOAD": "Échec de la chargement de l'adresse",
+    "FAILED_CREATE": "Échec de la création de l'adresse",
+    "SUCCESS_CREATE": "Adresse créee avec succès",
+    "SUCCESS_UPDATE": "Adresse mise à jour avec succès",
+    "SUCCESS_DELETE": "Adresse supprimée avec succès",
+    "FAILED_DELETE": "Échec de la suppression de l'adresse",
+    "FAILED_UPDATE": "Échec de la mise à jour de l'adresse",
+    "FAILED_DELETE_LINKED_ORDER": "Échec de la suppression de l'adresse liée à une commande"
+  },
+  "CONTACT":{
+    "VALID_FIELDS": "Veuillez remplir tous les champs obligatoires",
+    "FAILED_SEND": "Erreur lors de l'envoi du message",
+    "SUCCESS_SEND": "Message envoyé avec succès"
+  },
+  "INVOICE":{
+    "ELEMENT_NOT_FOUND":"Element de facture introuvable",
+    "FAILED_LOAD": "Échec de la chargement de la facture"
+  },
+  "PROFILE":{
+    "IMAGE_UPDATE_SUCCESS":"Image de profil mise à jour avec succès",
+    "IMAGE_UPDATE_FAILED":"Échec de la mise à jour de l'image de profil",
+    "IMAGE_LOAD_FAILED":"Échec du chargement de l'image de profil",
+    "UPDATE_SUCCESS":"Profil mis à jour avec succès",
+    "UPDATE_FAILED":"Échec de la mise à jour du profil"
+  },
+  "ORDERS":{
+    "FAILED_LOAD": "Échec de la chargement des commandes",
+    "SUCCESS_UPDATE": "Statut de la commande mis à jour avec succès",
+    "FAILED_UPDATE": "Échec de la mise à jour du statut de la commande"
+  },
+  "PRODUCTS":{
+    "FAILED_UPDATE": "Échec de la mise à jour de l'article",
+    "SUCCESS_UPDATE": "Article mis à jour avec succès",
+    "FAILED_LOAD": "Échec de la chargement de l'article",
+    "SUCCESS_LOAD": "Article chargé avec succès",
+    "FAILED_DELETE": "Échec de la suppression de l'article",
+    "SUCCESS_DELETE": "Article supprimé avec succès",
+    "INVALID_IMAGE_TYPE": "Type d'image non supporté, il doit s'agir d'une image JPEG, PNG, JPG"
+  }
+},
+  "CART": {
+    "TITLE": "Votre panier ({{count}})",
+    "CLEAR_ALL": "Tout supprimer",
+    "EMPTY": "Votre panier est vide",
+    "REMOVE": "Supprimer",
+    "RECOMMENDED": "Vous pourriez aussi aimer",
+    "NO_IMAGE": "Image non disponible",
+    "SUBTOTAL": "Sous-total",
+    "SHIPPING": "Livraison",
+    "TOTAL": "Total",
+    "CHECKOUT": "Passer à la caisse"
+  },
+  "BLOG": {
+  "TITLE": "Notre Blog",
+  "NO_POSTS": "Aucun article disponible pour le moment.",
+  "READ_MORE": "Lire plus"
+},
+"CONTACT": {
+  "TITLE": "Contacter le support",
+  "EMAIL": "Email",
+  "SUBJECT": "Sujet",
+  "MESSAGE": "Message",
+  "TYPE": "Type",
+  "HELP": "Aide",
+  "RETURN": "Retour",
+  "ORDER": "Commande",
+  "SELECT_ORDER": "Sélectionner une commande",
+  "ORDER_NUMBER": "Commande",
+  "SEND": "Envoyer le message",
+  "LOADING": "Chargement...",
+  "LOGIN_PROMPT": "Veuillez vous connecter pour envoyer une demande de contact.",
+  "GO_TO_LOGIN": "Aller à la connexion",
+  "SOCIETY_NUMBER": "Numéro",
+  "SOCIETY_EMAIL": "Email",
+  "SOCIETY_INFO": "Informations de la société"
+},
+
+ 
+  "profile": {
+    "title": "Mon Profil",
+    "personalInfo": {
+      "title": "Informations Personnelles",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "phoneNumber": "Numéro de Téléphone",
+      "dateOfBirth": "Date de Naissance",
+      "gender": "Genre",
+      "male": "HOMME",
+      "female": "FEMME",
+      "uploadPhoto": "Télécharger la Photo",
+      "saveChanges": "Enregistrer les Modifications"
+    },
+    "validation": {
+      "firstNameRequired": "Le prénom est requis.",
+      "firstNameMinLength": "Doit contenir au moins 4 caractères.",
+      "firstNamePattern": "Seules les lettres, espaces, traits d'union et apostrophes sont autorisés.",
+      "lastNameRequired": "Le nom est requis.",
+      "lastNameMinLength": "Doit contenir au moins 2 caractères.",
+      "lastNamePattern": "Seules les lettres, espaces, traits d'union et apostrophes sont autorisés.",
+      "phoneRequired": "Le numéro de téléphone est requis.",
+      "phoneMaxLength": "Doit contenir au maximum 20 caractères.",
+      "phoneMinLength": "Doit contenir au moins 8 caractères.",
+      "birthDateRequired": "La date de naissance est requise.",
+      "underage": "Vous devez avoir au moins 18 ans.",
+      "genderRequired": "Veuillez sélectionner votre genre."
+    },
+    "deliveryAddresses": {
+      "title": "Adresses de Livraison",
+      "addButton": "Ajouter une Adresse de Livraison",
+      "noAddresses": "Aucune adresse de livraison enregistrée"
+    },
+    "billingAddresses": {
+      "title": "Adresses de Facturation",
+      "addButton": "Ajouter une Adresse de Facturation",
+      "noAddresses": "Aucune adresse de facturation enregistrée"
+    },
+    "addressForm": {
+      "addDelivery": "Ajouter une Nouvelle Adresse de Livraison",
+      "editDelivery": "Modifier l'Adresse de Livraison",
+      "addBilling": "Ajouter une Nouvelle Adresse de Facturation",
+      "editBilling": "Modifier l'Adresse de Facturation",
+      "addressLine1": "Ligne d'Adresse 1",
+      "addressLine2": "Ligne d'Adresse 2",
+      "postalCode": "Code Postal",
+      "city": "Ville",
+      "country": "Pays",
+      "selectCountry": "Sélectionner un Pays",
+      "cancel": "Annuler",
+      "save": "Enregistrer l'Adresse",
+      "update": "Mettre à Jour l'Adresse"
+    },
+    "orderHistory": {
+      "title": "Historique des Commandes",
+      "orderNumber": "Commande #",
+      "placedOn": "Passée le :",
+      "status": "Statut :",
+      "paymentMethod": "Mode de Paiement :",
+      "downloadPdf": "télécharger le pdf",
+      "noOrders": "Vous n'avez pas encore passé de commandes"
+    }
+  },
+  "CONFIRM_DIALOG":{
+    "TITLE":"Confirmation",
+    "MESSAGE":"Voulez-vous vraiment supprimer cette adresse?",
+    "YES":"Oui",
+    "NO":"Non"
+  },
+  "ADMIN_SIDEBAR": {
+  "DASHBOARD": "Tableau de Bord",
+  "PRODUCTS": "Produits",
+  "MANAGE_PRODUCTS": "Gérer les Produits",
+  "USERS": "Utilisateurs",
+  "MANAGE_USERS": "Gérer les Utilisateurs",
+  "ORDERS": "Commandes",
+  "INVOICES": "Factures",
+  "MANAGE_INVOICES": "Gérer les Factures",
+  "REVIEWS": "Avis",
+  "BLOGS": "Blogs",
+  "MANAGE_BLOGS": "Gérer les Blogs",
+  "CATEGORIES": "Catégories",
+  "MANAGE_CATEGORIES": "Gérer les Catégories",
+  "PROMOTIONS": "Promotions",
+  "MANAGE_PROMOTIONS": "Gérer les Promotions",
+  "MANAGE_PROMO_CODES": "Gérer les Codes Promo",
+  "CONTACTS": "Contacts",
+  "RECOMMENDATION": "Système de Recommandation",
+  "MANAGE_SECTIONS": "Gérer les Sections",
+  "MANAGE_GENERAL": "Gérer les Paramétres Général"
+},
+  "ORDER_DETAILS": {
+    "TITLE": "Détails de la commande",
+    "PRINT_INVOICE": "Imprimer la facture",
+    "CUSTOMER_DETAILS": "Informations client",
+    "NAME": "Nom",
+    "EMAIL": "Email",
+    "PHONE": "Téléphone",
+    "SHIPPING_ADDRESS": "Adresse de livraison",
+    "PAYMENT_METHOD": "Méthode de paiement",
+    "ORDER_STATUS": "Statut de la commande",
+    "DELIVERED": "Livrée",
+    "IN_PROGRESS": "En cours",
+    "SHIPPED": "Expédiée",
+    "CHANGE_STATUS": "Changer le statut (Admin)",
+    "UPDATE_STATUS": "Mettre à jour",
+    "ORDER_ITEMS": "Articles commandés",
+    "PRODUCT": "Produit",
+    "COLOR": "Couleur",
+    "SIZE": "Taille",
+    "QUANTITY": "Quantité",
+    "PRICE": "Prix",
+    "TOTAL": "Total",
+    "ORDER_SUMMARY": "Résumé de la commande",
+    "PRODUCTS_SUBTOTAL": "Sous-total des produits",
+    "DISCOUNT": "Remise",
+    "SHIPPING_FEE": "Frais de livraison",
+    "EXPEDITION_DETAILS": "Détails de l'expédition",
+    "ANNULED": "Annulée",
+    "RETURN": "Retour",
+    "COMPLETED": "Terminée",
+    "PENDING": "En attente",
+    "CONFIRMED": "Confirmée",
+    "CANCELLED": "Annulée",
+    "IN_PROGRESS_PREPARATION": "En cours de preparation",
+    "ALL_STATUS": "Tous les statuts",
+    "MERGE_INVOICE": "Fusionner la facture"
+  },
+  "INVOICE_DETAILS":{
+    "TITLE": "Détails de la facture"
+
+  },
+  "PAYMENT":{
+    "LABEL": "Mode de Paiement",
+    "CASH": "Paiement à la livraison",
+    "CARD": "Carte bancaire",
+    "ERROR": "Veuillez sélectionner un mode de paiement",
+    "COMMING_SOON": "prochainement"
+  },
+  "COMPANY": {
+    "NAME": "TempoRise",
+    "CONTACT": "Contact",
+    "PHONE": "Téléphone"
+  },
+  "SHOW_MORE": "Afficher plus",
+  "SHOW_LESS": "Afficher moins",
+  
+  "CHECKOUT": {
+    "TITLE": "Livraison et Paiement",
+    "LEGAL_CONDITIONS": "J'accepte les conditions générales et la politique de confidentialité",
+    "EMAIL": {
+      "LABEL": "Adresse email",
+      "PLACEHOLDER": "vous@exemple.com",
+      "REQUIRED": "L'email est requis",
+      "INVALID": "L'email est invalide",
+      "HINT":"Example: user@example.com"
+    },
+    "FIRSTNAME": {
+      "LABEL": "Prénom",
+      "PLACEHOLDER": "Jean",
+      "REQUIRED": "Le prénom est requis",
+      "MINLENGTH": "Le prénom doit comporter au moins 2 caractères",
+      "PATTERN": "Le prénom ne peut contenir que des lettres",
+      "HINT":"Minimum 2 caractères, uniquement des lettres"
+    },
+    "LASTNAME": {
+      "LABEL": "Nom",
+      "PLACEHOLDER": "Dupont",
+      "REQUIRED": "Le nom est requis",
+      "MINLENGTH": "Le nom doit comporter au moins 2 caractères",
+      "PATTERN": "Le nom ne peut contenir que des lettres",
+      "HINT":"Minimum 2 caractères, uniquement des lettres"
+    },
+    "PHONE": {
+      "LABEL": "Numéro de téléphone",
+      "MAIN_LABEL": "Numéro de téléphone",
+      "CODE_PLACEHOLDER": "Code",
+      "SEARCH_PLACEHOLDER": "Rechercher",
+      "NO_ENTRIES": "Aucun pays trouvé",
+      "NATIONAL_NUMBER": "Numéro",
+      "HINT": "Sélectionnez un pays et tapez le numéro",
+      "INVALID_NUMBER": "Numéro invalide",
+      "REQUIRED_ERROR": "Ce champ est obligatoire"
+    },
+    "DELIVERY": {
+      "TITLE": "Adresse de livraison",
+      "ADD_NEW": "+ Ajouter une nouvelle adresse",
+      "NO_ADDRESS": "Aucune adresse de livraison enregistrée",
+      "NOT_SELECTED": "Aucune adresse de livraison choisie"
+    },
+    "BILLING": {
+      "TITLE": "Adresse de facturation",
+      "ADD_NEW": "+ Ajouter une nouvelle adresse",
+      "SAME": "Même adresse que l'adresse de livraison",
+      "DIFFERENT": "Adresse différente",
+      "NO_ADDRESS": "Aucune adresse de facturation enregistrée",
+      "NOT_SELECTED": "Aucune adresse de facturation choisie"
+    },
+    "PAYMENT": {
+      "LABEL": "Mode de paiement",
+      "CASH": "Paiement à la livraison",
+      "CARD": "Carte bancaire",
+      "ERROR": "Veuillez sélectionner un mode de paiement",
+      "COMMING_SOON": "prochainement"
+    },
+    "PROMO": {
+      "LABEL": "Code Promo",
+      "PLACEHOLDER": "Entrez le code promo",
+      "APPLY": "Appliquer"
+    },
+    "BUTTON": {
+      "COMPLETE": "Finaliser l'achat",
+      "LOADING": "Traitement en cours..."
+    },
+    "SUMMARY": {
+      "TITLE": "Récapitulatif de la commande",
+      "EMPTY": "Votre panier est vide",
+      "SUBTOTAL": "Sous-total",
+      "SHIPPING": "Frais de livraison",
+      "DISCOUNT": "Réduction",
+      "TOTAL": "Total",
+      "VARIANT": "Variante",
+      "QUANTITY": "Quantité"
+    },
+    "ADDRESS_FORM": {
+      "ADD_NEW": "Ajouter",
+      "EDIT": "Modifier",
+      "DELIVERY": "Livraison",
+      "BILLING": "Facturation",
+      "ADDRESS": "Adresse",
+      "FIELDS": {
+        "LINE1": "Première ligne",
+        "LINE1_PLACEHOLDER": "123 Rue Principale",
+        "LINE2": "Deuxième ligne (optionnel)",
+        "LINE2_PLACEHOLDER": "Apt 4B",
+        "CITY": "Ville",
+        "CITY_PLACEHOLDER": "Paris",
+        "ZIP": "Code Postal",
+        "ZIP_PLACEHOLDER": "12345",
+        "COUNTRY": "Pays",
+        "SELECT_COUNTRY": "Sélectionner un pays"
+      },
+      "ERRORS": {
+        "REQUIRED": "Ce champ est requis",
+        "ADDRESS_REQUIRED": "L'adresse est requise",
+        "CITY_REQUIRED": "La ville est requise",
+        "ZIP_REQUIRED": "Le code postal est requis",
+        "COUNTRY_REQUIRED": "Le pays est requis",
+        "ZIP_PATTERN": "Le code postal doit comporter 5 chiffres"
+      },
+      "ACTIONS": {
+        "CANCEL": "Annuler",
+        "SAVE": "Enregistrer",
+        "UPDATE": "Mettre à jour"
+      }
+    },
+    "EMPTY_CART": {
+      "TITLE": "Votre panier est vide",
+      "MESSAGE": "Il semblerait que vous n'ayez encore rien ajouté. Parcourez les produits et ajoutez-les à votre panier pour commencer votre commande.",
+      "BUTTON": "Continuer les achats"
+    }
+  },
+  "SAVE": "Économisez",
+  "AUTH": {
+    "LOGIN": {
+      "TITLE": "Connexion",
+      "SIGNING_IN": "Connexion en cours...",
+      "EMAIL_PLACEHOLDER": "Email",
+      "EMAIL_REQUIRED": "Email est requis",
+      "EMAIL_INVALID": "Veuillez entrer une adresse email valide",
+      "PASSWORD_PLACEHOLDER": "Mot de passe",
+      "PASSWORD_REQUIRED": "Mot de passe est requis",
+      "PASSWORD_MIN": "Le mot de passe doit comporter au moins 8 caractères",
+      "FORGOT_PASSWORD": "Mot de passe oublié?",
+      "SUBMIT": "Se connecter",
+      "OR_WEBSITE": "Ou",
+      "WEBSITE_LINK": "visitez notre site web",
+      "OR_SIGN_WITH": "Ou connectez-vous avec",
+      "GOOGLE_SIGNIN": "Connectez-vous avec Google",
+      "NO_ACCOUNT": "Vous n'avez pas de compte?",
+      "SIGN_UP": "Inscrivez-vous"
+    }
+  },
+    "SIGNUP": {
+    "TITLE": "Inscription",
+    "CREATING_ACCOUNT": "Création de votre compte...",
+    "ACCOUNT_CREATED": "Compte créé !",
+    "SETTING_UP": "Configuration de votre compte...",
+    "WELCOME": "Bienvenue dans notre communauté !",
+    "SUCCESS_MESSAGE": "Votre compte a été créé avec succès.",
+    "REDIRECTING": "Redirection vers la connexion...",
+    "EMAIL": "Email",
+    "EMAIL_REQUIRED": "L'email est requis.",
+    "EMAIL_INVALID": "Format d'email invalide.",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_REQUIRED": "Le mot de passe est requis.",
+    "PASSWORD_MINLENGTH": "Le mot de passe doit contenir au moins 8 caractères.",
+    "PASSWORD_PATTERN": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un caractère spécial.",
+    "CONFIRM_PASSWORD": "Confirmer le mot de passe",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirmer le mot de passe est requis.",
+    "PASSWORDS_MISMATCH": "Les mots de passe ne correspondent pas.",
+    "BIRTH_DATE": "Date de naissance",
+    "GENDER": "Genre",
+    "MALE": "Homme",
+    "FEMALE": "Femme",
+    "SUBMIT": "S'inscrire",
+    "PROCESSING": "Traitement...",
+    "OR_SIGNUP_WITH": "Ou inscrivez-vous avec",
+    "GOOGLE_SIGNIN": "Se connecter avec Google",
+    "ALREADY_HAVE_ACCOUNT": "Vous avez déjà un compte ?",
+    "LOGIN": "Connexion",
+    "GENDER_REQUIRED": "Veuillez sélectionner votre genre.",
+    "BIRTHDATE_REQUIRED": "La date de naissance est requise.",
+    "UNDERAGE": "Vous devez avoir au moins 18 ans.",
+    "EMAIL_ALREADY_EXISTS": "Un compte avec cette adresse email existe deja.",
+    "FAILED": "Inscription echouee."
+  }
+
+
+
+
+
+
+
+}
+
+    

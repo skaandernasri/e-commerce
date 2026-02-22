@@ -1,0 +1,51 @@
+<form [formGroup]="contentForm" (ngSubmit)="saveContent()">
+              <div class="space-y-4">
+                <div>
+                    <ngx-material-intl-tel-input
+  [fieldControl]="contentForm.controls['telephone']"
+  [required]="true"
+  [autoIpLookup]="false"
+  [autoSelectCountry]="true"
+  [autoSelectedCountry]="defaultCountry"
+  [numberValidation]="true"
+  [enableSearch]="true"
+  [includeDialCode]="false"
+  [emojiFlags]="false"
+  [hidePhoneIcon]="false"
+  [preferredCountries]="preferredCountries"
+  [enablePlaceholder]="true"
+  [textLabels]="{
+    mainLabel: ('CHECKOUT.PHONE.MAIN_LABEL' | translate),
+    codePlaceholder: ('CHECKOUT.PHONE.CODE_PLACEHOLDER' | translate),
+    searchPlaceholderLabel: ('CHECKOUT.PHONE.SEARCH_PLACEHOLDER' | translate),
+    noEntriesFoundLabel: ('CHECKOUT.PHONE.NO_ENTRIES' | translate),
+    nationalNumberLabel: ('CHECKOUT.PHONE.NATIONAL_NUMBER' | translate),
+    hintLabel: ('CHECKOUT.PHONE.HINT' | translate),
+    invalidNumberError: ('CHECKOUT.PHONE.INVALID_NUMBER' | translate),
+    requiredError: ('CHECKOUT.PHONE.REQUIRED_ERROR' | translate)
+  }">
+</ngx-material-intl-tel-input>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-[var(--text)] mb-2">Adresse mail</label>
+                  <input 
+                    type="email" 
+                    formControlName="adressMail"
+                    class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none">
+                </div>   
+                          </div>
+        
+
+
+
+              <!-- Save Button -->
+              <div class="mt-6">
+                <button 
+                  type="submit"
+                  [disabled]="!contentForm.valid"
+                  class="w-full px-6 py-3 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                  💾 Enregistrer le contenu
+                </button>
+              </div>
+            
+            </form>

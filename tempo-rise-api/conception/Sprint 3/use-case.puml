@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+rectangle "Sprint 3" {
+actor Utilisateur
+actor Administrateur
+
+package "Système de Recommandation" {
+
+    usecase "Consulter la page d’accueil" as UC1
+    usecase "Afficher les recommandations" as UC2
+    usecase "Réentraîner le modèle" as UC3
+    usecase "Évaluer le modèle" as UC4
+    usecase "Afficher les métriques (Précision, Rappel, AUC)" as UC5
+    usecase "Trouver la meilleur configuration pour le modéle (tuner le modèle)" as UC6
+
+    Utilisateur --> UC1
+    UC1 .> UC2 : include
+    Administrateur --> UC3
+    Administrateur --> UC4
+    Administrateur --> UC6
+    UC4 .> UC5 : include
+
+}
+}
+@enduml

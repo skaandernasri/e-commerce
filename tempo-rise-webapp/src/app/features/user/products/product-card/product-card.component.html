@@ -1,0 +1,89 @@
+<div class="hover:scale-105 transition duration-300 bg-[var(--surface)] rounded-lg shadow-md overflow-hidden flex flex-col">
+  <!-- Image Carousel -->
+  <div class="relative w-full h-48 overflow-hidden">
+    @if (product.imageProduits.length > 0) {
+      @for (img of product.imageProduits; track img.id; let i = $index) {
+        <img 
+        (click)="showProductDetails(product.id)"
+          [src]="imageBaseUrl+img.url"
+          [alt]="product.nom"
+          class="absolute w-full h-48 object-cover transition-opacity duration-300 cursor-pointer"
+          [class.opacity-100]="currentImageIndex[product.id] === i"
+          [class.opacity-0]="currentImageIndex[product.id] !== i"
+        />
+      }
+
+      <!-- Carousel Navigation -->
+      <div class="absolute bottom-2 left-0 right-0 flex justify-center space-x-2" >
+        @for (img of product.imageProduits; track img.id; let i = $index) {
+          <button
+            (click)="onImageChange(product.id,i)"
+            class="w-8 h-8 rounded-full border-2 transition-all"
+            [class.border-[var(--primary)]]="currentImageIndex[product.id] === i"
+            [class.border-transparent]="currentImageIndex[product.id] !== i"
+            aria-label="Select image thumbnail"
+          >
+            <img
+              [src]="imageBaseUrl+img.url"
+              alt="Thumbnail"
+              class="w-full h-full object-cover rounded-full"
+            />
+          </button>
+        }
+      </div>
+    } @else {
+      <img src="assets/images/no-image.png" alt="Product" class="w-full h-48 object-cover" />
+    }
+  </div>
+
+  <!-- Product Info -->
+  <div (click)="showProductDetails(product.id)" class="p-4 flex flex-col flex-grow cursor-pointer">
+    <h3 class="text-lg font-semibold mb-2 line-clamp-1">{{ product.nom }}</h3>
+
+    <app-rating [rating]="productRatings() || 0" [reviewCount]="productReviewCounts() || 0"></app-rating>
+
+                        <app-expand-long-text [text]="product.description" [id]="product!.id"></app-expand-long-text>
+
+    <!-- Stock Status -->
+    <div class="mb-4">
+      <span
+        class="text-sm font-medium px-2 py-0.5 rounded"
+      
+      >
+        <!-- [ngClass]="{
+          'bg-green-100 text-green-800': product.quantiteDisponible > 0,
+          'bg-red-100 text-red-800': product.quantiteDisponible <= 0
+        }" -->
+        <!-- {{ product.quantiteDisponible > 0 ? 'In stock' : 'Out of stock' }} -->
+      </span>
+
+      <!-- Price and Promotion -->
+      <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mt-2">
+        <span class="text-2xl font-bold text-[var(--text)] min-w-max">
+          {{ product.newPrice || product.prix | currencyFormat }}
+        </span>
+
+        @if (hasActivePromo(product) && currentPromotion(product)) {
+          @if(currentPromotion(product)?.type === "PERCENTAGE"){
+            <span class="text-lg text-[var(--secondary)] line-through min-w-max">
+              {{ product.prix | currencyFormat }}
+            </span>
+            <span class="bg-red-100 text-red-800 text-sm font-medium px-2 py-0.5 rounded">
+              {{'SAVE' | translate}} {{ product.prix - product.newPrice| currencyFormat }}
+              ({{ currentPromotion(product)?.reduction }}%)
+            </span>
+          }
+          @else{
+            <span class="text-lg text-[var(--secondary)] line-through min-w-max">
+              {{ product.prix | currencyFormat }}
+            </span>
+            <span class="bg-red-100 text-red-800 text-sm font-medium px-2 py-0.5 rounded">
+              {{'SAVE' | translate}} {{ product.prix - product.newPrice| currencyFormat }}
+            </span>
+            
+          }
+        }
+      </div>
+    </div>
+  </div>
+</div>

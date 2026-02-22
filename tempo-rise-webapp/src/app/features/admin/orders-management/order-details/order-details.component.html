@@ -1,0 +1,568 @@
+@if(isLoading){
+  <div class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary)]"></div>
+  </div>
+}
+@else{
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="bg-[var(--surface)] rounded-lg shadow-md p-6">
+    <!-- Order Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-[var(--text)]">
+          {{ 'ORDER_DETAILS.TITLE' | translate }}: #{{order?.id}}
+        </h1>
+        <p class="text-[var(--text-muted)]">
+          {{order?.date | date:'medium'}}
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <!-- <button (click)="mergeInvoice()"
+        [hidden]="!hideStatus || isLoggedIn"
+          class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors">
+          {{ 'ORDER_DETAILS.MERGE_INVOICE' | translate }}
+        </button> -->
+        <button (click)="downloadPdf()"
+          [disabled]="downloadingfactureId() === facture?.id"
+          [ngClass]="downloadingfactureId() === facture?.id ? 'opacity-50 cursor-not-allowed' : ''"
+          class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors">
+          {{ 'ORDER_DETAILS.PRINT_INVOICE' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Customer and Payment Info -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <!-- Customer Details -->
+      <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+        <h2 class="font-semibold text-lg mb-3 text-[var(--text)]">{{ 'ORDER_DETAILS.CUSTOMER_DETAILS' | translate }}</h2>
+        <div class="space-y-2 text-[var(--text-muted)]">
+          <p><span class="font-medium text-[var(--text)]">{{ 'ORDER_DETAILS.NAME' | translate }}:</span> {{order?.nom}} {{order?.prenom}}</p>
+          <p><span class="font-medium text-[var(--text)]">{{ 'ORDER_DETAILS.EMAIL' | translate }}:</span> {{order?.email}}</p>
+          <p><span class="font-medium text-[var(--text)]">{{ 'ORDER_DETAILS.PHONE' | translate }}:</span> {{order?.telephone}}</p>
+        </div>
+        @if(isAdmin() && !hideStatus && order?.statut !== 'TERMINEE' && order?.statut !== 'ANNULEE' ){
+         <button (click)="openCustomerForm({nom: order?.nom!, prenom: order?.prenom!, email: order?.email!, telephone: order?.telephone!})" class="mt-2 w-full px-3 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors text-sm">
+                    {{ 'ORDER_DETAILS.UPDATE_STATUS' | translate }}
+                  </button>
+                }
+
+      </div>
+
+      <!-- Delivery Address -->
+      <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+        <h2 class="font-semibold text-lg mb-3 text-[var(--text)]">{{ 'profile.deliveryAddresses.title' | translate }}</h2>
+        <div class="text-[var(--text-muted)]">
+          <p>{{order?.adresseLivraison?.ligne1}},</p>
+          <p *ngIf="order?.adresseLivraison?.ligne2">{{order?.adresseLivraison?.ligne2}},</p>
+          <p>{{order?.adresseLivraison?.codePostal}},</p>
+          <p>{{order?.adresseLivraison?.ville}}, {{order?.adresseLivraison?.pays}}</p>
+        </div>
+        @if(isAdmin() && !hideStatus && order?.statut !== 'TERMINEE' && order?.statut !== 'ANNULEE'){
+         <button (click)="openAddressForm('LIVRAISON', order?.adresseLivraison)" class="mt-2 w-full px-3 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors text-sm">
+                    {{ 'ORDER_DETAILS.UPDATE_STATUS' | translate }}
+                  </button>
+                  }
+        <!-- Billing Address -->
+         @if(order?.adresseFacturation?.id != order?.adresseLivraison?.id){
+        <h2 class="font-semibold text-lg mt-4 mb-3 text-[var(--text)]">{{ 'profile.billingAddresses.title' | translate }}</h2>
+        <div class="text-[var(--text-muted)]">
+          <p>{{order?.adresseFacturation?.ligne1}},</p>
+          <p *ngIf="order?.adresseFacturation?.ligne2">{{order?.adresseFacturation?.ligne2}},</p>
+          <p>{{order?.adresseFacturation?.codePostal}},</p>
+          <p>{{order?.adresseFacturation?.ville}}, {{order?.adresseFacturation?.pays}}</p>
+        </div>
+        @if(isAdmin() && !hideStatus){
+         <button (click)="openAddressForm('FACTURATION', order?.adresseFacturation)" class="text-[var(--primary)] hover:text-[var(--secondary)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                  </button>
+                }
+    }
+      </div>
+
+      <!-- Payment Method -->
+      <div class="bg-[var(--background)] p-4 rounded-lg border border-[var(--border)]">
+        <h2 class="font-semibold text-lg mb-3 text-[var(--text)]">{{ 'ORDER_DETAILS.PAYMENT_METHOD' | translate }}</h2>
+        <div class="text-[var(--text-muted)]">
+ @if(facture?.commande?.modePaiement=='A_LIVRAISON'){
+          <p class="capitalize mb-3">{{ 'PAYMENT.CASH' | translate }}</p>
+       }@else if(facture?.commande?.modePaiement=='CARTE_BANCAIRE'){
+          <p class="capitalize mb-3">{{ 'PAYMENT.CARD' | translate }}</p>
+       }
+          <!-- Order Status -->
+          <h2 class="font-semibold text-lg mb-2 text-[var(--text)]">{{ 'ORDER_DETAILS.ORDER_STATUS' | translate }}</h2>
+         <!-- ✅ Delivered -->
+          <span *ngIf="order?.statut === 'LIVREE'" class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.DELIVERED' | translate }}
+          </span>
+
+          <!-- ✅ Completed -->
+          <span *ngIf="order?.statut === 'TERMINEE'" class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.COMPLETED' | translate }}
+          </span>
+
+          <!-- ✅ Pending -->
+          <span *ngIf="order?.statut === 'EN_ATTENTE'" class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.PENDING' | translate }}
+          </span>
+
+          <!-- ✅ In Progress -->
+          <span *ngIf="order?.statut === 'EN_COURS'"
+                class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.IN_PROGRESS' | translate }}
+          </span>
+          <span *ngIf="order?.statut === 'EN_COURS_PREPARATION'"
+                class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.IN_PROGRESS_PREPARATION' | translate }}
+          </span>
+
+          <!-- ✅ Confirmed -->
+          <span *ngIf="order?.statut === 'CONFIRMEE'" class="px-2 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.CONFIRMED' | translate }}
+          </span>
+
+          <!-- ✅ Shipped -->
+          <span *ngIf="order?.statut === 'EXPEDIEE'" class="px-2 py-1 bg-orange-100 text-orange-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.SHIPPED' | translate }}
+          </span>
+
+          <!-- ✅ Cancelled -->
+          <span  *ngIf="order?.statut === 'ANNULEE'" 
+                class="px-2 py-1 bg-red-100 text-red-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.CANCELLED' | translate }}
+          </span>
+
+          <!-- ✅ Returned -->
+          <span *ngIf="order?.statut === 'RETOUR'" class="px-2 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">
+            {{ 'ORDER_DETAILS.RETURN' | translate }}
+          </span>
+
+
+          <!-- Admin Status Change -->
+           @if(order?.statut !== 'TERMINEE' && order?.statut !== 'ANNULEE' && isAdmin() && !hideStatus){
+          <div class="mt-4">
+            <h3 class="font-semibold text-md mb-2 text-[var(--text)]">{{ 'ORDER_DETAILS.CHANGE_STATUS' | translate }}</h3>
+            <select [(ngModel)]="statut" class="w-full p-2 border border-[var(--border)] rounded-md bg-[var(--surface)] text-[var(--text)]">
+              <option value="EN_ATTENTE">{{ 'ORDER_DETAILS.PENDING' | translate }}</option>
+              <option value="EN_COURS">{{ 'ORDER_DETAILS.IN_PROGRESS' | translate }}</option>
+              <option value="EN_COURS_PREPARATION">{{ 'ORDER_DETAILS.IN_PROGRESS_PREPARATION' | translate }}</option>
+              <option value="EXPEDIEE">{{ 'ORDER_DETAILS.SHIPPED' | translate }}</option>
+              <option value="CONFIRMEE">{{ 'ORDER_DETAILS.CONFIRMED' | translate }}</option>
+              <option value="LIVREE">{{ 'ORDER_DETAILS.DELIVERED' | translate }}</option>
+              <option value="TERMINEE">{{ 'ORDER_DETAILS.COMPLETED' | translate }}</option>
+              <option value="ANNULEE">{{ 'ORDER_DETAILS.ANNULED' | translate }}</option>
+              <option value="RETOUR">{{ 'ORDER_DETAILS.RETURN' | translate }}</option>
+            </select>
+          @if(updateStatusLoading){
+  <app-spinner></app-spinner>
+}
+@else{
+  <button
+    (click)="updateOrderStatus()"
+    class="mt-2 w-full px-3 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors text-sm">
+    {{ 'ORDER_DETAILS.UPDATE_STATUS' | translate }}
+  </button>
+}
+
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="font-semibold text-lg text-[var(--text)]">{{ 'ORDER_DETAILS.ORDER_ITEMS' | translate }}</h2>
+        @if(isAdmin() && !hideStatus && order?.statut !== 'TERMINEE' && order?.statut !== 'ANNULEE'){
+          <button (click)="openOrderItemForm()" class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors text-sm flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            Add Item
+          </button>
+        }
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-[var(--border)]">
+        <table class="min-w-full divide-y divide-[var(--border)]">
+          <thead class="bg-[var(--background)]">
+            <tr>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.PRODUCT' | translate }}</th>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.COLOR' | translate }}</th>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.SIZE' | translate }}</th>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.QUANTITY' | translate }}</th>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.PRICE' | translate }}</th>
+              <th class="px-6 py-3 text-left">{{ 'ORDER_DETAILS.TOTAL' | translate }}</th>
+              @if(isAdmin() && !hideStatus){
+                <th class="px-6 py-3 text-left">Actions</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of order?.produits; let i = index" class="hover:bg-[var(--background-hover)] transition-colors print:hover:bg-transparent">
+              <td class="px-6 py-4 whitespace-nowrap print:px-2 print:py-1">
+                <div class="flex items-center print:flex-col print:items-start">
+                  <div class="flex-shrink-0 h-10 w-10 print:h-8 print:w-8">
+                    @if(product.imageProduits){
+                      
+                    
+                    @if(product.imageProduits!.length > 0){
+                    <img class="h-10 w-10 rounded print:h-8 print:w-8" [src]="imagesBaseUrl+product.imageProduits![0].url" [alt]="product.nom">
+                    }
+                    @else {
+                      <img class="h-10 w-10 rounded print:h-8 print:w-8" src="assets/images/no-image.png" [alt]="product.nom">
+                    }
+                    }
+                  </div>
+                  <div class="ml-4 print:ml-0 print:mt-1">
+                    <div class="text-sm font-medium text-[var(--text)]">{{product.nom}}</div>
+                    <div class="text-sm text-[var(--text-muted)]">{{product.categorie}}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-[var(--text-muted)]">
+                <div class="flex gap-2 items-center">
+                  <div>{{product.couleur}}</div>
+                  <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 transition-all" [ngStyle]="{ 'background-color': product.couleur }"></div>
+                </div>
+              </td>
+              <td class="px-6 py-4 ">{{product.taille}}</td>
+              <td class="px-6 py-4 ">{{product.quantite}}</td>
+              <td class="px-6 py-4 ">{{ product!.prix! | currencyFormat }}</td>
+              <td class="px-6 py-4">{{ product.prixTotal | currencyFormat }}</td>
+              @if(isAdmin() && !hideStatus && order?.statut !== 'TERMINEE' && order?.statut !== 'ANNULEE'){
+                <td class="px-6 py-4">
+                  <div class="flex gap-2">
+                    <button (click)="openOrderItemForm(product)" class="text-[var(--primary)] hover:text-[var(--secondary)]">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                      </svg>
+                    </button>
+                    <button (click)="removeOrderItem(product.variantId)" class="text-red-600 hover:text-red-800">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              }
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="bg-[var(--background)] p-6 rounded-lg border border-[var(--border)]">
+      <h2 class="font-semibold text-lg mb-4 text-[var(--text)]">{{ 'ORDER_DETAILS.ORDER_SUMMARY' | translate }}</h2>
+      <div class="space-y-3">
+        <div class="flex justify-between">
+          <span class="text-[var(--text-muted)]">{{ 'ORDER_DETAILS.PRODUCTS_SUBTOTAL' | translate }}</span>
+          <span class="font-medium text-[var(--text)]">{{calculateTotal(order) | currencyFormat}}</span>
+        </div>
+        <div *ngIf="order?.codePromo" class="flex justify-between">
+          <span class="text-[var(--text-muted)]">{{ 'ORDER_DETAILS.DISCOUNT' | translate }} ({{order?.codePromo?.reduction}}%)</span>
+          <span class="text-red-500 dark:text-red-400">-{{calculateTotal(order) * order?.codePromo?.reduction! / 100 | currencyFormat}}</span>
+        </div>
+<div class="flex justify-between">
+  <span class="text-[var(--text-muted)]" [ngClass]="{
+      'text-green-500 line-through': shippingCost() === 0
+    }">
+    {{ 'ORDER_DETAILS.SHIPPING_FEE' | translate }}
+  </span>
+
+  <span
+    class="font-medium text-[var(--text)]"
+    [ngClass]="{
+      'text-green-500 line-through': shippingCost() === 0
+    }"
+  >
+    {{ configGlobalSignal().valeurLivraison | currencyFormat }}
+  </span>
+</div>
+
+        <div class="border-t border-[var(--border)] pt-3 mt-3 flex justify-between font-bold text-lg">
+          <span class="text-[var(--text)]">{{ 'ORDER_DETAILS.TOTAL' | translate }}</span>
+          <span class="text-[var(--text)]">{{order?.total! || 0 | currencyFormat}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Address Form Modal -->
+@if (showAddressForm) {
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-[var(--surface)] rounded-lg shadow-xl w-full max-w-md">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-4">
+          {{ editingAddress ? ('CHECKOUT.ADDRESS_FORM.EDIT' | translate) : ('CHECKOUT.ADDRESS_FORM.ADD_NEW' | translate) }} 
+          {{ addressFormType === 'LIVRAISON' ? ('CHECKOUT.ADDRESS_FORM.DELIVERY' | translate) : ('CHECKOUT.ADDRESS_FORM.BILLING' | translate) }} 
+          {{ 'CHECKOUT.ADDRESS_FORM.ADDRESS' | translate }}
+        </h3>
+        
+        <form [formGroup]="addressForm" (ngSubmit)="submitAddress()" class="space-y-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE1' | translate }}</label>
+            <input type="text" formControlName="ligne1" 
+                   class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                   placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE1_PLACEHOLDER' | translate }}">
+            @if(addressForm.get('ligne1')?.touched && addressForm.get('ligne1')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ADDRESS_REQUIRED' | translate }}
+              </div>
+            }
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE2' | translate }}</label>
+            <input type="text" formControlName="ligne2" 
+                   class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                   placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.LINE2_PLACEHOLDER' | translate }}">
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.CITY' | translate }}</label>
+              <input type="text" formControlName="ville" 
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                     placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.CITY_PLACEHOLDER' | translate }}">
+              @if(addressForm.get('ville')?.touched && addressForm.get('ville')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.CITY_REQUIRED' | translate }}
+                </div>
+              }
+            </div>
+            
+            <div>
+              <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.ZIP' | translate }}</label>
+              <input type="text" formControlName="codePostal" 
+                     (keypress)="allowOnlyNumbers($event)"
+                     maxlength="5"
+                     class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all"
+                     placeholder="{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.ZIP_PLACEHOLDER' | translate }}">
+              @if(addressForm.get('codePostal')?.touched && addressForm.get('codePostal')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ZIP_REQUIRED' | translate }}
+                </div>
+              }
+              @if(addressForm.get('codePostal')?.errors?.['pattern']){
+                <div class="text-red-500 text-sm mt-1">
+                  {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.ZIP_PATTERN' | translate }}
+                </div>
+              }
+            </div>
+          </div>
+          
+          <div>
+            <label class="block mb-1 text-sm font-medium">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.COUNTRY' | translate }}</label>
+            <select formControlName="pays" 
+                    class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] pr-10 appearance-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none transition-all">
+              <option value="">{{ 'CHECKOUT.ADDRESS_FORM.FIELDS.SELECT_COUNTRY' | translate }}</option>
+              @for (country of countries; track country.code) {
+                <option [value]="country.name">{{ country.name }}</option>
+              }
+            </select>
+            @if(addressForm.get('pays')?.touched && addressForm.get('pays')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">
+                {{ 'CHECKOUT.ADDRESS_FORM.ERRORS.COUNTRY_REQUIRED' | translate }}
+              </div>
+            }
+          </div>
+          
+          <div class="flex justify-end gap-3 pt-4">
+            <button type="button" 
+                    (click)="closeAddressForm()"
+                    class="px-4 py-2 border border-gray-300 rounded-md text-[var(--text)] hover:bg-gray-100 transition">
+              {{ 'CHECKOUT.ADDRESS_FORM.ACTIONS.CANCEL' | translate }}
+            </button>
+            <button type="submit" 
+                    class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:opacity-90 transition">
+              {{ editingAddress ? ('CHECKOUT.ADDRESS_FORM.ACTIONS.UPDATE' | translate) : ('CHECKOUT.ADDRESS_FORM.ACTIONS.SAVE' | translate) }} 
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Customer Details Form Modal -->
+@if(showCustomerDetailsForm){
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-[var(--surface)] rounded-lg shadow-xl w-full max-w-md">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-4">
+          Edit Customer details
+        </h3>
+
+        <form [formGroup]="customerDetailsForm" (ngSubmit)="submitCustomerDetails()">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" formControlName="nom" class="w-full p-2 border rounded bg-[var(--background)]">
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Prenom</label>
+            <input type="text" formControlName="prenom" class="w-full p-2 border rounded bg-[var(--background)]">
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" formControlName="email" class="w-full p-2 border rounded bg-[var(--background)]">
+          </div>
+          <div class="mb-4">
+            <ngx-material-intl-tel-input
+              [fieldControl]="customerDetailsForm.controls['telephone']"
+              [required]="true"
+              [autoIpLookup]="false"
+              [autoSelectCountry]="true"
+              [autoSelectedCountry]="defaultCountry"
+              [numberValidation]="true"
+              [enableSearch]="true"
+              [includeDialCode]="false"
+              [emojiFlags]="false"
+              [hidePhoneIcon]="false"
+              [preferredCountries]="preferredCountries"
+              [enablePlaceholder]="true"
+              [textLabels]="{
+                mainLabel: ('CHECKOUT.PHONE.MAIN_LABEL' | translate),
+                codePlaceholder: ('CHECKOUT.PHONE.CODE_PLACEHOLDER' | translate),
+                searchPlaceholderLabel: ('CHECKOUT.PHONE.SEARCH_PLACEHOLDER' | translate),
+                noEntriesFoundLabel: ('CHECKOUT.PHONE.NO_ENTRIES' | translate),
+                nationalNumberLabel: ('CHECKOUT.PHONE.NATIONAL_NUMBER' | translate),
+                hintLabel: ('CHECKOUT.PHONE.HINT' | translate),
+                invalidNumberError: ('CHECKOUT.PHONE.INVALID_NUMBER' | translate),
+                requiredError: ('CHECKOUT.PHONE.REQUIRED_ERROR' | translate)
+              }">
+            </ngx-material-intl-tel-input>
+          </div>
+          <div class="flex justify-end gap-3 pt-4">
+            <button type="button" (click)="closeCustomerDetailsForm()" class="px-4 py-2 border rounded text-[var(--text)] hover:bg-[var(--secondary)]">Cancel</button>
+            <button type="submit" class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:opacity-90 transition">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Order Item Form Modal -->
+@if(showOrderItemForm){
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-[var(--surface)] rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <h3 class="text-xl font-semibold mb-4">
+          {{ editingOrderItem ? 'Edit Order Item' : 'Add New Order Item' }}
+        </h3>
+
+        <form [formGroup]="orderItemForm" (ngSubmit)="submitOrderItem()" class="space-y-4">
+          <div>
+            <label class="block mb-1 text-sm font-medium">Product</label>
+            <select formControlName="productId" 
+                    (change)="onProductSelect($any($event.target).value)"
+                    class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none">
+              <option [value]="null" disabled >Select a product</option>
+              @for (product of availableProducts; track product.id) {
+                <option [value]="product.id">{{ product.nom }}</option>
+              }
+            </select>
+            @if(orderItemForm.get('productId')?.touched && orderItemForm.get('productId')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">Product is required</div>
+            }
+          </div>
+
+          @if(selectedProduct){
+            <div>
+              <label class="block mb-1 text-sm font-medium">Color</label>
+              <select formControlName="couleur" 
+                      (change)="onColorSelect($any($event.target).value)"
+                      class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none">
+                <option value="">Select a color</option>
+                @for (color of availableColors; track color) {
+                  <option [value]="color">{{ color }}</option>
+                }
+              </select>
+              @if(orderItemForm.get('couleur')?.touched && orderItemForm.get('couleur')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">Color is required</div>
+              }
+            </div>
+
+            <div>
+              <label class="block mb-1 text-sm font-medium">Size</label>
+              <select formControlName="taille" 
+                      (change)="onSizeSelect($any($event.target).value)"
+                      class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+                <option value="">Select a size</option>
+                @for (size of availableSizes; track size) {
+                  <option [value]="size">{{ size }}</option>
+                }
+              </select>
+              @if(orderItemForm.get('taille')?.touched && orderItemForm.get('taille')?.errors?.['required']){
+                <div class="text-red-500 text-sm mt-1">Size is required</div>
+              }
+            </div>
+            
+            @if(selectedVariant){
+              <div class="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md">
+                <p class="text-sm text-[var(--text)]">
+                  <span class="font-medium">Available Stock:</span> {{ selectedVariant.quantity }} units
+                </p>
+              </div>
+            }
+          }
+
+          <div>
+            <label class="block mb-1 text-sm font-medium">Quantity</label>
+            <input type="number" 
+                   formControlName="quantite" 
+                   min="1"
+                   [max]="availableStock"
+                   class="w-full border bord  er-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+            @if(orderItemForm.get('quantite')?.touched && orderItemForm.get('quantite')?.errors?.['required']){
+              <div class="text-red-500 text-sm mt-1">Quantity is required</div>
+            }
+            @if(orderItemForm.get('quantite')?.errors?.['min']){
+              <div class="text-red-500 text-sm mt-1">Quantity must be at least 1</div>
+            }
+            @if(orderItemForm.get('quantite')?.errors?.['maxQuantityExceeded']){
+              <div class="text-red-500 text-sm mt-1">Quantity exceeds available stock ({{ availableStock }})</div>
+            }
+          </div>
+
+        <div>
+  <label class="block mb-1 text-sm font-medium">Price</label>
+  <input type="text" 
+         formControlName="prix"   
+         class="w-full border border-gray-300 p-3 rounded-md bg-[var(--background)] text-[var(--text)] focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] outline-none">
+  <p class="text-xs text-[var(--text-muted)] mt-1">
+  </p>
+</div>
+
+
+          <div class="flex justify-end gap-3 pt-4">
+            <button type="button" 
+                    (click)="closeOrderItemForm()"
+                    class="px-4 py-2 border border-gray-300 rounded-md text-[var(--text)] hover:bg-gray-100 transition">
+              Cancel
+            </button>
+            <button type="submit" 
+                    [disabled]="orderItemForm.invalid"
+                    class="px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition disabled:opacity-50 disabled:cursor-not-allowed">
+              {{ editingOrderItem ? 'Update' : 'Add' }} Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Invoice Template (Hidden) -->
+<div style="position: absolute; top: -9999px; left: -9999px;">
+  <div #invoiceTemplate>
+    <app-invoice-template [facture]="facture"></app-invoice-template>
+  </div>
+</div>
+
+}

@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.4/scripts/addTables.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.4/scripts/updateRetourProduitTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.4/scripts/AddColumn.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.4.4/scripts/updatePaiementTable.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+

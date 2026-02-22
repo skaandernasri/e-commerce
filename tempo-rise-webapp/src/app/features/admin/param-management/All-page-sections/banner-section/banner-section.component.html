@@ -1,0 +1,64 @@
+<form [formGroup]="contentForm" (ngSubmit)="saveContent()">
+              <div class="space-y-4">
+                <div>
+                  <label class="flex flex-row gap-2 text-sm font-medium text-[var(--text)] mb-2">Fix
+                  <input 
+                    type="checkbox" 
+                    formControlName="fix"
+                    (change)="onChange($event)"
+                    class=" px-3 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2  focus:border-[var(--primary)] focus:outline-none text-sm">
+                </label>
+                  </div>
+                @if(!contentForm.get('fix')?.value){
+                  <div>
+                  <label class="block text-sm font-medium text-[var(--text)] mb-2">speed</label>
+                  <input 
+                    type="number"
+                    min="1"
+                    max="200" 
+                    formControlName="speed"
+                    class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none">
+                
+                @if(contentForm.get('speed')?.touched && contentForm.get('speed')?.invalid){
+                  <span class="text-red-500 text-sm">Veuillez entrer un nombre de 1 à 200</span>
+                }
+                </div>
+                }
+                
+                          </div>
+<!-- Texts -->
+   <div formArrayName="texts">
+    @for (group of textsArray.controls ; track group) {
+      <div [formGroupName]="$index" class="space-y-4 m-2">
+        <div>
+            <label class="block text-sm font-medium text-[var(--text)] mb-2">text {{$index+1}}</label>
+          <textarea 
+            type="text" 
+            formControlName="text"
+            class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none">
+          </textarea>
+          </div>
+         <button type ="button" (click)="removeTexts($index)" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:opacity-90 transition-all duration-200 transform hover:scale-105">
+    Supprimer
+  </button>
+      </div>
+     
+    }
+    <button type="button" class="px-4 py-2 m-2 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all" (click)="addTexts()">Ajouter un texte</button>
+  </div>
+                      
+
+
+            
+
+              <!-- Save Button -->
+              <div class="mt-6">
+                <button 
+                  type="submit"
+                  [disabled]="!contentForm.valid"
+                  class="w-full px-6 py-3 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                  💾 Enregistrer le contenu
+                </button>
+              </div>
+            
+            </form>

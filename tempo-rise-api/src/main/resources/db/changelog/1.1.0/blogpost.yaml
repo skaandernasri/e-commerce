@@ -1,0 +1,21 @@
+databaseChangeLog:
+    - changeSet:
+        id: 1
+        author: postgres
+        changes:
+          - sqlFile:
+              dbms: 'postgresql'
+              endDelimiter: \nGO
+              splitStatements: true
+              path: classpath:/db/changelog/1.1.0/scripts/addstatus.sql
+              stripComments: true
+    - changeSet:
+        id: 2
+        author: postgres
+        changes:
+          - sqlFile:
+              dbms: 'postgresql'
+              endDelimiter: \nGO
+              splitStatements: true
+              path: classpath:/db/changelog/1.1.0/scripts/addimagetoimageblogpout.sql
+              stripComments: true

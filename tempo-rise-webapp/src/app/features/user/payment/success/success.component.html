@@ -1,0 +1,25 @@
+<div class="min-h-screen flex items-center justify-center bg-[var(--background)] p-4">
+  <div class="bg-[var(--surface)] p-8 rounded-2xl shadow-xl max-w-2xl w-full text-center">
+    <svg class="mx-auto w-16 h-16 text-green-500 mb-4" fill="none" stroke="currentColor" stroke-width="2"
+         viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <h1 class="text-3xl font-bold text-[var(--primary)] mb-2">Paiement Réussi</h1>
+    <p class="mb-4 text-[var(--text)]">Votre paiement a été traité avec succès.</p>
+    @if(payment){
+    <div class="text-left text-sm bg-white/10 p-4 rounded-xl">
+      <p><strong>ID Paiement:</strong> {{ payment.id }}</p>
+      <p><strong>Statut:</strong> {{ payment.status }}</p>
+      <p><strong>Montant:</strong> {{ payment.convertedAmount | currencyFormat }} </p>
+      <p><strong>Méthodes acceptées:</strong> {{ payment.acceptedPaymentMethods.join(', ') }}</p>
+      <p><strong>Client:</strong> {{ payment.paymentDetails.name }} ({{ payment.paymentDetails.email }})</p>
+      <p><strong>Créé le:</strong> {{ payment.createdAt | date:'medium' }}</p>
+    </div>
+    }
+
+    <a routerLink="/" class="mt-6 inline-block bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+      Retour à l'accueil
+    </a>
+  </div>
+</div>

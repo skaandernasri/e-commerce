@@ -1,0 +1,23 @@
+@startuml
+actor Client
+
+participant "Interface Client " as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "Microservice Recommandation (Python)" as PythonService
+participant "Base de données" as DB
+
+== Consultation des recommandations personnalisées ==
+
+Client  -> UI : Accéder à la page d’accueil ou suggestions
+UI -> Controller : requête getRecommendations(userId)
+Controller -> Service : récupérerRecommandations(userId)
+Service -> PythonService : appeler API /getRecommendations(userId)
+PythonService -> DB : requête données utilisateurs, produits, interactions
+DB --> PythonService : données extraites
+PythonService --> Service : liste recommandations
+Service --> Controller : liste recommandations
+Controller --> UI : afficher recommandations
+UI --> Client  : affichage des produits recommandés
+
+@enduml

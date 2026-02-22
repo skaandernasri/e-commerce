@@ -1,0 +1,279 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8" [class]="theme">
+  <div class="w-full max-w-md">
+    <div class="bg-[var(--background)] border border-black rounded-lg shadow-lg p-6 sm:p-8 transition-all duration-300"
+         [class]="{
+           'ring-2 ring-green-500': showSuccess,
+           'ring-2 ring-red-500': errorMessage
+         }">
+      
+      <!-- Header -->
+      <h2 class="mb-6 text-center text-2xl sm:text-3xl font-extrabold text-[var(--text)]">
+        @if (isLoading) {
+          {{ 'SIGNUP.CREATING_ACCOUNT' | translate }}
+        } @else if (showSuccess) {
+          <span class="flex items-center justify-center gap-2">
+            <svg class="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            {{ 'SIGNUP.ACCOUNT_CREATED' | translate }}
+          </span>
+        } @else {
+          {{ 'SIGNUP.TITLE' | translate }}
+        }
+      </h2>
+
+      <!-- Loading State -->
+      @if (isLoading) {
+        <div class="space-y-6 text-center">
+          <div class="flex justify-center">
+            <div class="w-16 h-16 border-4 border-[var(--primary)] border-t-transparent rounded-full animate-spin"></div>
+          </div>
+          <p class="text-[var(--text)]">{{ 'SIGNUP.SETTING_UP' | translate }}</p>
+          <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div class="h-full bg-[var(--primary)] rounded-full transition-all duration-300" 
+                 [style.width.%]="progress"></div>
+          </div>
+        </div>
+      }
+
+      <!-- Success State -->
+      @if (showSuccess) {
+        <div class="text-center space-y-6">
+          <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100">
+            <svg class="h-10 w-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-[var(--text)]">{{ 'SIGNUP.WELCOME' | translate }}</h3>
+          <p class="text-[var(--text)]">{{ 'SIGNUP.SUCCESS_MESSAGE' | translate }}</p>
+          <p class="text-sm text-[var(--text)] animate-pulse">{{ 'SIGNUP.REDIRECTING' | translate }}</p>
+        </div>
+      }
+
+      <!-- Form -->
+      @if (!isLoading && !showSuccess) {
+        <form class="space-y-4" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          
+          <!-- Error Message -->
+          @if (errorMessage) {
+            <div class="rounded-md bg-red-50 p-4">
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <p class="ml-3 text-sm text-red-700">{{ errorMessage | translate}}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Email Field -->
+          <div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="w-5 h-5" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.83203 5.8335H20.9987C21.927 5.8335 22.8172 6.20225 23.4736 6.85862C24.1299 7.515 24.4987 8.40524 24.4987 9.3335V19.8335C24.4987 20.7618 24.1299 21.652 23.4736 22.3084C22.8172 22.9647 21.927 23.3335 20.9987 23.3335H5.83203C4.90377 23.3335 4.01353 22.9647 3.35716 22.3084C2.70078 21.652 2.33203 20.7618 2.33203 19.8335V9.3335C2.33203 8.40524 2.70078 7.515 3.35716 6.85862C4.01353 6.20225 4.90377 5.8335 5.83203 5.8335ZM5.83203 7.00016C5.2487 7.00016 4.73536 7.1985 4.3387 7.5485L13.4154 13.4168L22.492 7.5485C22.0954 7.1985 21.582 7.00016 20.9987 7.00016H5.83203ZM13.4154 14.8285L3.65036 8.4935C3.55703 8.75016 3.4987 9.04183 3.4987 9.3335V19.8335C3.4987 20.4523 3.74453 21.0458 4.18212 21.4834C4.6197 21.921 5.21319 22.1668 5.83203 22.1668H20.9987C21.6175 22.1668 22.211 21.921 22.6486 21.4834C23.0862 21.0458 23.332 20.4523 23.332 19.8335V9.3335C23.332 9.04183 23.2737 8.75016 23.1804 8.4935L13.4154 14.8285Z" fill="black"/>
+                </svg>
+              </span>
+              <input id="email" type="email" formControlName="email" required placeholder="{{ 'SIGNUP.EMAIL' | translate }}"
+                     class="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-[var(--text)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base text-[var(--text)]">
+            </div>
+            @if(signupForm.get('email')?.invalid && signupForm.get('email')?.touched){
+              <p class="text-red-500 text-xs sm:text-sm mt-1">
+                @if(signupForm.get('email')?.errors?.['required']){
+                  <span> {{ 'SIGNUP.EMAIL_REQUIRED' | translate }}</span>
+                }
+                @else if(signupForm.get('email')?.errors?.['email'] || signupForm.get('email')?.errors?.['pattern']){
+                  <span> {{ 'SIGNUP.EMAIL_INVALID' | translate }}</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <div class="relative">
+<span 
+  class="absolute inset-y-0 left-0 pl-2 flex items-center "
+>
+  <svg width="23" height="23" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.9987 22.6668C15.2915 22.6668 14.6132 22.3859 14.1131 21.8858C13.613 21.3857 13.332 20.7074 13.332 20.0002C13.332 18.5202 14.5187 17.3335 15.9987 17.3335C16.7059 17.3335 17.3842 17.6144 17.8843 18.1145C18.3844 18.6146 18.6654 19.2929 18.6654 20.0002C18.6654 20.7074 18.3844 21.3857 17.8843 21.8858C17.3842 22.3859 16.7059 22.6668 15.9987 22.6668ZM23.9987 26.6668V13.3335H7.9987V26.6668H23.9987ZM23.9987 10.6668C24.7059 10.6668 25.3842 10.9478 25.8843 11.4479C26.3844 11.948 26.6654 12.6263 26.6654 13.3335V26.6668C26.6654 27.3741 26.3844 28.0524 25.8843 28.5524C25.3842 29.0525 24.7059 29.3335 23.9987 29.3335H7.9987C7.29145 29.3335 6.61318 29.0525 6.11308 28.5524C5.61298 28.0524 5.33203 27.3741 5.33203 26.6668V13.3335C5.33203 11.8535 6.5187 10.6668 7.9987 10.6668H9.33203V8.00016C9.33203 6.23205 10.0344 4.53636 11.2847 3.28612C12.5349 2.03588 14.2306 1.3335 15.9987 1.3335C16.8742 1.3335 17.7411 1.50593 18.5499 1.84097C19.3588 2.176 20.0937 2.66706 20.7127 3.28612C21.3318 3.90517 21.8229 4.6401 22.1579 5.44894C22.4929 6.25778 22.6654 7.12468 22.6654 8.00016V10.6668H23.9987ZM15.9987 4.00016C14.9378 4.00016 13.9204 4.42159 13.1703 5.17174C12.4201 5.92188 11.9987 6.9393 11.9987 8.00016V10.6668H19.9987V8.00016C19.9987 6.9393 19.5773 5.92188 18.8271 5.17174C18.077 4.42159 17.0596 4.00016 15.9987 4.00016Z" fill="#484848"/>
+</svg>
+
+</span  >
+@if(showPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showPassword = !showPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 16H13L10.8368 13.3376C9.96488 13.7682 8.99592 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8L3.07945 4.30466C3.14989 4.22013 3.22229 4.13767 3.29656 4.05731L0 0H3L16 16ZM5.35254 6.58774C5.12755 7.00862 5 7.48941 5 8C5 9.65685 6.34315 11 8 11C8.29178 11 8.57383 10.9583 8.84053 10.8807L5.35254 6.58774Z" fill="#000000"/>
+<path d="M16 8L14.2278 10.1266L7.63351 2.01048C7.75518 2.00351 7.87739 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8Z" fill="#000000"/>
+</svg>
+</span>
+}
+@if(!showPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showPassword = !showPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 8L3.07945 4.30466C4.29638 2.84434 6.09909 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8L12.9206 11.6953C11.7036 13.1557 9.90091 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8ZM8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z" fill="#000000"/>
+</svg>
+</span>
+}
+              <input id="password" type="password" formControlName="password" required placeholder="{{ 'SIGNUP.PASSWORD' | translate }}" [type]="showPassword ? 'text' : 'password'"
+                     class="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-[var(--text)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base text-[var(--text)]">
+            </div>
+           @if (signupForm.get('password')?.invalid && 
+     (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)) {
+  <div class="mt-1 text-xs sm:text-sm text-red-600">
+    @if (signupForm.get('password')?.errors?.['required']) {
+      <p>{{ 'SIGNUP.PASSWORD_REQUIRED' | translate }}</p>
+    }
+    @if (signupForm.get('password')?.errors?.['minlength']) {
+      <p>  {{ 'SIGNUP.PASSWORD_MINLENGTH' | translate }}</p>
+    }
+    @if (signupForm.get('password')?.errors?.['pattern']) {
+      <p>
+{{ 'SIGNUP.PASSWORD_PATTERN' | translate }}
+      </p>
+    }
+  </div>
+}
+
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div>
+            <div class="relative">
+                           <span 
+  class="absolute inset-y-0 left-0 pl-2 flex items-center "
+>
+  <svg width="23" height="23" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.9987 22.6668C15.2915 22.6668 14.6132 22.3859 14.1131 21.8858C13.613 21.3857 13.332 20.7074 13.332 20.0002C13.332 18.5202 14.5187 17.3335 15.9987 17.3335C16.7059 17.3335 17.3842 17.6144 17.8843 18.1145C18.3844 18.6146 18.6654 19.2929 18.6654 20.0002C18.6654 20.7074 18.3844 21.3857 17.8843 21.8858C17.3842 22.3859 16.7059 22.6668 15.9987 22.6668ZM23.9987 26.6668V13.3335H7.9987V26.6668H23.9987ZM23.9987 10.6668C24.7059 10.6668 25.3842 10.9478 25.8843 11.4479C26.3844 11.948 26.6654 12.6263 26.6654 13.3335V26.6668C26.6654 27.3741 26.3844 28.0524 25.8843 28.5524C25.3842 29.0525 24.7059 29.3335 23.9987 29.3335H7.9987C7.29145 29.3335 6.61318 29.0525 6.11308 28.5524C5.61298 28.0524 5.33203 27.3741 5.33203 26.6668V13.3335C5.33203 11.8535 6.5187 10.6668 7.9987 10.6668H9.33203V8.00016C9.33203 6.23205 10.0344 4.53636 11.2847 3.28612C12.5349 2.03588 14.2306 1.3335 15.9987 1.3335C16.8742 1.3335 17.7411 1.50593 18.5499 1.84097C19.3588 2.176 20.0937 2.66706 20.7127 3.28612C21.3318 3.90517 21.8229 4.6401 22.1579 5.44894C22.4929 6.25778 22.6654 7.12468 22.6654 8.00016V10.6668H23.9987ZM15.9987 4.00016C14.9378 4.00016 13.9204 4.42159 13.1703 5.17174C12.4201 5.92188 11.9987 6.9393 11.9987 8.00016V10.6668H19.9987V8.00016C19.9987 6.9393 19.5773 5.92188 18.8271 5.17174C18.077 4.42159 17.0596 4.00016 15.9987 4.00016Z" fill="#484848"/>
+</svg>
+
+</span  >
+@if(showConfirmPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showConfirmPassword = !showConfirmPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 16H13L10.8368 13.3376C9.96488 13.7682 8.99592 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8L3.07945 4.30466C3.14989 4.22013 3.22229 4.13767 3.29656 4.05731L0 0H3L16 16ZM5.35254 6.58774C5.12755 7.00862 5 7.48941 5 8C5 9.65685 6.34315 11 8 11C8.29178 11 8.57383 10.9583 8.84053 10.8807L5.35254 6.58774Z" fill="#000000"/>
+<path d="M16 8L14.2278 10.1266L7.63351 2.01048C7.75518 2.00351 7.87739 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8Z" fill="#000000"/>
+</svg>
+</span>
+}
+@if(!showConfirmPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showConfirmPassword = !showConfirmPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 8L3.07945 4.30466C4.29638 2.84434 6.09909 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8L12.9206 11.6953C11.7036 13.1557 9.90091 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8ZM8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z" fill="#000000"/>
+</svg>
+</span>
+}
+              <input id="confirmPassword" type="password" formControlName="confirmPassword" required placeholder="{{ 'SIGNUP.CONFIRM_PASSWORD' | translate }}" [type]="showConfirmPassword ? 'text' : 'password'"
+                     class="appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-[var(--text)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base text-[var(--text)]">
+            </div>
+            @if(signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.touched || signupForm.get('confirmPassword')?.dirty)){
+              <p class="text-red-500 text-xs sm:text-sm mt-1">
+                @if(signupForm.get('confirmPassword')?.errors?.['required']){
+                  <span>                {{ 'SIGNUP.CONFIRM_PASSWORD_REQUIRED' | translate }}
+</span>
+                }
+                @else if(signupForm.get('confirmPassword')?.errors?.['passwordMismatch']){
+                  <span>{{ 'SIGNUP.PASSWORDS_MISMATCH' | translate }}</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Birth Date Field -->
+          <div>
+            <label for="dateNaissance" class="block text-xs sm:text-sm font-medium text-[var(--text)] mb-1">{{ 'SIGNUP.BIRTH_DATE' | translate }}</label>
+            <input id="dateNaissance" type="date" formControlName="dateNaissance" required
+                   class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base text-[var(--text)]">
+            @if(signupForm.get('dateNaissance')?.invalid && signupForm.get('dateNaissance')?.touched){
+              <p class="text-red-500 text-xs sm:text-sm mt-1">
+                @if(signupForm.get('dateNaissance')?.errors?.['required']){
+                  <span>{{ 'SIGNUP.BIRTHDATE_REQUIRED' | translate }}</span>
+                }
+                @else if(signupForm.get('dateNaissance')?.errors?.['underage']){
+                  <span>{{ 'SIGNUP.UNDERAGE' | translate }}</span>
+                }
+              </p>
+            }
+          </div>
+
+          <!-- Gender Selection -->
+          <div>
+            <label class="block text-xs sm:text-sm font-medium text-[var(--text)] mb-2">{{ 'SIGNUP.GENDER' | translate }}</label>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <input id="male" type="radio" value="MALE" formControlName="genre"
+                       class="h-4 w-4 text-[var(--primary)] focus:ring-[var(--primary)] border-gray-300">
+                <label for="male" class="ml-2 block text-xs sm:text-sm text-[var(--text)]">{{ 'SIGNUP.MALE' | translate }}</label>
+              </div>
+              <div class="flex items-center">
+                <input id="female" type="radio" value="FEMELLE" formControlName="genre"
+                       class="h-4 w-4 text-[var(--primary)] focus:ring-[var(--primary)] border-gray-300">
+                <label for="female" class="ml-2 block text-xs sm:text-sm text-[var(--text)]">{{ 'SIGNUP.FEMALE' | translate }}</label>
+              </div>
+            </div>
+            @if(signupForm.get('genre')?.invalid && signupForm.get('genre')?.touched){
+              <p class="text-red-500 text-xs sm:text-sm mt-1">
+                <span>{{ 'SIGNUP.GENDER_REQUIRED' | translate }}</span>
+              </p>
+            }
+          </div>
+        <!-- legal_conditions -->
+        <div class="flex items-center">
+         
+            
+        <label for="legal_conditions" 
+       class="flex items-center gap-2 text-sm font-medium text-[var(--text)]">
+  <!-- Hidden checkbox -->
+  <input type="checkbox" formControlName="legal_conditions" id="legal_conditions">
+
+  <!-- Label text -->
+ <span> {{ 'CHECKOUT.LEGAL_CONDITIONS' | translate }} <span class="text-red-500 ">*</span></span>
+</label>
+
+        </div>
+          <!-- Submit Button -->
+          <button type="submit"
+          [disabled]="signupForm.invalid"
+                  class="w-full flex justify-center items-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-base sm:text-lg font-medium text-black bg-[#E6CBB2] hover:bg-[var(--secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            @if (isLoading) {
+              <svg class="animate-spin -ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ 'SIGNUP.PROCESSING' | translate }}
+            } @else {
+              {{ 'SIGNUP.SUBMIT' | translate }}
+            }
+          </button>
+
+          <!-- Divider -->
+          <div class="flex items-center mt-4">
+            <div class="flex-grow border-t border-gray-300"></div>
+            <span class="px-3 text-xs sm:text-sm text-gray-400">{{ 'SIGNUP.OR_SIGNUP_WITH' | translate }}</span>
+            <div class="flex-grow border-t border-gray-300"></div>
+          </div>
+
+          <!-- Google Sign In Button -->
+          <button type="button" id="google-signin-button" 
+                  class="w-full inline-flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors text-xs sm:text-sm font-medium text-[var(--text)]">
+            <svg class="w-5 h-5 mr-2 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            {{ 'SIGNUP.GOOGLE_SIGNIN' | translate }}
+          </button>
+
+          <!-- Login Link -->
+          <p class="mt-4 text-center text-xs sm:text-sm text-[var(--text)]">
+{{ 'SIGNUP.ALREADY_HAVE_ACCOUNT' | translate }} 
+            <a [routerLink]="['/auth/user/signin']" class="font-medium text-[#A86826] hover:text-[var(--secondary)] underline">
+              {{ 'SIGNUP.LOGIN' | translate }}
+            </a>
+          </p>
+        </form>
+      }
+    </div>
+  </div>
+</div>

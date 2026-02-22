@@ -1,0 +1,5 @@
+package tn.temporise.domain.model;
+
+public enum TypeAction {
+  VIEW_PRODUCT, ADD_TO_CART, REMOVE_FROM_CART, PURCHASE, ADD_TO_WISHLIST, LEAVE_REVIEW, SEARCH_CLICK, PRODUCT_HOVER
+}

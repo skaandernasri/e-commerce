@@ -1,0 +1,41 @@
+@startuml Client_Interactions
+
+actor Client
+
+participant "Interface Client" as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant  "Base de données" as BD
+
+== UTILISATEUR CONSULTE ET INTERAGIT ==
+
+Client -> UI : Accéder aux articles
+UI -> Controller : getArticlesPublies()
+Controller -> Service : récupérerArticlesPublies()
+Service -> BD : SELECT * FROM articles WHERE status = 'publié'
+BD --> Service : Articles publiés
+Service --> Controller : Liste articles
+Controller --> UI : Affichage
+
+Client -> UI : Commenter un article
+UI -> Controller : ajouterCommentaire(articleId, texte)
+Controller -> Service : enregistrerCommentaire()
+Service -> BD : INSERT INTO commentaires (...)
+BD --> Service : Confirmation
+Service --> Controller : Succès
+Controller --> UI : Afficher message
+
+Client -> UI : Donner une note produit
+UI -> Controller : noterProduit(produitId, note)
+Controller -> Service : enregistrerNote()
+Service -> BD : INSERT INTO avis (...)
+BD --> Service : OK
+Service --> Controller : OK
+Controller --> UI : Confirmation
+
+note right
+Toutes ces actions nécessitent une connexion,
+sauf la visualisation des produits/articles.
+end note
+
+@enduml

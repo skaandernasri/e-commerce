@@ -1,0 +1,443 @@
+<!-- admin-pages.component.html -->
+<div class="min-h-screen p-6 bg-[var(--background)]">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-[var(--text)] mb-2">Gestion des Pages</h1>
+      <p class="text-[var(--text)] opacity-70">Gérez les sections de chaque page de votre site</p>
+      
+      <!-- Stats -->
+      <div class="flex gap-4 mt-4">
+        <div class="px-4 py-2 bg-[var(--surface)] rounded-lg">
+          <span class="text-sm text-[var(--text)] opacity-60">Total sections: </span>
+          <span class="font-bold text-[var(--text)]">{{ totalSections() }}</span>
+        </div>
+        <div *ngIf="hasSelectedPage()" class="px-4 py-2 bg-[var(--surface)] rounded-lg">
+          <span class="text-sm text-[var(--text)] opacity-60">{{ selectedPage()?.label }}: </span>
+          <span class="font-bold text-[var(--text)]">{{ selectedPageSectionCount() }} section(s)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="text-center py-12">
+      <div class="animate-spin inline-block w-12 h-12 border-4 border-[var(--primary)] border-t-transparent rounded-full"></div>
+      <p class="mt-4 text-[var(--text)] opacity-70">Chargement...</p>
+    </div>
+
+    <div *ngIf="!isLoading()" class="grid grid-cols-12 gap-6">
+      <!-- Pages List -->
+      <div class="col-span-12 lg:col-span-3">
+        <div class="bg-[var(--surface)] rounded-lg shadow-md p-6 sticky top-6">
+          <h2 class="text-xl font-semibold text-[var(--text)] mb-4">Pages</h2>
+          
+          <div class="space-y-2">
+            <div 
+              *ngFor="let page of pages()"
+              (click)="selectPage(page)"
+              [class.ring-2]="selectedPage()?.type === page.type"
+              [class.ring-primary]="selectedPage()?.type === page.type"
+              [class.bg-[var(--primary)]]="selectedPage()?.type === page.type"
+              [class.bg-opacity-10]="selectedPage()?.type === page.type"
+              class="p-4 bg-[var(--background)] rounded-lg cursor-pointer hover:bg-[var(--hover)] transition-all duration-200 transform hover:scale-[1.02]">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h3 class="font-medium text-[var(--text)]">{{ page.label }}</h3>
+                  <p class="text-xs text-[var(--text)] opacity-60 mt-1">
+                    {{ page.sections.length }} section(s)
+                  </p>
+                </div>
+                <span class="material-icons text-2xl transition-transform duration-200" 
+                      [class.scale-125]="selectedPage()?.type === page.type">
+                  {{ getPageTypeIcon(page.type) }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sections List -->
+      <div class="col-span-12 lg:col-span-4">
+        <div *ngIf="!hasSelectedPage()" class="bg-[var(--surface)] rounded-lg shadow-md p-12 text-center">
+          <div class="text-6xl mb-4 opacity-20">📄</div>
+          <p class="text-[var(--text)] opacity-50 text-lg">Sélectionnez une page</p>
+        </div>
+
+        <div *ngIf="hasSelectedPage()" class="bg-[var(--surface)] rounded-lg shadow-md p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-[var(--text)]">
+              Sections - {{ selectedPage()?.label }}
+            </h2>
+            <button 
+              (click)="openSectionModal()"
+              class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 transform hover:scale-105">
+              + Ajouter
+            </button>
+          </div>
+
+          <div class="space-y-2 max-h-[calc(100vh-250px)]  overflow-y-auto">
+            <div 
+              *ngFor="let section of selectedPageSections()?.sections"
+              (click)="selectSection(section)"
+              [class.ring-2]="selectedSection()?.id === section.id"
+              [class.ring-secondary]="selectedSection()?.id === section.id"
+              class="p-4 bg-[var(--background)] rounded-lg cursor-pointer hover:bg-[var(--hover)] overflow-auto transition-all duration-200 transform hover:scale-[1.01]">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <h3 class="font-medium text-[var(--text)]">{{ section.titre }}</h3>
+                  <p class="text-sm text-[var(--text)] opacity-60 mt-1">
+                    <span class="inline-block px-2 py-0.5 rounded bg-[var(--primary)] bg-opacity-20 text-[var(--text)] text-xs font-medium mr-2">
+                      {{ getSectionTypeLabel(section.type) }}
+                    </span>
+                    <span [class.text-green-500]="section.active" [class.text-red-500]="!section.active">
+                      {{ section.active ? '✓ Actif' : '✗ Inactif' }}
+                    </span>
+                  </p>
+                </div>
+                <div class="flex gap-2 ml-2">
+                  <button 
+                    (click)="openSectionModal(section); $event.stopPropagation()"
+                    class="p-1 hover:bg-[var(--primary)] hover:text-white rounded transition-all duration-200">
+                    ✏️
+                  </button>
+                  <button 
+                    (click)="deleteSection(section.id!); $event.stopPropagation()"
+                    class="p-1 hover:bg-red-500 hover:text-white rounded transition-all duration-200">
+                    🗑️
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="selectedPageSections()!.sections.length === 0" class="text-center py-8">
+              <div class="text-4xl mb-2 opacity-20">📋</div>
+              <p class="text-[var(--text)] opacity-50">Aucune section pour cette page</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Content Editor -->
+      <div class="col-span-12 lg:col-span-5">
+        <div *ngIf="!hasSelectedSection()" class="bg-[var(--surface)] rounded-lg shadow-md p-12 text-center">
+          <div class="text-6xl mb-4 opacity-20">📝</div>
+          <p class="text-[var(--text)] opacity-50 text-lg">Sélectionnez une section</p>
+        </div>
+
+        <div *ngIf="hasSelectedSection()" class="space-y-6">
+          <!-- Section Info -->
+          <div class=" bg-[var(--surface)] rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold text-[var(--text)] mb-2 break-words ">{{ selectedSection()?.titre }}</h2>
+            <span class="inline-block px-3 py-1 rounded-full bg-[var(--primary)] bg-opacity-20 text-[var(--text)] text-sm font-medium">
+              {{ getSectionTypeLabel(selectedSection()!.type) }}
+            </span>
+          </div>
+
+          <!-- Dynamic Content Form -->
+            @if( selectedSection()?.type != 'CONTENT3'){
+          <div class="bg-[var(--surface)] rounded-lg shadow-md p-6 max-h-[calc(100vh-300px)] overflow-y-auto">
+           
+            <h3 class="text-xl font-semibold text-[var(--text)] mb-4">Contenu de la section</h3>
+            @switch (selectedPage()?.type) {
+              @case ('TERMS_AND_CONDITIONS') {
+                @switch (selectedSection()?.type) {
+                  @case ('HTML') {
+                    <app-tac-html-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-tac-html-section>
+                  }
+                }
+              }
+              @case('CONTACT'){
+                @switch (selectedSection()?.type) {
+                  @case ('SOCIATY_INFO') {
+                    <app-contact-main-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-contact-main-section>
+                  }
+                }
+              }
+              @case('PRODUCT'){
+                @switch (selectedSection()?.type) {
+                  @case ('OUR_PRODUCTS') {
+                    <app-products-main-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-products-main-section>
+                  }
+                }
+              }
+              @case('BLOG'){
+                @switch (selectedSection()?.type) {
+                  @case ('OUR_BLOGS') {
+                    <app-blogs-main-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-blogs-main-section>
+                  }
+                }
+              }
+              @case('ALL'){
+                @switch (selectedSection()?.type) {
+                  @case ('FOOTER') {
+                    <app-footer-param [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-footer-param>
+                  }
+                  @case('RIGHT_BARS'){
+                    <app-right-banner-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-right-banner-section>
+                  }
+                  @case('BANNER_SCROLLING'){
+                    <app-banner-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-banner-section>
+                  }
+                }
+              }
+              @case('ABOUT'){
+                @switch (selectedSection()?.type) {
+                  @case ('HTML') {
+                    <app-about-html-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-about-html-section>
+                  }
+                }
+              }
+              @case('DELIVERY_AND_RETURN'){
+                @switch (selectedSection()?.type) {
+                  @case ('HTML') {
+                    <app-dar-html-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-dar-html-section>
+                  }
+                }
+              }
+              @case('LEGAL_NOTICE'){
+                @switch (selectedSection()?.type) {
+                  @case ('HTML') {
+                    <app-ln-html-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-ln-html-section>
+                  }
+                }
+              }
+              @case('PRODUCT_DETAILS'){
+                @switch (selectedSection()?.type) {
+                  @case ('CONTENT1') {
+                    <app-content1-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content1-section>
+                  }
+                }
+              }
+              @case('HOME'){
+                @switch (selectedSection()?.type) {
+                  @case ('HERO') {
+                    <app-hero-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-hero-section>
+                  }
+                  @case('CONTENT1'){
+                    <app-content1-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content1-section>
+                  }
+                  @case('CONTENT2'){
+                    <app-content2-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content2-section>
+                  }
+                  @case('CONTENT4'){
+                    <app-content4-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content4-section>
+                  }
+                  @case('CONTENT5'){
+                    <app-content5-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content5-section>
+                  }
+                  @case('CONTENT6'){
+                    <app-content6-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content6-section>
+                  }
+                  @case('CONTENT7'){
+                    <app-content7-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content7-section>
+                  }
+                  @case('CONTENT8'){
+                    <app-content8-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-content8-section>
+                  }
+                  @case('OUR_PRODUCTS'){
+                    <app-our-products-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-our-products-section>
+                  }
+                  @case('OUR_REVIEWS'){
+                    <app-our-reviews-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-our-reviews-section>
+                  }
+                  @case('FAQ'){
+                    <app-faq-section [selectedSection]="selectedSectionReadOnly!" (loadPages)="loadPages()"></app-faq-section>
+                  }
+                }
+              }
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Section -->
+<div *ngIf="showSectionModal()" 
+     class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 animate-fade-in"
+     (click)="closeModal()">
+  <div class="bg-[var(--surface)] rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-in"
+       (click)="$event.stopPropagation()">
+    <div class="p-6">
+      <h2 class="text-2xl font-bold text-[var(--text)] mb-6">
+  {{ editMode() ? 'Modifier' : 'Créer' }} une Section
+</h2>
+      
+      <form [formGroup]="sectionForm" (ngSubmit)="saveSection()">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-[var(--text)] mb-2">Titre *</label>
+            <input 
+              type="text" 
+              formControlName="titre"
+              class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none transition-all duration-200">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-[var(--text)] mb-2">Type de Section *</label>
+            <select 
+              formControlName="type"
+              class="w-full px-4 py-2 bg-[var(--background)] text-[var(--text)] rounded-lg border-2 border-transparent focus:border-[var(--primary)] focus:outline-none transition-all duration-200">
+              @switch (selectedPage()?.type) {
+                @case ('ALL') {
+                  @for(type of allPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+              </option>
+                  }
+                }
+                @case('HOME'){
+                  @for(type of homePageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+              </option>
+                }
+              }
+                @case('ABOUT'){
+                  @for(type of aboutPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+              </option>
+                }
+              }
+                @case('CONTACT'){
+                  @for(type of contactPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    </option>
+                    }
+                  }
+                @case('TERMS_AND_CONDITIONS'){
+                  @for(type of TACPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                  }
+                @case('PRODUCT'){
+                  @for(type of productsPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                  }
+                @case('BLOG'){
+                  @for(type of blogPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                  }
+                @case('PRODUCT_DETAILS'){
+                  @for(type of productDetailsPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                  }
+                @case('DELIVERY_AND_RETURN'){
+                  @for(type of deliveryAndReturnPageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                }
+                @case('LEGAL_NOTICE'){
+                  @for(type of legalNoticePageSections; track $index) {
+                    <option [value]="type">
+                {{ getSectionTypeLabel(type) }}
+                    }
+                }
+              @default {
+                <option selected disabled value="" >
+                 No section's type for this page...
+              </option>
+              }
+            }
+            </select>
+          </div>
+
+          <div class="flex items-center">
+            <input 
+              type="checkbox" 
+              formControlName="active"
+              id="active"
+              class="w-5 h-5 text-[var(--text)] rounded focus:ring-2 focus:ring-[var(--primary)]">
+            <label for="active" class="ml-2 text-sm font-medium text-[var(--text)]">Actif</label>
+          </div>
+
+          <!-- Image Upload Section -->
+           @if(sectionForm.value.type === 'HERO' || sectionForm.value.type === 'CONTENT3' || sectionForm.value.type === 'CONTENT6' ) {
+          <div>
+            <label class="block text-sm font-medium text-[var(--text)] mb-4">Image de fond</label>
+            <div class="flex flex-col gap-4">
+              <div>
+                <label class="cursor-pointer inline-block">
+                  <span class="px-4 py-2 text-sm md:text-base bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors">
+                    Télécharger une image
+                  </span>
+                  <input type="file"
+                         (change)="onFileEvent($event)"
+                         accept="image/*"
+                         class="hidden">
+                </label>
+              </div>
+
+              <!-- Image Previews -->
+              <div class="flex items-center w-full max-w-sm">
+                <div *ngIf="imagePreviews && imagePreviews.trim() !== ''" class="relative group w-full">
+                  <img 
+                    [src]="imagePreviews" 
+                    alt="Image preview"
+                    class="w-full object-cover rounded-lg border border-[var(--background)] shadow-sm transition-transform duration-200 group-hover:scale-105"
+                  />
+                  <button type="button"
+                          (click)="removeFile(false)"
+                          class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    ✕
+                  </button>
+                </div>
+
+                <div *ngIf="!imagePreviews && sectionForm.value.imageUrl" class="relative group w-full">
+                  <img 
+                    [src]="imagesBaseUrl + sectionForm.value?.imageUrl" 
+                    alt="Section image"
+                    class="w-full object-cover rounded-lg border border-[var(--background)] shadow-sm transition-transform duration-200 group-hover:scale-105"
+                  />
+                  <button type="button"
+                          (click)="removeFile(true)"
+                          class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    ✕
+                  </button>
+                </div>
+
+                <div *ngIf="!imagePreviews && !sectionForm.value.imageUrl" 
+                     class="flex aspect-square items-center justify-center bg-gray-100 rounded-lg border border-dashed border-[var(--background)] w-full">
+                  <img 
+                    src="/assets/images/no-image.png" 
+                    alt="No image available"
+                    class="opacity-70 object-contain"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          }
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button 
+            type="button"
+            (click)="closeModal()"
+            class="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-200">
+            Annuler
+          </button>
+          <button 
+            type="submit"
+            [disabled]="!sectionForm.valid"
+            class="px-6 py-2 bg-[var(--primary)] text-white rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+            {{ editMode() ? 'Modifier' : 'Créer' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

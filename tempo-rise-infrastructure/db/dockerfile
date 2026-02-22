@@ -1,0 +1,8 @@
+FROM postgres:17.5
+
+RUN apt-get update && apt-get install -y cron
+
+COPY backup-scripts/backup-cron /etc/cron.d/backup-cron
+RUN chmod 0644 /etc/cron.d/backup-cron
+
+CMD ["bash", "-c", "cron && docker-entrypoint.sh postgres"]

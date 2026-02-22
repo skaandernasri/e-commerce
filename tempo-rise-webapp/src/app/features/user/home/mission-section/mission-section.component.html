@@ -1,0 +1,30 @@
+ @if(activeContent5Section()){
+<section [id]="activeContent5Section()?.type" class="bg-[#e8cbb0] rounded-2xl sm:rounded-[30px] p-6 sm:p-8 md:p-10 flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8 md:gap-10 max-w-6xl mx-auto my-8 sm:my-12">
+  <!-- Text Block -->
+  <div class="text-left md:w-1/3">
+    <h2 class="text-2xl sm:text-3xl font-extrabold text-black mb-2">{{ content5Content()?.title }}</h2>
+    <p class="text-base sm:text-lg text-black">{{ content5Content()?.subtitle }}</p>
+  </div>
+
+  <!-- Venn Circles -->
+  <div class="relative w-full md:w-2/3 h-[300px] sm:h-[350px] md:h-[400px]">
+    <!-- Confort -->
+    <div class="absolute top-10 sm:top-15 left-[20%] md:left-[27%] w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-[#b07e45] opacity-90 rounded-full flex flex-col justify-center items-center text-center p-3 sm:p-4 z-10">
+      <h3 class="text-base sm:text-lg md:text-xl font-semibold">{{ content5Content()?.title1 }}</h3>
+      <p class="text-xs sm:text-sm mt-1 sm:mt-2">{{ content5Content()?.subtitle1 }}</p>
+    </div>
+
+    <!-- Durabilité -->
+    <div class="absolute top-10 sm:top-15 left-[50%] md:left-[60%] w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-[#f4ebe3] opacity-90 rounded-full flex flex-col justify-center items-center text-center p-3 sm:p-4 z-10">
+      <h3 class="text-base sm:text-lg md:text-xl font-semibold">{{ content5Content()?.title2 }}</h3>
+      <p class="text-xs sm:text-sm mt-1 sm:mt-2">{{ content5Content()?.subtitle2 }}</p>
+    </div>
+
+    <!-- Écoresponsabilité -->
+    <div class="absolute top-[120px] sm:top-[140px] md:top-[160px] right-[5px] sm:right-[10px] transform -translate-x-1/2 w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 bg-[#7e8c5f] opacity-90 rounded-full flex flex-col justify-center items-center text-center p-3 sm:p-4 z-20">
+      <h3 class="text-base sm:text-lg md:text-xl font-semibold">{{ content5Content()?.title3 }}</h3>
+      <p class="text-xs sm:text-sm mt-1 sm:mt-2">{{ content5Content()?.subtitle3 }}</p>
+    </div>
+  </div>
+</section>
+}

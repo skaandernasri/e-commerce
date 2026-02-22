@@ -1,0 +1,209 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     role="dialog"
+     aria-modal="true">
+  
+  <!-- Modal Container -->
+  <div @fadeInUp class="relative w-full max-w-md bg-[var(--surface)] rounded-xl shadow-2xl overflow-hidden border border-[var(--background)]">
+    
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] p-4">
+      <h2 class="text-xl font-bold text-white">
+        {{ isEditMode ? 'Edit Promotion' : 'Create New Promotion' }}
+      </h2>
+    </div>
+
+    <!-- Content -->
+    <form [formGroup]="promotionForm" (ngSubmit)="onSubmit()" class="w-full p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+      <!-- Basic Information Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Name Field -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Name*</label>
+          <input
+            type="text"
+            formControlName="nom"
+            class="w-full px-4 py-2 rounded-lg border border-[var(--background)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)/20] bg-[var(--surface)] text-[var(--text)]"
+            placeholder="Enter promotion name"
+          >
+          @if (promotionForm.get('nom')?.invalid && promotionForm.get('nom')?.touched) {
+            <div class="text-red-500 text-xs mt-1">
+              @if (promotionForm.get('nom')?.errors?.['required']) {
+                <p>Name is required</p>
+              }
+              @if (promotionForm.get('nom')?.errors?.['minlength']) {
+                <p>Name must be at least 2 characters</p>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Percentage Reduction -->
+        <div class="space-y-2">
+           <select formControlName="type"
+  [ngClass]="{
+    'text-gray-400': !promotionForm.get('type')?.value,
+    'text-[var(--text)]': promotionForm.get('type')?.value
+  }"
+  class="bg-[var(--surface)] w-full px-3 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)]">
+  
+  <option value="" disabled>Select a reduction type...</option>
+  <option value="PERCENTAGE">Percentage</option>
+  <option value="FIXED">Amount</option>
+</select>
+
+            @if(promotionForm.get('type')?.invalid && promotionForm.get('type')?.touched){
+              <p class="text-red-500 text-xs mt-1">Reduction type is required</p>
+            }
+            @if(promotionForm.get('type')?.value == 'FIXED'){
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-[var(--text)]">Discount*</label>
+                <input 
+                  type="number" 
+                  formControlName="reduction"
+                  min="1" 
+                  class="w-full px-3 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]"
+                >
+                @if (promotionForm.get('reduction')?.invalid && promotionForm.get('reduction')?.touched) {
+                  <div class="text-red-500 text-xs mt-1">
+                    @if (promotionForm.get('reduction')?.errors?.['required']) {
+                      <p>Discount is required</p>
+                    }
+                  </div>
+                }
+                @if (promotionForm.errors?.['priceLessThanReduction'] && promotionForm.touched) {
+  <p class="text-red-500 text-xs mt-1">Price must be greater than discount</p>
+}
+              </div>
+            }
+            @if(promotionForm.get('type')?.value == 'PERCENTAGE'){
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-[var(--text)]">Discount Percentage*</label>
+                <input 
+                  type="number" 
+                  formControlName="reduction"
+                  min="1" 
+                  max="100"
+                  step="0.01"
+                  class="w-full px-3 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]"
+                >
+                @if (promotionForm.get('reduction')?.invalid && promotionForm.get('reduction')?.touched) {
+                  <div class="text-red-500 text-xs mt-1">
+                    @if (promotionForm.get('reduction')?.errors?.['required']) {
+                      <p>Discount is required</p>
+                    }
+                    @if (promotionForm.errors?.['percentageOutOfRange'] && promotionForm.touched) {
+                      <p>Percentage must be between 1 and 100</p>
+                    }
+                  </div>
+                }
+              </div>
+
+            }
+          
+        </div>
+
+        <!-- Date Range -->
+<div class="space-y-2 col-span-1 md:col-span-2">
+  <mat-form-field appearance="fill" class="w-full !bg-[var(--surface)] !text-[var(--text)] rounded-md border border-[var(--background)]">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker" class="text-[var(--text)]">
+      <input matStartDate placeholder="Start date" formControlName="dateDebut"
+             class="bg-[var(--surface)] text-[var(--text)] px-3 py-2" />
+      <input matEndDate placeholder="End date" formControlName="dateFin"
+             class="bg-[var(--surface)] text-[var(--text)] px-3 py-2" />
+    </mat-date-range-input>
+    <mat-hint class="text-[var(--text)]">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  @if (promotionForm.get('dateDebut')?.invalid && promotionForm.get('dateDebut')?.touched) {
+    <p class="text-red-500 text-xs mt-1">Start date is required</p>
+  }
+  @if (promotionForm.get('dateFin')?.invalid && promotionForm.get('dateFin')?.touched) {
+    <p class="text-red-500 text-xs mt-1">End date is required</p>
+  }
+  @if (promotionForm.errors?.['dateOrderInvalid'] && promotionForm.touched) {
+    <p class="text-red-500 text-xs mt-1">Start date must be before end date</p>
+  }
+  @if (promotionForm.errors?.['endDateInPast'] && promotionForm.touched) {
+    <p class="text-red-500 text-xs mt-1">End date cannot be in the past</p>
+  }
+
+  <mat-form-field>
+    <mat-label>start time</mat-label>
+    <input matInput [matTimepicker]="startTimePicker" formControlName="heureDebut">
+    <mat-timepicker-toggle matIconSuffix [for]="startTimePicker"/>
+    <mat-timepicker #startTimePicker/>
+  </mat-form-field>
+  @if (promotionForm.get('heureDebut')?.invalid && promotionForm.get('heureDebut')?.touched) {
+    <p class="text-red-500 text-xs mt-1">start time is required</p>
+  }
+  <mat-form-field>
+    <mat-label>end time</mat-label>
+    <input matInput [matTimepicker]="endTimePicker" formControlName="heureFin">
+    <mat-timepicker-toggle matIconSuffix [for]="endTimePicker"/>
+    <mat-timepicker #endTimePicker/>
+  </mat-form-field>
+  @if (promotionForm.get('heureFin')?.invalid && promotionForm.get('heureFin')?.touched) {
+    <p class="text-red-500 text-xs mt-1">end time is required</p>
+  }
+
+ 
+</div>
+
+        <!-- Products -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">product*</label>
+          <select formControlName="produitId"
+                  class="bg-[var(--surface)] text-[var(--text)] w-full px-3 py-2 border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)]">
+                  <option [ngValue]="null" disabled selected hidden>Select a product...</option>
+
+                  @for(prod of products; track prod.id) {
+              <option [ngValue]="prod.id">{{ prod.nom }}</option>
+            }
+          </select>
+          @if (promotionForm.get('produitId')?.invalid && promotionForm.get('produit')?.touched) {
+            <p class="text-red-500 text-xs">Product is required</p>
+          }
+          @if(errMessage!=''){
+            <p class="text-red-500 text-xs mt-1">{{errMessage}}</p>
+          }
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Description</label>
+        <textarea
+          formControlName="description"
+          rows="3"
+          class="w-full px-4 py-2 rounded-lg border border-[var(--background)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)/20] bg-[var(--surface)] text-[var(--text)]"
+          placeholder="Enter description (optional)"
+        ></textarea>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-[var(--background)] px-6 py-4 border-t border-[var(--border)] flex justify-end gap-3">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 text-sm font-medium text-[var(--text)] hover:text-[var(--primary)] transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="promotionForm.invalid || isLoading"
+          class="px-4 py-2 bg-[var(--primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--secondary)] transition-colors flex items-center gap-2 disabled:opacity-50"
+        >
+          @if (!isLoading) {
+            <span>{{ isEditMode ? 'Update' : 'Create' }}</span>
+          }
+          @else { 
+            <span class="animate-spin">↻</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

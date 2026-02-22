@@ -1,0 +1,52 @@
+@startuml
+'------------------------------
+' Frontend
+'------------------------------
+package "Frontend" {
+  [Frontend Web]
+}
+
+'------------------------------
+' Backend
+'------------------------------
+package "Backend" {
+  [API Gateway]
+  [Gestion des Commandes]
+  [Gestion des Utilisateurs]
+  [Gestion des Produits]
+  [Suivi des Clients]
+}
+
+'------------------------------
+' Base de Données
+'------------------------------
+database "Base de Données" {
+  [DB Commandes]
+  [DB Utilisateurs]
+  [DB Produits]
+}
+
+'------------------------------
+' Systèmes Externes
+'------------------------------
+cloud "Systèmes Externes" {
+  [Google Analytics]
+  [Passerelle de Paiement]
+  [Email Service]
+}
+
+'------------------------------
+' Connexions entre les composants
+'------------------------------
+[Frontend Web] --> [API Gateway] : Envoie des requêtes
+[API Gateway] --> [Gestion des Commandes] : Traite commande
+[API Gateway] --> [Gestion des Utilisateurs] : Traite utilisateurs
+[API Gateway] --> [Gestion des Produits] : Traite produits
+[Gestion des Commandes] --> [DB Commandes]
+[Gestion des Utilisateurs] --> [DB Utilisateurs]
+[Gestion des Produits] --> [DB Produits]
+[Suivi des Clients] --> [Google Analytics] : Suivi comportement
+[API Gateway] --> [Passerelle de Paiement] : Paiement
+[Frontend Web] --> [Email Service] : Notifications
+
+@enduml

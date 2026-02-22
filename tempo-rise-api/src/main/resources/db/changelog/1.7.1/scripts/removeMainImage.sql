@@ -1,0 +1,1 @@
+ALTER TABLE image_blogpost DROP COLUMN main_image;

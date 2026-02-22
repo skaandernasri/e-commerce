@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.2.0/scripts/suiviClient.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE produit ADD COLUMN composition TEXT;
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE produit ADD COLUMN guide TEXT;
+        - sql:
+            dbms: postgresql
+            sql: ALTER TABLE produit ADD COLUMN faq TEXT;

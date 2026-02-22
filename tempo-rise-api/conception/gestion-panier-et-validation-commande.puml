@@ -1,0 +1,51 @@
+@startuml
+actor Utilisateur
+participant "Frontend" as Frontend
+participant "Backend" as Backend
+participant "Système de Paiement" as Paiement
+participant "Système de Livraison" as Livraison
+participant "Base de Données" as DB
+
+== Ajout au Panier ==
+Utilisateur -> Frontend : Ajoute un produit au panier
+Frontend -> Backend : Envoie les détails du produit (ID, quantité)
+Backend -> DB : Vérifie la disponibilité du stock
+DB --> Backend : Retourne le stock disponible
+Backend -> DB : Réserve le produit (si disponible)
+DB --> Backend : Confirme la réservation
+Backend --> Frontend : Retourne la confirmation d'ajout au panier
+Frontend --> Utilisateur : Affiche le panier mis à jour
+
+== Modification du Panier ==
+Utilisateur -> Frontend : Modifie la quantité ou supprime un produit
+Frontend -> Backend : Envoie les modifications (ID produit, nouvelle quantité)
+Backend -> DB : Met à jour la réservation du produit
+DB --> Backend : Confirme la mise à jour
+Backend --> Frontend : Retourne le panier mis à jour
+Frontend --> Utilisateur : Affiche le panier mis à jour
+
+== Validation de la Commande ==
+Utilisateur -> Frontend : Clique sur "Passer la commande"
+Frontend -> Backend : Demande la validation du panier
+Backend -> DB : Vérifie à nouveau la disponibilité du stock
+DB --> Backend : Confirme la disponibilité
+Backend -> DB : Convertit le panier en commande
+DB --> Backend : Retourne les détails de la commande
+Backend -> Paiement : Envoie les informations de paiement
+Paiement --> Backend : Confirme le paiement réussi
+Backend -> Livraison : Envoie les détails de la commande pour la livraison
+Livraison --> Backend : Confirme la prise en charge de la livraison
+Backend -> DB : Met à jour le statut de la commande (payée, en cours de livraison)
+DB --> Backend : Confirme la mise à jour
+Backend --> Frontend : Retourne la confirmation de la commande
+Frontend --> Utilisateur : Affiche la confirmation de la commande
+
+== Suivi de la Commande ==
+Utilisateur -> Frontend : Consulte le statut de la commande
+Frontend -> Backend : Demande le statut de la commande
+Backend -> DB : Récupère les informations de la commande
+DB --> Backend : Retourne les détails de la commande
+Backend --> Frontend : Retourne le statut de la commande
+Frontend --> Utilisateur : Affiche le statut de la commande
+
+@enduml

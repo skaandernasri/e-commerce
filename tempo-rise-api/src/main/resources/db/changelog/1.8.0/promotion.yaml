@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.8.0/scripts/updatePromotion.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.8.0/scripts/reductionName.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+

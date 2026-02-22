@@ -1,0 +1,54 @@
+@startgantt
+Project starts 2025-02-24
+
+sunday are closed
+saturday are closed
+
+-- Phase 1: Authentification et Utilisateurs --
+[Authentification] lasts 7 days and is colored in Lavender/LightBlue
+  [Développement backend] lasts 3 days and starts at [Authentification]'s start
+  [Intégration OAuth] lasts 2 days and starts at [Développement backend]'s end
+  [Tests de sécurité] lasts 2 days and starts at [Intégration OAuth]'s end
+
+[Gestion Utilisateur] lasts 10 days and starts at [Authentification]'s end
+  [Création des rôles] lasts 3 days and starts at [Gestion Utilisateur]'s start
+  [Gestion des permissions] lasts 5 days and starts at [Création des rôles]'s end
+  [Tests utilisateur] lasts 2 days and starts at [Gestion des permissions]'s end
+
+[Notification] lasts 3 days and starts at [Gestion Utilisateur]'s end
+[Panier] lasts 7 days and starts at [Notification]'s end
+
+-- Phase 2: Gestion des Produits et Commandes --
+[Gestion des Produits] lasts 15 days and starts at [Panier]'s end
+  [Ajout et modification] lasts 7 days and starts at [Gestion des Produits]'s start
+  [Gestion des catégories] lasts 4 days and starts at [Ajout et modification]'s end
+  [Affichage et filtres] lasts 4 days and starts at [Gestion des catégories]'s end
+
+[Gestion des Commandes] lasts 10 days and starts at [Gestion des Produits]'s end
+[Gestion des Promotions] lasts 7 days and starts at [Gestion des Commandes]'s end
+[Gestion des Stocks] lasts 7 days and starts at [Gestion des Promotions]'s end
+
+-- Phase 3: Blog et Commentaires --
+[Gestion des BlogPosts] lasts 10 days and starts at [Gestion des Stocks]'s end
+[Gestion des Commentaires] lasts 7 days and starts at [Gestion des BlogPosts]'s end
+
+-- Phase 4: Suivi et Analytics --
+[Suivi des Ventes] lasts 7 days and starts at [Gestion des Commentaires]'s end
+[Suivi des Clients] lasts 7 days and starts at [Suivi des Ventes]'s end
+[Google Analytics Integration] lasts 4 days and starts at [Suivi des Clients]'s end
+
+-- Phase 5: Facturation et Retours --
+[Gestion des Factures] lasts 7 days and starts at [Google Analytics Integration]'s end
+[Gestion des Retours] lasts 7 days and starts at [Gestion des Factures]'s end
+
+-- Phase 6: Finalisation --
+[Tests et Validation] lasts 10 days and starts at [Gestion des Retours]'s end
+  [Tests unitaires] lasts 3 days and starts at [Tests et Validation]'s start
+  [Tests fonctionnels] lasts 3 days and starts at [Tests unitaires]'s end
+  [Tests de charge] lasts 4 days and starts at [Tests fonctionnels]'s end
+
+[Déploiement] lasts 5 days and starts at [Tests et Validation]'s end
+  [Mise en production] lasts 2 days and starts at [Déploiement]'s start
+  [Monitoring post-déploiement] lasts 3 days and starts at [Mise en production]'s end
+
+@endgantt

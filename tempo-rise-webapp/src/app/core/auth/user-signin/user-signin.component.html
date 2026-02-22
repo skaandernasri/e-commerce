@@ -1,0 +1,163 @@
+<div class="min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8 bg-[var(--background)]">
+  <div class="w-full max-w-md">
+    <div class="bg-[#F3EDE5] rounded-lg shadow-lg p-6 sm:p-8">
+      
+      <!-- Header -->
+<h2 class="mb-6 text-center text-2xl sm:text-3xl font-extrabold text-[var(--text)]">
+  {{ 'AUTH.LOGIN.TITLE' | translate }}
+</h2>
+
+
+      <!-- Loading State -->
+      @if (isLoading) {
+        <div class="text-center py-8">
+          <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[var(--primary)] border-t-transparent"></div>
+<p class="mt-3 text-sm text-[var(--text)]">{{ 'AUTH.LOGIN.SIGNING_IN' | translate }}</p>
+        </div>
+      } @else {
+        
+        <!-- Signin Form -->
+        <form class="space-y-4" [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+          
+          <!-- Email Field -->
+          <div>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#484848] font-bold text-lg">
+                &#64;
+              </span>
+              <input 
+                id="email" 
+                type="email" 
+                formControlName="email" 
+                required 
+  placeholder="{{ 'AUTH.LOGIN.EMAIL_PLACEHOLDER' | translate }}"
+                class="appearance-none block w-full pl-10 pr-3 py-2 border border-[var(--primary)] rounded-md shadow-sm placeholder-[var(--text)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base bg-[#F3EDE5] text-[var(--text)]">
+            </div>
+            @if (signinForm.get('email')?.invalid && (signinForm.get('email')?.dirty || signinForm.get('email')?.touched)) {
+              <div class="mt-1 text-xs sm:text-sm text-red-600">
+                @if (signinForm.get('email')?.errors?.['required']) {
+  {{ 'AUTH.LOGIN.EMAIL_REQUIRED' | translate }}
+                }
+                @if (signinForm.get('email')?.errors?.['email'] || signinForm.get('email')?.errors?.['pattern']) {
+  {{ 'AUTH.LOGIN.EMAIL_INVALID' | translate }}
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <div class="relative">
+ <span 
+  class="absolute inset-y-0 left-0 pl-2 flex items-center "
+>
+  <svg width="23" height="23" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.9987 22.6668C15.2915 22.6668 14.6132 22.3859 14.1131 21.8858C13.613 21.3857 13.332 20.7074 13.332 20.0002C13.332 18.5202 14.5187 17.3335 15.9987 17.3335C16.7059 17.3335 17.3842 17.6144 17.8843 18.1145C18.3844 18.6146 18.6654 19.2929 18.6654 20.0002C18.6654 20.7074 18.3844 21.3857 17.8843 21.8858C17.3842 22.3859 16.7059 22.6668 15.9987 22.6668ZM23.9987 26.6668V13.3335H7.9987V26.6668H23.9987ZM23.9987 10.6668C24.7059 10.6668 25.3842 10.9478 25.8843 11.4479C26.3844 11.948 26.6654 12.6263 26.6654 13.3335V26.6668C26.6654 27.3741 26.3844 28.0524 25.8843 28.5524C25.3842 29.0525 24.7059 29.3335 23.9987 29.3335H7.9987C7.29145 29.3335 6.61318 29.0525 6.11308 28.5524C5.61298 28.0524 5.33203 27.3741 5.33203 26.6668V13.3335C5.33203 11.8535 6.5187 10.6668 7.9987 10.6668H9.33203V8.00016C9.33203 6.23205 10.0344 4.53636 11.2847 3.28612C12.5349 2.03588 14.2306 1.3335 15.9987 1.3335C16.8742 1.3335 17.7411 1.50593 18.5499 1.84097C19.3588 2.176 20.0937 2.66706 20.7127 3.28612C21.3318 3.90517 21.8229 4.6401 22.1579 5.44894C22.4929 6.25778 22.6654 7.12468 22.6654 8.00016V10.6668H23.9987ZM15.9987 4.00016C14.9378 4.00016 13.9204 4.42159 13.1703 5.17174C12.4201 5.92188 11.9987 6.9393 11.9987 8.00016V10.6668H19.9987V8.00016C19.9987 6.9393 19.5773 5.92188 18.8271 5.17174C18.077 4.42159 17.0596 4.00016 15.9987 4.00016Z" fill="#484848"/>
+</svg>
+
+</span  >
+@if(showPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showPassword = !showPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16 16H13L10.8368 13.3376C9.96488 13.7682 8.99592 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8L3.07945 4.30466C3.14989 4.22013 3.22229 4.13767 3.29656 4.05731L0 0H3L16 16ZM5.35254 6.58774C5.12755 7.00862 5 7.48941 5 8C5 9.65685 6.34315 11 8 11C8.29178 11 8.57383 10.9583 8.84053 10.8807L5.35254 6.58774Z" fill="#000000"/>
+<path d="M16 8L14.2278 10.1266L7.63351 2.01048C7.75518 2.00351 7.87739 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8Z" fill="#000000"/>
+</svg>
+</span>
+}
+@if(!showPassword){
+<span class="absolute inset-y-0 right-2 pl-2 flex items-center" (click)='showPassword = !showPassword'>
+<svg width="23" height="23" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 8L3.07945 4.30466C4.29638 2.84434 6.09909 2 8 2C9.90091 2 11.7036 2.84434 12.9206 4.30466L16 8L12.9206 11.6953C11.7036 13.1557 9.90091 14 8 14C6.09909 14 4.29638 13.1557 3.07945 11.6953L0 8ZM8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11Z" fill="#000000"/>
+</svg>
+</span>
+}
+  <input 
+    id="password"
+    [type]="showPassword ? 'text' : 'password'"
+    formControlName="password" 
+    required 
+  placeholder="{{ 'AUTH.LOGIN.PASSWORD_PLACEHOLDER' | translate }}"
+    class="appearance-none block w-full pl-10 pr-3 py-2 border border-[var(--primary)] rounded-md shadow-sm placeholder-[var(--text)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-[var(--primary)] text-sm sm:text-base bg-[#F3EDE5] text-[var(--text)] transition-all duration-300"
+  >
+</div>
+
+           @if (signinForm.get('password')?.invalid && 
+     (signinForm.get('password')?.dirty || signinForm.get('password')?.touched)) {
+  <div class="mt-1 text-xs sm:text-sm text-red-600">
+    @if (signinForm.get('password')?.errors?.['required']) {
+  {{ 'AUTH.LOGIN.PASSWORD_REQUIRED' | translate }}
+    }
+    @if (signinForm.get('password')?.errors?.['minlength']) {
+  {{ 'AUTH.LOGIN.PASSWORD_MIN' | translate }}
+    }
+  </div>
+}
+
+          </div>
+
+        <!-- Action Links -->
+        <div class="flex justify-end text-xs sm:text-sm mt-2">
+          <a [routerLink]="['/reset-request']" 
+            class="font-medium text-[var(--text)] hover:text-[var(--secondary)] underline">
+  {{ 'AUTH.LOGIN.FORGOT_PASSWORD' | translate }}
+          </a>
+        </div>
+
+
+          <!-- Error Message -->
+          @if (errorMessage) {
+            <div class="rounded-md bg-red-50 p-3 sm:p-4">
+              <div class="flex items-center">
+                <svg class="h-5 w-5 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+                <p class="ml-3 text-xs sm:text-sm font-medium text-red-800">{{errorMessage | translate}}</p>
+              </div>
+            </div>
+          }
+
+          <!-- Submit Button -->
+          <button type="submit" [disabled]="signinForm.invalid"
+                  class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-base sm:text-lg font-medium text-black bg-[#E6CBB2] hover:bg-[var(--secondary)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+  {{ 'AUTH.LOGIN.SUBMIT' | translate }}
+          </button>
+        </form>
+
+        <!-- Website Link -->
+<p class="mt-4 text-center text-xs sm:text-sm text-[var(--text)]">
+  {{ 'AUTH.LOGIN.OR_WEBSITE' | translate }}
+  <a [routerLink]="['/']" class="font-medium text-[var(--primary)] hover:text-[var(--secondary)] underline">
+    {{ 'AUTH.LOGIN.WEBSITE_LINK' | translate }}
+  </a>
+</p>
+
+        <!-- Divider -->
+        <div class="flex items-center mt-4">
+          <div class="flex-grow border-t border-gray-300"></div>
+<span class="px-3 text-xs sm:text-sm text-gray-400">
+  {{ 'AUTH.LOGIN.OR_SIGN_WITH' | translate }}
+</span>          <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <!-- Google Sign In Button -->
+        <button type="button" id="google-signin-button" 
+                class="w-full inline-flex justify-center items-center py-2 px-4 mt-4 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 transition-colors text-xs sm:text-sm font-medium text-[var(--text)]">
+          <svg class="w-5 h-5 mr-2 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+{{ 'AUTH.LOGIN.GOOGLE_SIGNIN' | translate }}        </button>
+
+        <!-- Sign Up Link -->
+        <p class="mt-4 text-center text-xs sm:text-sm text-[var(--text)]">
+  {{ 'AUTH.LOGIN.NO_ACCOUNT' | translate }}
+          <a [routerLink]="['/auth/user/signup']" class="font-medium text-[#A86826] hover:text-[var(--secondary)] underline">
+    {{ 'AUTH.LOGIN.SIGN_UP' | translate }}
+          </a>
+        </p>
+      }
+    </div>
+  </div>
+</div>

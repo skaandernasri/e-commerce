@@ -1,0 +1,42 @@
+
+@if(activeBlogsSection()){
+<div class="container mx-auto px-4 py-10">
+  @if(activeBlogsMainSection()){
+  <section [id]="activeBlogsMainSection()?.type">
+  <h1 class="text-4xl font-bold text-center mb-10 text-[var(--primary)]">
+    {{ mainContent()?.title }}
+  </h1>
+@if(!isLoading){
+  @if(!blogPosts || blogPosts.length === 0){
+    <p class="text-center text-gray-500 text-lg">
+      {{ 'BLOG.NO_POSTS' | translate }}
+    </p>
+  } @else {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <article *ngFor="let post of blogPosts" class="bg-white hover:shadow-xl transition-shadow duration-300 rounded-xl overflow-hidden border border-gray-200">
+        @if(post.image && post.image.length > 0){
+        <img [src]="imageBaseUrl + post.image[0].url || 'https://via.placeholder.com/500x200?text=Chargement...'" 
+             alt="blog" class="w-full h-48 object-cover">
+        }
+        @else{
+        <img src="assets/images/no-image.png" alt="blog" class="w-full h-48 object-cover">
+        }
+        <div class="p-6">
+          <h2 class="text-2xl font-semibold mb-2 text-gray-800">{{ post.titre }}</h2>
+          <p class="text-sm text-gray-500 mb-3">{{ post.datePublication | date:'short' }}</p>
+    <app-expand-long-text [text]="post.contenu" [id]="post.id"></app-expand-long-text> 
+          <a [routerLink]="['/blog', post.id]" class="text-[var(--primary)] font-semibold hover:underline">
+            {{ 'BLOG.READ_MORE' | translate }} →
+          </a>
+        </div>
+      </article>
+    </div>
+  }
+  }
+  @else {
+    <app-spinner></app-spinner>
+  }
+  </section>
+ }
+</div>
+}

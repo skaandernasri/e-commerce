@@ -1,0 +1,45 @@
+@startuml Gestion_Entites_Hexagonal
+
+actor Gestionnaire
+participant "Interface Utilisateur" as UI
+participant "Contrôleur (Adaptateur Entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "Port de sortie : EntitéRepository" as EntitéRepo
+
+== Accéder à la gestion d'une entité ==
+Gestionnaire -> UI : Accéder à la gestion des entités
+UI -> Controller : getEntités()
+Controller -> Service : récupérerListeEntités()
+Service -> EntitéRepo : findAll()
+EntitéRepo --> Service : liste des entités
+Service --> Controller : transmettre liste
+Controller --> UI : afficher les entités
+
+== Ajouter une entité ==
+Gestionnaire -> UI : Ajouter une entité
+UI -> Controller : ajouterEntité(données)
+Controller -> Service : ajouterEntité(données)
+Service -> EntitéRepo : save(entité)
+EntitéRepo --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher confirmation
+
+== Modifier une entité ==
+Gestionnaire -> UI : Modifier une entité
+UI -> Controller : modifierEntité(id, nouvellesDonnées)
+Controller -> Service : modifierEntité(id, nouvellesDonnées)
+Service -> EntitéRepo : update(id, entité)
+EntitéRepo --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher succès
+
+== Supprimer une entité ==
+Gestionnaire -> UI : Supprimer une entité
+UI -> Controller : supprimerEntité(id)
+Controller -> Service : supprimerEntité(id)
+Service -> EntitéRepo : deleteById(id)
+EntitéRepo --> Service : confirmation
+Service --> Controller : succès
+Controller --> UI : afficher suppression réussie
+
+@enduml

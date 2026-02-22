@@ -1,0 +1,76 @@
+<plugin>
+    <artifactId>maven-clean-plugin</artifactId>
+    <configuration>
+        <filesets>
+            <fileset>
+                <directory>build/</directory>
+            </fileset>
+        </filesets>
+    </configuration>
+</plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-war-plugin</artifactId>
+    <configuration>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <warSourceDirectory>build/www/</warSourceDirectory>
+        <webResources>
+            <resource>
+                <directory>src/main/webapp</directory>
+                <includes>
+                    <include>WEB-INF/**</include>
+                </includes>
+            </resource>
+        </webResources>
+    </configuration>
+</plugin>
+<plugin>
+    <groupId>com.github.eirslett</groupId>
+    <artifactId>frontend-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>install node and npm</id>
+            <goals>
+                <goal>install-node-and-npm</goal>
+            </goals>
+            <configuration>
+                <nodeVersion>${node.version}</nodeVersion>
+                <npmVersion>${npm.version}</npmVersion>
+            </configuration>
+        </execution>
+        <execution>
+            <id>npm install</id>
+            <goals>
+                <goal>npm</goal>
+            </goals>
+            <configuration>
+                <arguments>install</arguments>
+            </configuration>
+        </execution>
+        <execution>
+            <id>webpack build test</id>
+            <goals>
+                <goal>npm</goal>
+            </goals>
+            <phase>test</phase>
+            <configuration>
+                <arguments>run webpack:test</arguments>
+                <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+            </configuration>
+        </execution>
+        <execution>
+            <id>webpack build prod</id>
+            <goals>
+                <goal>npm</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+                <arguments>run webpack:prod</arguments>
+                <environmentVariables>
+                    <APP_VERSION>${project.version}</APP_VERSION>
+                </environmentVariables>
+                <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>

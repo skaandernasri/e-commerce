@@ -1,0 +1,81 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-8 text-[var(--text)]">Dashboard Overview</h1>
+  
+  <!-- Stats Cards Row -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Users Card -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Users</p>
+          <h3 class="text-2xl font-bold mt-2">{{ (users()).length || 0 }}</h3>
+        </div>
+        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Card -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Products</p>
+          <h3 class="text-2xl font-bold mt-2">{{ totalProducts || 0 }}</h3>
+        </div>
+        <div class="p-3 rounded-full bg-green-100 text-green-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Orders Card -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm font-medium text-gray-500">Total Orders</p>
+          <h3 class="text-2xl font-bold mt-2">{{ (orders()).length || 0 }}</h3>
+        </div>
+        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <!-- Orders Status Chart -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Orders by Status</h2>
+      <canvas id="ordersStatusChart"></canvas>
+    </div>
+
+    <!-- Products Stock Chart -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Products Stock Overview</h2>
+      <canvas id="productsStockChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Second Charts Row -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Monthly Sales Chart -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Monthly Sales</h2>
+      <canvas id="monthlySalesChart"></canvas>
+    </div>
+
+    <!-- Payment Methods Chart -->
+    <div class="bg-[var(--surface)] p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4">Payment Methods</h2>
+      <canvas id="paymentMethodsChart"></canvas>
+    </div>
+  </div>
+</div>

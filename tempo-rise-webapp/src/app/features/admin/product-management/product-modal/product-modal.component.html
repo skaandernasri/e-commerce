@@ -1,0 +1,269 @@
+<div  class="fixed inset-0 flex items-start md:items-center justify-center p-4 "
+     role="dialog"
+     aria-modal="true"
+     (click)="handleClickOutside($event)"
+     [attr.aria-labelledby]="isEditMode ? 'edit-title' : 'create-title'">
+  
+  <!-- Modal Container -->
+  <div #productModal @fadeInUp class="relative w-full max-w-4xl bg-[var(--surface)] rounded-xl shadow-2xl border border-[var(--background)] mx-auto my-4 md:my-8">
+    
+    <!-- Header -->
+    <div class="sticky top-0 bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] p-4 z-10">
+      <h2 class="text-xl font-bold text-white"
+          [id]="isEditMode ? 'edit-title' : 'create-title'">
+        {{ isEditMode ? 'Edit Product' : 'Create New Product' }}
+      </h2>
+    </div>
+
+    <!-- Content -->
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" 
+          class="p-6 space-y-6 max-h-[calc(100dvh-8rem)] md:max-h-[calc(100dvh-10rem)] overflow-y-auto">
+      
+      <!-- Basic Information Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <!-- Name -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Product Name*</label>
+          <input type="text" 
+                 formControlName="nom"
+                 maxlength="100"
+                 class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+          @if (productForm.get('nom')?.invalid && productForm.get('nom')?.touched) {
+            @if(productForm.get('nom')?.errors?.['maxlength']) {
+              <p class="text-red-500 text-xs mt-1">Product name must be at most 100 characters</p>
+            }
+            @if(productForm.get('nom')?.errors?.['required']) {
+              <p class="text-red-500 text-xs mt-1">Product name is required</p>
+            }
+          }
+        </div>
+
+        <!-- Price -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Price*</label>
+          <input type="number" 
+                 formControlName="prix"
+                 min="0" step="0.01"
+                 class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+          @if (productForm.get('prix')?.invalid && productForm.get('prix')?.touched) {
+            <p class="text-red-500 text-xs mt-1">Valid price is required</p>
+          }
+        </div>
+
+        <!-- Category -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Category*</label>
+          <select formControlName="categorie"
+          [compareWith]="compareCategories"
+                  class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)]  text-[var(--text)] ">
+                <option [ngValue]="null">Select a category...</option>
+                  @for(cat of categories; track cat.id) {
+              <option [ngValue]="cat">{{ cat.nom }}</option>
+            }
+          </select>
+          @if (productForm.get('categorie')?.invalid && productForm.get('categorie')?.touched) {
+            <p class="text-red-500 text-xs mt-1">Category is required</p>
+          }
+        </div>
+        <!-- Marque -->
+        <div class="space-y-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Marque*</label>
+          <select formControlName="marque"
+                  class="w-full px-3 py-2 text-sm md:text-base border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)]  text-[var(--text)] ">
+                <option value=''>Select a marque...</option>
+                  @for(mar of marques; track mar.viewValue) {
+              <option [value]="mar.value">{{ mar.viewValue }}</option>
+            }
+          </select>
+          @if (productForm.get('marque')?.invalid && productForm.get('marque')?.touched) {
+            <p class="text-red-500 text-xs mt-1">Marque is required</p>
+          }
+        </div>
+        <div formArrayName="variants" class="space-y-4">
+    <label class="block text-sm font-medium text-[var(--text)]">
+    Product Variants*
+    @if (productForm.get('variants')?.invalid && productForm.get('variants')?.touched) {
+      <span class="text-red-500 text-xs ml-2">At least one variant is required</span>
+    }
+  </label>
+  
+@for(variant of variants.controls; track trackVariant($index, variant); let i = $index) {
+  <div [formGroupName]="i" class="flex flex-wrap gap-3 items-center p-3 bg-[var(--surface)] rounded-md border border-[var(--background)]">
+    <!-- Color Select -->
+    <select formControlName="color" 
+            class="px-3 py-2 text-sm border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+      <option value="" disabled selected>Color</option>
+      @for(color of colorOptions; track color) {
+        <option [value]="color">{{ color }}</option>
+      }
+    </select>
+    
+    <!-- Size Select -->
+    <select formControlName="size" 
+            class="px-3 py-2 text-sm border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)]">
+      <option value="" disabled selected>Size</option>
+      @for(size of sizeOptions; track size) {
+        <option [value]="size">{{ size }}</option>
+      }
+    </select>
+    
+    <!-- Quantity Input -->
+    <input type="number" 
+           formControlName="quantity" 
+           min="1" 
+           class="px-3 py-2 text-sm border border-[var(--background)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary)] bg-[var(--surface)] text-[var(--text)] w-20">
+    
+    <!-- Remove Button -->
+    <button type="button" 
+            (click)="removeVariant(i)" 
+            class="text-red-500 hover:text-red-700 transition-colors ml-auto">
+      <span class="material-icons text-sm">delete</span>
+    </button>
+  </div>
+}
+  
+  <!-- Add Variant Button -->
+  <button type="button" 
+          (click)="addVariant()" 
+          class="mt-2 px-4 py-2 bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors flex items-center gap-2">
+    <span class="material-icons text-sm">add</span>
+    Add Variant
+  </button>
+</div>
+<!-- Product Status Toggles -->
+<div class="flex flex-col md:flex-row items-start md:items-center gap-6 mt-4">
+  <!-- Active Toggle -->
+  <label class="flex items-center cursor-pointer gap-3">
+    <span class="text-sm font-medium text-[var(--text)]">Active</span>
+    <input type="checkbox"
+           formControlName="actif"
+           class="hidden peer">
+    <div class="w-11 h-6 bg-gray-300 peer-checked:bg-[var(--primary)] rounded-full relative transition-colors">
+      <div class="absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-5"></div>
+    </div>
+  </label>
+</div>
+        <!-- Promotion Section -->
+        <div class="space-y-2 md:col-span-2">
+          <label class="block text-sm font-medium text-[var(--text)]">Promotions</label>
+          <!-- Selected Promotions List -->
+<div class="mt-2 space-y-2 max-h-40 overflow-y-auto">
+  @if (!productForm.get('promotions')?.value?.length) {
+    <span class="bg-red-100 text-red-800 text-sm font-medium px-2 py-0.5 rounded">
+      No promotions assigned
+    </span>
+  }
+  @else {
+    @for (promo of promotionsPreview; track promo.id; let i = $index) {
+      <div class="flex items-center justify-between p-2 rounded-md text-sm  bg-[var(--background)] ">
+        <span class="text-[var(--text)]">
+          {{ promo.nom }} ({{ promo.reduction }}% off) - 
+          Valid until: {{ promo.dateFin }}
+        </span>
+        <button 
+          type="button" 
+          (click)="removePromotion(i)"
+          class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+          aria-label="Remove promotion"
+        >
+          <span class="material-icons text-sm">close</span>
+        </button>
+      </div>
+    }
+  }
+</div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Description</label>
+          <quill-editor 
+          class="w-full mx-auto h-32 "
+    #quillEditor
+    formControlName="description"
+    [modules]="modules"
+    theme="snow"
+  ></quill-editor> </div>
+      <!-- Composition -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Composition</label>
+          <quill-editor 
+          class="w-full mx-auto h-32 "
+    #quillEditor
+    formControlName="composition"
+    [modules]="modules"
+    theme="snow"
+  ></quill-editor> </div>
+      <!-- guide d'utilisation -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">guide d'utilisation</label>
+        <quill-editor 
+        class="w-full mx-auto h-32"
+    #quillEditor
+    formControlName="guide"
+    [modules]="modules"
+    theme="snow"
+  ></quill-editor> </div>
+      <!-- faq -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">faq</label>
+         <quill-editor
+         class="w-full mx-auto h-32"
+    #quillEditor
+    formControlName="faq"
+    [modules]="modules"
+    theme="snow"
+  ></quill-editor> </div>
+     <!-- Image Upload Section -->
+<div class="space-y-4">
+  <label class="block text-sm font-medium text-[var(--text)]">Product Images</label>
+  
+  <label class="cursor-pointer inline-block">
+    <span class="px-4 py-2 text-sm md:text-base bg-[var(--primary)] text-white rounded-md hover:bg-[var(--secondary)] transition-colors">
+      Upload Images
+    </span>
+    <input type="file"
+           (change)="onFileEvent($event)"
+           multiple
+           accept=".jpg,.jpeg,.png"
+           class="hidden">
+  </label>
+
+  <!-- Image Previews -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+    @for(preview of imagePreviews; track preview; let i = $index) {
+      <div class="relative group">
+        <img [src]="preview.startsWith('data:image') ? preview : imagesBaseUrl + preview" 
+             class="w-full h-32 object-cover rounded-lg border border-[var(--background)]">
+        <button type="button"
+                (click)="onFileEvent(i)"
+                class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+          <span class="material-icons text-sm">close</span>
+        </button>
+      </div>  
+    }
+  </div>
+</div>
+
+      <!-- Footer -->
+      <div class="sticky bottom-0 bg-[var(--background)] px-6 py-3 border-t border-[var(--border)] flex justify-end gap-3 -mx-6 -mb-6">
+        <button type="button"
+                (click)="onCancel()"
+                class="px-3 py-1 md:px-4 md:py-2 text-sm font-medium text-[var(--text)] hover:text-[var(--primary)] transition-colors">
+          Cancel
+        </button>
+        <button type="submit"
+                [disabled]="productForm.invalid || isLoading"
+                class="px-3 py-1 md:px-4 md:py-2 text-sm md:text-base bg-[var(--primary)] text-white font-medium rounded-md hover:bg-[var(--secondary)] transition-colors flex items-center gap-2 disabled:opacity-50">
+          @if (!isLoading) {
+            <span>{{ isEditMode ? 'Update' : 'Create' }}</span>
+          }
+          @else { 
+            <span class="animate-spin">↻</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

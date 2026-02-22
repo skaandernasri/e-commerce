@@ -1,0 +1,56 @@
+@startuml
+actor Client
+
+participant "Interface Client " as UI
+participant "Contrôleur (Adaptateur entrant)" as Controller
+participant "Cas d’usage (Service Application)" as Service
+participant "API Paiement Konnect" as KonnectAPI
+participant "Service Notification" as NotifService
+participant "Base de données" as DB
+
+== Création de la commande et paiement ==
+
+Client -> UI : Cliquer sur "Valider mon panier"
+UI -> Controller : POST /commande
+Controller -> Service : createCommande(userId, panier)
+Service -> DB : enregistrer commande et lignes
+DB --> Service : commande enregistrée
+
+Service -> KonnectAPI : créer paiement (amount, orderId)
+KonnectAPI --> Service : lien de paiement + référence
+
+Service -> DB : sauvegarder info paiement (référence, statut)
+DB --> Service : confirmation
+
+Service -> NotifService : envoyer email de confirmation de commande
+NotifService -> DB : enregistrer notification
+DB --> NotifService : ok
+
+Service --> Controller : retour info paiement (lien, référence)
+Controller --> UI : rediriger vers lien de paiement Konnect
+
+== Notification après paiement ==
+
+KonnectAPI -> Controller : appel webhook /paiement/callback
+Controller -> Service : traiterCallback(reference)
+Service -> DB : mettre à jour statut du paiement
+Service -> NotifService : envoyer email "Paiement confirmé"
+NotifService -> DB : enregistrer notification
+DB --> NotifService : ok
+
+== Remboursement (en cas de retour) ==
+
+Client -> UI : Demander un retour / remboursement
+UI -> Controller : POST /contact/{id}/traiter
+Controller -> Service : traiterRetour(contactId, refundMethod)
+Service -> DB : vérifier type de contact
+alt type == "RETOUR" et refundMethod = "VIREMENT"
+    Service -> DB : enregistrer remboursement (méthode, isRefunded = true)
+    Service -> NotifService : envoyer email "Remboursement par virement en cours"
+    NotifService -> DB : enregistrer notification
+    DB --> NotifService : ok
+else type != "RETOUR"
+    Service --> Controller : Ignorer remboursement
+end
+
+@enduml

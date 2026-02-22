@@ -1,0 +1,70 @@
+@startuml
+
+actor "Client" as Client
+actor "Gestionnaire" as Gestionnaire
+actor "Administrateur" as Administrateur
+actor "Super Administrateur" as SuperAdmin
+actor "Payment Server" as PaymentServer
+
+usecase "S'inscrire" as UC1
+usecase "Se connecter" as UC2
+usecase "Visualiser produits" as UC3
+usecase "Ajouter produit au panier" as UC4
+usecase "Retirer produit du panier" as UC5
+usecase "Passer commande" as UC6
+usecase "Consulter commande" as UC7
+usecase "Écrire commentaire" as UC8
+usecase "Noter produit" as UC9
+usecase "Retourner produit" as UC10
+usecase "Consulter historique de commande" as UC11
+usecase "Recevoir notification" as UC12
+usecase "Gérer stock" as UC13
+usecase "Gérer utilisateur" as UC14
+usecase "Gérer promotions" as UC15
+usecase "Générer facture" as UC16
+usecase "Changer template" as UC17
+usecase "Suivre action client" as UC18
+usecase "Gérer les droits" as UC19
+usecase "Valider les données" as UC20
+
+Client -- UC1
+Client -- UC2
+Client -- UC3
+Client -- UC4
+Client -- UC5
+Client -- UC6
+Client -- UC7
+Client -- UC8
+Client -- UC9
+Client -- UC10
+Client -- UC11
+Client -- UC12
+
+Gestionnaire -- UC13
+Gestionnaire -- UC15
+Gestionnaire -- UC16
+Gestionnaire -- UC14
+
+Administrateur -- UC14
+Administrateur -- UC15
+Administrateur -- UC13
+Administrateur -- UC18
+Administrateur -- UC19
+
+SuperAdmin -- UC17
+
+
+PaymentServer -- UC20
+
+UC6 <|.. UC16 : <<extend>>
+UC6 <|.. UC12 : <<extend>>
+UC6 ..|> UC20 : <<include>>
+
+Gestionnaire <|-- Administrateur
+Administrateur <|-- SuperAdmin
+
+note right of UC2
+Toutes les actions necessitent une connexion sauf la visualisation des produits
+end note
+
+@enduml

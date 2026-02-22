@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.7.1/scripts/addImageUrl.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 2
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.7.1/scripts/updateImagelength.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 3
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.7.1/scripts/mainImage.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 4
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.7.1/scripts/removeMainImage.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+  - changeSet:
+      id: 5
+      author: postgres
+      changes:
+        - sqlFile:
+            path: classpath:/db/changelog/1.7.1/scripts/addImageUrlUser.sql
+            relativeToChangelogFile: false
+            splitStatements: true
+            stripComments: true
+
+
+

@@ -1,0 +1,13 @@
+@startuml UseCase_SuperAdmin
+
+actor "Super Administrateur" as SuperAdmin
+
+usecase "Changer template" as UC17
+
+SuperAdmin -- UC17
+
+note right
+  Action sensible nécessitant une connexion avec des droits élevés.
+end note
+
+@enduml

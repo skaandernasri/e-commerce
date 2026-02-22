@@ -1,0 +1,99 @@
+@if(data.contact.statusContact === 'EN_COURS'){
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4"
+     role="dialog"
+     aria-modal="true">
+  
+  <!-- Modal Container -->
+  <div @fadeInUp class="relative w-full max-w-md bg-[var(--surface)] rounded-xl shadow-2xl overflow-hidden border border-[var(--background)]">
+    
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] p-4">
+      <h2 class="text-xl font-bold text-white">
+         Edit Contact 
+      </h2>
+    </div>
+
+    <!-- Content -->
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="p-6 space-y-6">
+      <!-- statusContact Field -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Status Contact</label>
+        <select
+          formControlName="statusContact"
+          class="w-full px-4 py-2 rounded-lg border border-[var(--background)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)/20] bg-[var(--surface)] text-[var(--text)]"
+        >
+          <option value="EN_COURS">en cours</option>
+          <option value="RESOLU">Resolu</option>
+        </select>
+      </div>
+    @if(data.contact.type=='RETOUR'){
+        <!-- Refund Method Field -->
+      <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Refund Method</label>
+        <select
+          formControlName="refundMethod"
+          class="w-full px-4 py-2 rounded-lg border border-[var(--background)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)/20] bg-[var(--surface)] text-[var(--text)]"
+        >
+          <option value="VIREMENT">VIREMENT</option>
+          <option value="CARTE_BANCAIRE">CARTE_BANCAIRE</option>
+        </select>
+      </div>
+      <!-- isRefunded Field -->
+       <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">
+             <input type="checkbox" formControlName="isRefunded" />
+           <span class="ml-2">isRefunded</span> </label>
+        
+      </div>
+    }
+    <!-- Admin Response Field -->
+     <div class="space-y-2">
+        <label class="block text-sm font-medium text-[var(--text)]">Admin Response</label>
+        <textarea
+          formControlName="adminResponse"
+          class="w-full px-4 py-2 rounded-lg border border-[var(--background)] focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)/20] bg-[var(--surface)] text-[var(--text)]"
+        ></textarea>
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-[var(--background)] px-6 py-4 border-t border-[var(--border)] flex justify-end gap-3">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 text-sm font-medium text-[var(--text)] hover:text-[var(--primary)] transition-colors"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="contactForm.invalid || isLoading"
+          class="px-4 py-2 bg-[var(--primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--secondary)] transition-colors flex items-center gap-2 disabled:opacity-50"
+        >
+          @if (!isLoading) {
+            <span>Update</span>
+          }
+          @else { 
+            <span class="animate-spin">↻</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+<!-- Modal for status NOT EN_COURS -->
+ @else{
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50" role="dialog" aria-modal="true">
+  
+  <div @fadeInUp class="relative w-full max-w-md bg-[var(--surface)] rounded-xl shadow-2xl overflow-hidden border border-[var(--background)] p-6 text-center">
+    <h2 class="text-xl font-bold text-[var(--text)] mb-4">Information</h2>
+    <p class="text-[var(--text)] mb-6">
+      The contact status is <strong>{{ data.contact.statusContact }}</strong> and cannot be edited.
+    </p>
+    <button (click)="onCancel()" 
+            class="px-4 py-2 bg-[var(--primary)] text-white rounded hover:bg-[var(--secondary)] transition-colors">
+      Close
+    </button>
+  </div>
+</div>
+}

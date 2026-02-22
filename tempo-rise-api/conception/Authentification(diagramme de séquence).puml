@@ -1,0 +1,112 @@
+@startuml
+actor Utilisateur
+participant "Frontend" as Frontend
+participant "Backend" as Backend
+participant "Base de Données" as DB
+participant "Google OAuth" as Google
+participant "Facebook OAuth" as Facebook
+
+== Authentification locale (login/mot de passe) ==
+Utilisateur -> Frontend : Saisit son email et son mot de passe
+Frontend -> Backend : Envoie les identifiants (email, mot de passe)
+Backend -> DB : Vérifie si l'email existe
+alt L'email existe avec une authentification locale
+    Backend -> DB : Vérifie si le mot de passe correspond
+    alt les identifiants sont corrects
+        DB --> Backend : Retourne les informations de l'utilisateur
+        Backend -> Backend : Génère un JWT
+        Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+        Frontend --> Utilisateur : Affiche un message de connexion réussie
+    else les identifiants sont erronés
+        Backend -> Frontend : Renvoie une erreur "Email ou mot de passe incorrect"
+        Frontend --> Utilisateur : Affiche un message d'erreur
+    end
+else L'email existe avec un autre provider (Google/Facebook)
+    Backend -> Frontend : Renvoie une erreur "Email déjà utilisé avec un autre provider"
+    Frontend --> Utilisateur : Affiche une suggestion pour créer un mot de passe
+    Utilisateur -> Frontend : Saisit un nouveau mot de passe
+    Frontend -> Backend : Envoie le nouveau mot de passe
+    Backend -> DB : Ajoute une nouvelle entrée dans la table d'authentification
+    DB --> Backend : Confirme l'ajout
+    Backend -> Backend : Génère un JWT
+    Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+    Frontend --> Utilisateur : Affiche un message de connexion réussie et de mot de passe ajouté
+else L'email n'existe pas
+    Backend -> Frontend : Renvoie une erreur "Email ou mot de passe incorrect"
+    Frontend --> Utilisateur : Affiche un message d'erreur
+end
+
+== Connexion avec Google ==
+Utilisateur -> Frontend : Clique sur "Se connecter avec Google"
+Frontend -> Google : Redirige vers Google OAuth
+Google -> Utilisateur : Demande l'autorisation d'accéder au compte Google
+Utilisateur -> Google : Autorise l'accès
+Google -> Frontend : Redirige avec un code d'autorisation
+Frontend -> Backend : Envoie le code d'autorisation
+Backend -> Google : Échange le code d'autorisation contre un token d'accès
+alt Google refuse l'authentification
+    Google --> Backend : Retourne une erreur d'authentification
+    Backend -> Frontend : Renvoie une erreur "Authentification Google refusée"
+    Frontend --> Utilisateur : Affiche un message d'erreur
+else Authentification réussie
+    Google --> Backend : Retourne le token d'accès et les informations de l'utilisateur
+    Backend -> DB : Vérifie si l'email est déjà utilisé
+    alt L'email est déjà utilisé
+        Backend -> DB : Met à jour les informations utilisateur (nom, prénom, date de naissance, URL image de profil)
+        DB --> Backend : Confirme la mise à jour
+        Backend -> DB : Ajoute une nouvelle entrée dans la table d'authentification
+        DB --> Backend : Confirme l'ajout
+        Backend -> Backend : Génère un JWT
+        Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+        Frontend --> Utilisateur : Affiche un message de connexion réussie et de provider ajouté
+    else L'email n'est pas utilisé
+        Backend -> DB : Crée un nouvel utilisateur et une entrée dans la table d'authentification
+        DB --> Backend : Confirme la création
+        Backend -> Backend : Génère un JWT
+        Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+        Frontend --> Utilisateur : Affiche un message de connexion réussie
+    end
+end
+
+== Connexion avec Facebook ==
+Utilisateur -> Frontend : Clique sur "Se connecter avec Facebook"
+Frontend -> Facebook : Redirige vers Facebook OAuth
+Facebook -> Utilisateur : Demande l'autorisation d'accéder au compte Facebook
+Utilisateur -> Facebook : Autorise l'accès
+Facebook -> Frontend : Redirige avec un code d'autorisation
+Frontend -> Backend : Envoie le code d'autorisation
+Backend -> Facebook : Échange le code d'autorisation contre un token d'accès
+Facebook --> Backend : Retourne le token d'accès et les informations de l'utilisateur
+Backend -> DB : Vérifie si l'email est déjà utilisé
+alt L'email est déjà utilisé
+    Backend -> DB : Met à jour les informations utilisateur (nom, prénom, date de naissance, URL image de profil)
+    DB --> Backend : Confirme la mise à jour
+    Backend -> DB : Ajoute une nouvelle entrée dans la table d'authentification
+    DB --> Backend : Confirme l'ajout
+    Backend -> Backend : Génère un JWT
+    Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+    Frontend --> Utilisateur : Affiche un message de connexion réussie et de provider ajouté
+else L'email n'est pas utilisé
+    Backend -> DB : Crée un nouvel utilisateur et une entrée dans la table d'authentification
+    DB --> Backend : Confirme la création
+    Backend -> Backend : Génère un JWT
+    Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+    Frontend --> Utilisateur : Affiche un message de connexion réussie
+end
+
+== Accès à une ressource protégée ==
+Utilisateur -> Frontend : Demande une ressource protégée
+Frontend -> Backend : Envoie la requête avec le cookie JWT
+Backend -> Backend : Vérifie le JWT
+Backend -> DB : Récupère les données de la ressource
+DB --> Backend : Retourne les données
+Backend --> Frontend : Renvoie la ressource demandée
+Frontend --> Utilisateur : Affiche la ressource
+
+== Déconnexion ==
+Utilisateur -> Frontend : Clique sur "Se déconnecter"
+Frontend -> Backend : Envoie une requête de déconnexion
+Backend -> Frontend : Renvoie une réponse avec un cookie vide (pour supprimer le JWT)
+Frontend --> Utilisateur : Redirige vers la page de connexion
+
+@enduml

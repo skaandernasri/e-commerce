@@ -1,0 +1,66 @@
+ @if(activeContent2Section()){
+<section [id]="activeContent2Section()?.type" class="py-12 sm:py-16 px-4 sm:px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 uppercase tracking-wide">
+      {{ content2Content()?.title }}
+    </h2>
+
+    <!-- Main Grid - Stack on mobile -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+      <!-- Left side -->
+      <div class="grid grid-rows-3 gap-4 sm:gap-6">
+        @for(content2 of content2Content()?.imagesAndText;track $index){
+          @if($index < 3){
+        <div class="group overflow-hidden rounded-lg">
+          <div class="transform group-hover:scale-105 transition duration-300 bg-cover bg-center rounded-lg p-4 sm:p-6 flex items-end justify-center text-white font-bold text-lg sm:text-xl min-h-[150px] sm:min-h-[200px]"
+[style.background-image]="safeBackground(content2.imageUrl,$index,'content2')">
+          
+            <div class="backdrop-blur-md bg-white/40 px-3 py-1 sm:px-4 sm:py-2 text-center rounded-lg border-2 border-white">
+              <h3>{{ content2.title }}</h3>
+            </div>
+          </div>
+        </div>
+      }
+        }
+      </div>
+
+      <!-- Right side -->
+      <div class="grid grid-rows-[auto_1fr] gap-4 sm:gap-6 h-full">
+        <!-- Top image -->
+         @for(content2 of content2Content()?.imagesAndText;track $index){
+          @if($index == 3){
+        <div class="group overflow-hidden rounded-lg h-full">
+          <div
+          [style.background-image]="safeBackground(content2.imageUrl,$index,'content2')"
+
+           class="transform group-hover:scale-105 transition duration-300 bg-cover bg-center bg-no-repeat rounded-lg p-4 sm:p-6 flex items-end justify-center text-white font-bold text-lg sm:text-xl h-[150px] sm:h-[200px]">
+            
+            <div class="backdrop-blur-md bg-white/40 px-3 py-1 sm:px-4 sm:py-2 text-center rounded-lg border-2 border-white">
+              <h3>{{ content2.title }}</h3>
+            </div>
+          </div>
+        </div>
+      }
+    }
+
+        <!-- Bottom row -->
+        <div class="grid grid-cols-2 gap-3 sm:gap-4 h-full">
+          @for(content2 of content2Content()?.imagesAndText;track $index){
+          @if($index >=4 && $index < 6){
+          <div class="group overflow-hidden rounded-lg h-full">
+            <div
+            [style.background-image]="safeBackground(content2.imageUrl,$index,'content2')"
+            class="transform group-hover:scale-105 transition duration-300 bg-cover bg-center rounded-lg p-4 sm:p-6 flex items-end justify-center text-white font-bold text-lg sm:text-xl h-full">
+              <div class="backdrop-blur-md bg-white/40 px-3 py-1 sm:px-4 sm:py-2 text-center rounded-lg border-2 border-white">
+                <h3>{{ content2.title }}</h3>
+              </div>
+            </div>
+          </div>
+        }
+      }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+}

@@ -1,0 +1,380 @@
+<header class="bg-[var(--surface)] shadow-md ">
+  <app-banner></app-banner>
+  <div class="container mx-auto px-3 sm:px-4 lg:px-6">
+    <!-- Main Header Row -->
+    <div class="flex items-center justify-between h-14 sm:h-16 lg:h-18 gap-2 sm:gap-4">
+
+      <!-- Left: Mobile Menu + Logo -->
+      <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+        <button
+          class="md:hidden p-2 -ml-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors"
+          (click)="toggleMobileMenu()"
+          [attr.aria-label]="'HEADER.TOGGLE_NAV' | translate">
+          <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            @if(!isMobileMenuOpen) {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            } @else {
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            }
+          </svg>
+        </button>
+
+        <a routerLink="/" class="flex items-center">
+          <svg width="104" height="48" viewBox="0 0 104 48" fill="none" xmlns="http://www.w3.org/2000/svg" 
+               class="h-6 w-auto sm:h-7 md:h-8">
+            <g clip-path="url(#clip0_61_2694)">
+              <path d="M5.66556 17.9334H0V13.0044H16.7504V17.9334H11.0848V47.5072H5.66556V17.9334Z" fill="currentColor"/>
+              <path d="M19.3613 12.9961H34.1411V17.9251H24.7806V27.0437H32.2197V31.9726H24.7806V42.5699H34.1411V47.4989H19.3613V12.9961Z" fill="currentColor"/>
+              <path d="M37.2451 12.9961H44.9798L48.4284 37.6903H48.527L51.9756 12.9961H59.7103V47.4989H54.5867V21.3754H54.4881L50.5469 47.4989H46.0144L42.0732 21.3754H41.9746V47.4989H37.2451V12.9961Z" fill="currentColor"/>
+              <path d="M63.75 12.9961H71.7311C77.1503 12.9961 79.8106 16.0028 79.8106 21.5232V24.9242C79.8106 30.4447 77.1503 33.4513 71.7311 33.4513H69.1692V47.4989H63.75V12.9961ZM71.7311 28.5224C73.4554 28.5224 74.3914 27.7337 74.3914 25.2692V21.1782C74.3914 18.7137 73.4554 17.9251 71.7311 17.9251H69.1692V28.5224H71.7311Z" fill="currentColor"/>
+              <path d="M82.3721 39.3249V21.1862C82.3721 15.6658 85.2787 12.5112 90.5994 12.5112C95.9201 12.5112 98.8268 15.6658 98.8268 21.1862V39.3249C98.8268 44.8453 95.9201 47.9998 90.5994 47.9998C85.2787 47.9998 82.3721 44.8453 82.3721 39.3249ZM93.4076 39.6617V20.833C93.4076 18.3685 92.3237 17.432 90.5994 17.432C88.8751 17.432 87.7913 18.3685 87.7913 20.833V39.6617C87.7913 42.1262 88.8751 43.0627 90.5994 43.0627C92.3237 43.0627 93.4076 42.1262 93.4076 39.6617Z" fill="currentColor"/>
+              <path d="M90.9278 0.312012H90.2217V8.96236H90.9278V0.312012Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-miterlimit="10"/>
+              <path d="M95.8652 4.43728L93.6855 9.13086L94.3259 9.42854L96.5056 4.73496L95.8652 4.43728Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-miterlimit="10"/>
+              <path d="M84.3406 4.45378L83.7002 4.75146L85.8798 9.44504L86.5202 9.14736L84.3406 4.45378Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-miterlimit="10"/>
+              <path d="M103.067 5.23777L96.9531 11.3545L97.4524 11.8541L103.566 5.73733L103.067 5.23777Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-miterlimit="10"/>
+              <path d="M76.7562 5.22847L76.2568 5.72803L82.3706 11.8447L82.8699 11.3452L76.7562 5.22847Z" fill="currentColor" stroke="currentColor" stroke-width="0.75" stroke-miterlimit="10"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_61_2694">
+                <rect width="104" height="48" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Center: Desktop Search Bar (hidden on mobile) -->
+      <div class="hidden md:block relative flex-1 max-w-md lg:max-w-lg xl:max-w-xl mx-auto">
+        <input
+          #searchInput
+          type="text"
+          [(ngModel)]="searchTerm"
+          (input)="searchTerm()"
+          placeholder="{{ 'HEADER.SEARCH_PLACEHOLDER' | translate }}"
+          class="w-full px-4 py-2 rounded-full bg-[var(--background)] border border-gray-300 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-20 transition-all text-sm"
+        />
+        
+        @if (products().length > 0) {
+          <div
+            #productsDropdown
+            class="absolute left-0 right-0 z-50 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-80 overflow-y-auto">
+            @for (product of products(); track product.id) {
+              <div
+                (click)="onProductSelected(product)"
+                class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0">
+                
+                @if (product.imageProduits && product.imageProduits.length > 0) {
+                  <div class="w-12 h-12 flex-shrink-0">
+                    <img
+                      [src]="imageBaseUrl+product.imageProduits[0].url"
+                      alt="{{ product.nom }}"
+                      class="w-full h-full object-cover rounded-md"
+                    />
+                  </div>
+                } @else {
+                  <div class="w-12 h-12 flex-shrink-0 bg-gray-100 rounded-md flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                }
+
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-baseline justify-between gap-2">
+                    <span class="text-sm font-medium text-gray-900 truncate">{{ product.nom }}</span>
+                    <span class="text-sm font-semibold flex-shrink-0">
+                      @if (product.promotions?.length) {
+                        <span class="text-[var(--primary)]">{{ product.newPrice | currencyFormat }}</span>
+                      } @else {
+                        <span class="text-gray-900">{{ product.prix | currencyFormat }}</span>
+                      }
+                    </span>
+                  </div>
+                  <span class="text-xs text-gray-500 block mt-0.5">{{ product.categorie.nom }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Center: Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+        @for(link of navLinks; track $index) {
+          <a [routerLink]="link.path"
+             routerLinkActive="text-[var(--primary)] font-medium"
+             [routerLinkActiveOptions]="{ exact: link.exact }"
+             class="text-[var(--text)] hover:text-[var(--primary)] transition-colors px-3 py-2 rounded-md text-sm whitespace-nowrap">
+            {{ link.translationKey | translate }}
+          </a>
+        }
+      </nav>
+
+      <!-- Right: Action Icons -->
+      <div class="flex items-center gap-1 flex-shrink-0">
+
+        <!-- Mobile Search Button -->
+        <button 
+          class="md:hidden p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors"
+          (click)="toggleMobileSearch()"
+          [attr.aria-label]="'HEADER.SEARCH' | translate">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+
+        <!-- Language Selector -->
+        <div class="relative" #languageDropdown>
+          <button 
+            (click)="toggleLanguageMenu($event)"
+            class="p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors text-xs sm:text-sm font-medium">
+            {{ languageService.currentLanguage.toUpperCase() }}
+          </button>
+
+          @if (isLanguageMenuOpen) {
+            <div class="absolute right-0 mt-2 w-16 bg-[var(--background)] rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+              <div class="py-1">
+                @for (lang of languages; track lang) {
+                  <button 
+                    (click)="changeLanguage(lang)"
+                    class="block w-full text-center px-3 py-2 text-sm font-medium text-[var(--text)] hover:bg-[var(--hover)] transition-colors">
+                    {{ lang.toUpperCase() }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Cart Button -->
+        <button 
+          (click)="toggleCart()" 
+          class="relative p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors" 
+          [attr.aria-label]="'HEADER.CART' | translate">
+          <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          @if (cartItemCount() > 0) {
+            <span class="absolute -top-0.5 -right-0.5 bg-[var(--primary)] text-white text-xs font-bold w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full">
+              {{ cartItemCount() }}
+            </span>
+          }
+        </button>
+
+        <!-- Notifications (Logged In) -->
+        @if(isLoggedIn()) {
+          <div class="relative" #notifDropdown>
+            <button 
+              (click)="toggleNotification()" 
+              class="relative p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors" 
+              [attr.aria-label]="'HEADER.NOTIFICATIONS' | translate">
+              <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              @if (notifCount() > 0) {
+                <span class="absolute -top-0.5 -right-0.5 bg-[var(--primary)] text-white text-xs font-bold w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center rounded-full">
+                  {{ notifCount() | notifNumber}}
+                </span>
+              }
+            </button>
+
+            @if(showNotifications()) {
+              <div class="absolute right-0 mt-2 w-80 sm:w-96 bg-[var(--background)] shadow-xl border rounded-xl z-50 max-h-96 overflow-hidden flex flex-col">
+                <div class="p-4 border-b font-semibold text-[var(--text)] flex-shrink-0">
+                  {{ 'HEADER.NOTIFICATIONS' | translate }}
+                </div>
+                
+                <div class="overflow-y-auto flex-1">
+                  @if(notifs().length > 0){
+                    @for(notif of notifs(); track notif.id) {
+                      <div class="px-4 py-3 border-b hover:bg-[var(--hover)] transition-colors cursor-pointer">
+                        <div class="flex items-start justify-between gap-2">
+                          <div class="text-sm font-medium text-[var(--text)] flex-1">
+                            {{ notif.title }}
+                          </div>
+                          @if (!notif.isRead) {
+                            <span class="inline-block w-2 h-2 rounded-full bg-blue-500 flex-shrink-0 mt-1"></span>
+                          }
+                        </div>
+                        <div class="text-xs text-gray-600 mt-1">{{ notif.message }}</div>
+                        <div class="text-xs text-gray-400 mt-1">{{ notif.updatedAt | date:'short' }}</div>
+                      </div>
+                    }
+                    
+                    @if(hasMoreNotifs()) {
+                      <div class="p-3 border-t flex justify-center flex-shrink-0">
+                        <button 
+                          (click)="loadMoreNotifs(authState().id!)"
+                          class="px-4 py-2 text-sm text-[var(--primary)] hover:bg-gray-50 rounded-md transition-colors font-medium"
+                          [disabled]="loadingMore">
+                          @if(loadingMore) {
+                            {{ 'HEADER.LOADING' | translate }}
+                          } @else {
+                            {{ 'HEADER.LOAD_MORE' | translate }}
+                          }
+                        </button>
+                      </div>
+                    }
+                  } @else {
+                    <div class="p-8 text-sm text-gray-500 text-center">
+                      {{ 'HEADER.NO_NOTIFICATIONS' | translate }}
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- User Menu (Logged In) -->
+        @if(isLoggedIn()) {
+          <div class="relative" #userDropdown>
+            <button 
+              (click)="toggleUserMenu($event)" 
+              class="flex items-center gap-1 p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+              <span class="hidden xl:inline text-sm">{{ 'USER_MENU.ACCOUNT' | translate }}</span>
+            </button>
+            
+            @if (isUserMenuOpen) {
+              <div class="absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-[var(--background)] ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+                <div class="py-1">
+                  <a routerLink="/profile" 
+                     class="block px-4 py-2.5 text-sm text-[var(--text)] hover:bg-[var(--hover)] transition-colors">
+                    {{ 'USER_MENU.PROFILE' | translate }}
+                  </a>
+                  <a routerLink="/whichlist" 
+                     class="block px-4 py-2.5 text-sm text-[var(--text)] hover:bg-[var(--hover)] transition-colors">
+                    {{ 'USER_MENU.WHISHLIST' | translate }}
+                  </a>
+                  <button 
+                    (click)="logout()" 
+                    class="block w-full text-left px-4 py-2.5 text-sm text-[var(--text)] hover:bg-[var(--hover)] transition-colors border-t border-gray-100">
+                    {{ 'USER_MENU.LOGOUT' | translate }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Login Link (Not Logged In) -->
+          <a routerLink="/auth/user/signin" 
+             class="flex items-center gap-1 p-2 text-[var(--text)] hover:text-[var(--primary)] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+            <span class="hidden xl:inline text-sm">{{ 'USER_MENU.LOGIN' | translate }}</span>
+          </a>
+        }
+
+        <!-- Admin Dashboard -->
+        @if (isAdmin()) {
+          <a routerLink="/admin/dashboard"
+             class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600 transition-all shadow-sm hover:shadow text-sm font-medium ml-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17,11c0.34,0,0.67,0.04,1,0.09V6.27L10.5,3L3,6.27v4.91c0,4.54,3.2,8.79,7.5,9.82c0.55-0.13,1.08-0.32,1.6-0.55C11.41,19.47,11,18.28,11,17C11,13.69,13.69,11,17,11z"/>
+            </svg>
+            <span class="hidden xl:inline">{{ 'HEADER.DASHBOARD' | translate }}</span>
+          </a>
+        }
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    @if(isMobileMenuOpen) {
+      <div class="md:hidden border-t border-gray-200 bg-[var(--surface)]">
+        <nav class="flex flex-col py-3">
+          @for(link of navLinks; track $index) {
+            <a [routerLink]="link.path"
+               routerLinkActive="text-[var(--primary)] bg-[var(--hover)] font-medium"
+               [routerLinkActiveOptions]="{ exact: link.exact }"
+               class="text-[var(--text)] hover:text-[var(--primary)] hover:bg-[var(--hover)] transition-colors px-4 py-3 text-sm"
+               (click)="isMobileMenuOpen = false">
+              {{ link.translationKey | translate }}
+            </a>
+          }
+
+          @if (isAdmin()) {
+            <a routerLink="/admin/dashboard"
+               class="flex items-center gap-2 mx-4 mt-3 px-4 py-2.5 rounded-md bg-red-500 text-white hover:bg-red-600 transition-colors text-sm font-medium"
+               (click)="isMobileMenuOpen = false">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17,11c0.34,0,0.67,0.04,1,0.09V6.27L10.5,3L3,6.27v4.91c0,4.54,3.2,8.79,7.5,9.82c0.55-0.13,1.08-0.32,1.6-0.55C11.41,19.47,11,18.28,11,17C11,13.69,13.69,11,17,11z"/>
+              </svg>
+              <span>{{ 'HEADER.DASHBOARD' | translate }}</span>
+            </a>
+          }
+        </nav>
+      </div>
+    }
+
+    <!-- Mobile Search Bar (Toggleable) -->
+    @if(isMobileSearchOpen) {
+      <div class="md:hidden border-t border-gray-200 bg-[var(--surface)] py-3 px-3">
+        <div class="relative">
+          <input
+            #mobileSearchInput
+            type="text"
+            [(ngModel)]="searchTerm"
+            (input)="searchTerm()"
+            placeholder="{{ 'HEADER.SEARCH_PLACEHOLDER' | translate }}"
+            class="w-full px-4 py-2 rounded-full bg-[var(--background)] border border-gray-300 focus:outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)] focus:ring-opacity-20 transition-all text-sm"
+          />
+          
+          @if (products().length > 0) {
+            <div
+              class="absolute left-0 right-0 z-50 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-80 overflow-y-auto">
+              @for (product of products(); track product.id) {
+                <div
+                  (click)="onProductSelected(product)"
+                  class="flex items-center gap-3 px-3 py-2.5 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-100 last:border-b-0">
+                  
+                  @if (product.imageProduits && product.imageProduits.length > 0) {
+                    <div class="w-12 h-12 flex-shrink-0">
+                      <img
+                        [src]="imageBaseUrl+product.imageProduits[0].url"
+                        alt="{{ product.nom }}"
+                        class="w-full h-full object-cover rounded-md"
+                      />
+                    </div>
+                  } @else {
+                    <div class="w-12 h-12 flex-shrink-0 bg-gray-100 rounded-md flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  }
+
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-baseline justify-between gap-2">
+                      <span class="text-sm font-medium text-gray-900 truncate">{{ product.nom }}</span>
+                      <span class="text-sm font-semibold flex-shrink-0">
+                        @if (product.promotions?.length) {
+                          <span class="text-[var(--primary)]">{{ product.newPrice | currencyFormat }}</span>
+                        } @else {
+                          <span class="text-gray-900">{{ product.prix | currencyFormat }}</span>
+                        }
+                      </span>
+                    </div>
+                    <span class="text-xs text-gray-500 block mt-0.5">{{ product.categorie.nom }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+      
+</header>

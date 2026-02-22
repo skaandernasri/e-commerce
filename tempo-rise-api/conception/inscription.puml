@@ -1,0 +1,72 @@
+@startuml
+actor Utilisateur
+participant "Frontend" as Frontend
+participant "Backend" as Backend
+participant "Base de Données" as DB
+participant "Google CAPTCHA" as Captcha
+participant "Service d'Emails" as EmailService
+
+== Inscription ==
+Utilisateur -> Frontend : Saisit son email, nom, prénom, date de naissance et un nouveau mot de passe
+Frontend -> Captcha : Affiche un CAPTCHA Google
+Utilisateur -> Captcha : Résout le CAPTCHA
+Captcha --> Frontend : Retourne le token CAPTCHA
+Frontend -> Backend : Envoie les identifiants (email, nom, prénom, date de naissance, mot de passe, token CAPTCHA)
+Backend -> Captcha : Vérifie le token CAPTCHA
+alt CAPTCHA invalide
+    Captcha --> Backend : Retourne une erreur "CAPTCHA invalide"
+    Backend -> Frontend : Renvoie une erreur "CAPTCHA invalide"
+    Frontend --> Utilisateur : Affiche un message d'erreur
+else CAPTCHA valide
+    Backend -> Backend : Vérifie si le mot de passe est fort (longueur, complexité)
+    alt Le mot de passe est faible
+        Backend -> Frontend : Renvoie une erreur "Mot de passe faible"
+        Frontend --> Utilisateur : Affiche un message d'erreur
+    else Le mot de passe est fort
+        Backend -> DB : Vérifie si l'email est déjà utilisé
+        alt L'email est déjà utilisé
+            Backend -> Frontend : Renvoie une erreur "Email déjà utilisé"
+            Frontend --> Utilisateur : Affiche un message d'erreur
+        else L'email n'est pas utilisé
+            Backend -> DB : Crée un nouvel utilisateur et une entrée dans la table d'authentification
+            DB --> Backend : Confirme la création
+            Backend -> EmailService : Envoie un email de confirmation avec un lien de vérification
+            EmailService --> Utilisateur : Reçoit l'email de confirmation
+            Utilisateur -> EmailService : Clique sur le lien de vérification
+            EmailService -> Backend : Notifie la confirmation de l'email
+            Backend -> DB : Marque l'email comme vérifié
+            DB --> Backend : Confirme la mise à jour
+            Backend -> Backend : Génère un JWT
+            Backend -> Frontend : Renvoie le JWT dans un cookie HTTP-only
+            Frontend --> Utilisateur : Affiche un message de confirmation réussie
+        end
+    end
+end
+
+== Réinitialisation du mot de passe ==
+Utilisateur -> Frontend : Clique sur "Mot de passe oublié"
+Frontend -> Backend : Envoie une demande de réinitialisation
+Backend -> EmailService : Envoie un email avec un lien de réinitialisation
+EmailService --> Utilisateur : Reçoit l'email de réinitialisation
+Utilisateur -> Frontend : Clique sur le lien de réinitialisation
+Frontend -> Backend : Envoie le token de réinitialisation
+Backend -> Backend : Vérifie le token de réinitialisation
+alt Token valide
+    Utilisateur -> Frontend : Saisit un nouveau mot de passe
+    Frontend -> Backend : Envoie le nouveau mot de passe
+    Backend -> Backend : Vérifie si le mot de passe est fort (longueur, complexité)
+    alt Le mot de passe est faible
+        Backend -> Frontend : Renvoie une erreur "Mot de passe faible"
+        Frontend --> Utilisateur : Affiche un message d'erreur
+    else Le mot de passe est fort
+        Backend -> DB : Met à jour le mot de passe de l'utilisateur
+        DB --> Backend : Confirme la mise à jour
+        Backend -> Frontend : Renvoie un message de succès
+        Frontend --> Utilisateur : Affiche un message de réinitialisation réussie
+    end
+else Token invalide
+    Backend -> Frontend : Renvoie une erreur "Token invalide"
+    Frontend --> Utilisateur : Affiche un message d'erreur
+end
+
+@enduml

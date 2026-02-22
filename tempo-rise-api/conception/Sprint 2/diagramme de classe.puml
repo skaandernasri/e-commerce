@@ -1,0 +1,122 @@
+@startuml
+
+' ==== Classes existantes réutilisées ====
+class Utilisateur {
+    +id: Long
+    +nom: String
+    +email: String
+    +roles: Set<Role>
+}
+enum Role {
+    CLIENT
+    REDACTEUR
+    ADMIN
+    SUPER_ADMIN
+    GESTIONNAIRE
+}
+enum TypeAuthentification {
+    EMAIL
+    FACEBOOK
+    GOOGLE
+}
+class Authentification {
+    +id: Long
+    +type: TypeAuthentification
+    +motDePasse: String
+    +providerId: String
+    +utilisateur: Utilisateur
+}
+class SuiviClient {
+    +id: Long
+    +utilisateur: Utilisateur
+    +produit: Produit
+    +typeAction: TypeAction
+    +score: Double
+    +date: Date
+}
+class Produit {
+    +id: Long
+    +nom: String
+    +description: String
+    +marque: String
+    +composition: String
+    +guide: String
+    +faq: String
+    +categorie: Categorie
+    +prix: Double
+}
+class Variant {
+    +id: Long
+    +produit: Produit
+    +taille: String
+    +couleur: String
+    +stock: long
+}
+
+' ==== Nouvelles classes spécifiques au Sprint 2 ====
+class BlogPost {
+    +id: Long
+    +titre: String
+    +contenu: String
+    +datePublication: Date
+    +estPublie: Boolean
+    +partager(reseau: String): void
+}
+
+class ImageBlogPost {
+    +id: Long
+    +url: String
+}
+
+class Commentaire {
+    +id: Long
+    +contenu: String
+    +datePublication: Date
+}
+
+class Avis {
+    +id: Long
+    +note: Integer
+    +commentaire: String
+    +datePublication: Date
+}
+
+class GoogleAnalyticsService {
+    +suivreAction(utilisateur: Utilisateur, action: String): void
+}
+
+class GestionUtilisateur {
+    +ajouterUtilisateur(utilisateur: Utilisateur): void
+    +modifierRole(utilisateurId: Long, role: Role): void
+}
+enum TypeAction {
+    VIEW_PRODUCT
+    ADD_TO_CART
+    REMOVE_FROM_CART
+    PURCHASE
+    ADD_TO_WISHLIST
+    LEAVE_REVIEW
+    SEARCH_CLICK
+    PRODUCT_HOVER
+}
+
+' ==== Relations ajoutées/modifiées ====
+Utilisateur "1" -- "*" SuiviClient : effectue
+Utilisateur "1" -- "*" Role : possède
+GoogleAnalyticsService "1" -- "*" SuiviClient : enregistre
+Utilisateur "1" -- "*" BlogPost : écrit
+BlogPost "1" -- "*" ImageBlogPost : contient
+BlogPost "1" -- "*" Commentaire : reçoit
+Utilisateur "1" -- "*" Commentaire : poste
+Utilisateur "1" -- "*" Avis : poste
+Produit "1" -- "*" Avis : reçoit
+Produit "1" -- "*" Variant : possède
+GoogleAnalyticsService "1" -- "*" Utilisateur : suit
+GestionUtilisateur "1" -- "*" Utilisateur : administre
+Authentification "*" -- "1" TypeAuthentification
+Utilisateur "1" -- "*" Authentification : a
+Produit "1" -- "*" SuiviClient : est concerné par
+SuiviClient "*" -- "1" TypeAction : est de type
+
+
+@enduml
